@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@theme static {
+  --color-ink: #09050f;
+  --color-surface: #120a21;
+  --color-surface-2: #1a1030;
+  --color-line: #2a1b4a;
+  --color-line-strong: #43307a;
+  --color-fg: #f0eaff;
+  --color-muted: #a99fc8;
+  --color-neon-pink: #ff4fd8;
+  --color-neon-cyan: #4de3ff;
+  --color-gold: #f7c948;
+}
+
+@theme inline {
+  --font-pixel: var(--font-press-start), ui-monospace, monospace;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-ink);
+    background-image:
+      radial-gradient(60rem 28rem at 50% -8rem, rgb(255 79 216 / 0.16), transparent 65%),
+      radial-gradient(40rem 24rem at 100% 0, rgb(77 227 255 / 0.09), transparent 60%),
+      linear-gradient(rgb(255 255 255 / 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(255 255 255 / 0.03) 1px, transparent 1px);
+    background-size: auto, auto, 48px 48px, 48px 48px;
+    color: var(--color-fg);
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: rgb(255 79 216 / 0.35);
+  }
+}
