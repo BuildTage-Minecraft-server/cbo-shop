@@ -5,9 +5,6 @@ import { Button } from "@/shared/ui";
 import { loginAction } from "../api/login";
 import { initialLoginState } from "../model/state";
 
-const fieldClass =
-  "h-11 rounded-md border border-line-strong bg-ink px-3 text-base text-fg outline-none transition placeholder:text-muted/60 focus:border-neon-cyan focus:shadow-[0_0_0_3px_rgb(77_227_255/0.15)]";
-
 export function LoginForm({ next }: { next: string }) {
   const [state, formAction, pending] = useActionState(loginAction, initialLoginState);
 
@@ -15,8 +12,8 @@ export function LoginForm({ next }: { next: string }) {
     <form action={formAction} className="flex flex-col gap-4">
       <input type="hidden" name="next" value={next} />
 
-      <label className="flex flex-col gap-1.5 text-sm">
-        <span className="text-muted">Ник или логин</span>
+      <label className="flex flex-col gap-2">
+        <span className="font-pixel text-base text-muted">Ник или логин</span>
         <input
           name="username"
           type="text"
@@ -24,29 +21,29 @@ export function LoginForm({ next }: { next: string }) {
           defaultValue={state.username}
           required
           maxLength={64}
-          className={fieldClass}
+          className="hud-input"
         />
       </label>
 
-      <label className="flex flex-col gap-1.5 text-sm">
-        <span className="text-muted">Пароль</span>
+      <label className="flex flex-col gap-2">
+        <span className="font-pixel text-base text-muted">Пароль</span>
         <input
           name="password"
           type="password"
           autoComplete="current-password"
           required
           maxLength={256}
-          className={fieldClass}
+          className="hud-input"
         />
       </label>
 
       {state.error ? (
-        <p role="alert" className="text-sm text-neon-pink">
+        <p role="alert" className="text-sm text-hud-red">
           {state.error}
         </p>
       ) : null}
 
-      <Button type="submit" size="lg" disabled={pending}>
+      <Button type="submit" size="lg" accent="cyan" icon="user" disabled={pending} className="w-full">
         {pending ? "Проверяем..." : "Войти"}
       </Button>
     </form>

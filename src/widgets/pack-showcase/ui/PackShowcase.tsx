@@ -3,9 +3,12 @@ import { CURRENCY_PACKS, PackCard } from "@/entities/currency-pack";
 import { getSession } from "@/entities/session";
 import { BuyButton } from "@/features/buy-currency";
 import { routes, siteConfig } from "@/shared/config";
-import { ButtonLink, Container, SectionHeading } from "@/shared/ui";
+import { ButtonLink, Container, IconBox, Panel, SectionHeading } from "@/shared/ui";
+import type { Accent } from "@/shared/ui";
 
 const loginHref = `${routes.login}?next=${encodeURIComponent(routes.shop)}`;
+
+const PACK_ACCENTS: readonly Accent[] = ["blue", "green", "purple", "pink", "orange", "yellow"];
 
 export async function PackShowcase() {
   const session = await getSession();
@@ -15,32 +18,34 @@ export async function PackShowcase() {
       <Container>
         <SectionHeading
           kicker="Магазин"
-          title="Пакеты Обрыгаций"
+          title="Пакеты игровой валюты"
           description={`Цены указаны в рублях. Оплата проходит через ${siteConfig.paymentProvider}, валюта начисляется автоматически.`}
         />
 
-        <div className="mt-8 rounded-xl border border-line bg-surface/70 px-5 py-4 text-sm text-muted">
+        <Panel accent="cyan" bar="left" className="mt-8 flex items-center gap-4 px-5 py-4">
+          <IconBox icon="gem" accent="pink" />
           {session ? (
-            <p>
-              Покупка для аккаунта <strong className="text-fg">{session.name}</strong>. Обрыгации будут начислены на этот аккаунт.
+            <p className="text-sm text-body">
+              Покупка для аккаунта <strong className="text-white">{session.name}</strong>. Валюта будет начислена на этот аккаунт.
             </p>
           ) : (
-            <p>
-              Чтобы купить, войдите через аккаунт сервера. Обрыгации начисляются на тот аккаунт, под которым вы вошли.
+            <p className="text-sm text-body">
+              Чтобы купить, войдите через аккаунт сервера. Валюта начисляется на тот аккаунт, под которым вы вошли.
             </p>
           )}
-        </div>
+        </Panel>
 
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {CURRENCY_PACKS.map((pack) => (
+          {CURRENCY_PACKS.map((pack, index) => (
             <PackCard
               key={pack.id}
               pack={pack}
+              accent={PACK_ACCENTS[index % PACK_ACCENTS.length]}
               action={
                 session ? (
                   <BuyButton packId={pack.id} label="Купить" />
                 ) : (
-                  <ButtonLink href={loginHref} size="lg" className="w-full">
+                  <ButtonLink href={loginHref} size="lg" icon="user" className="w-full">
                     Войти и купить
                   </ButtonLink>
                 )

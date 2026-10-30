@@ -35,7 +35,7 @@ export async function createPaymentAction(_previous: BuyState, formData: FormDat
 
     const payment = await createPayment(credentials, {
       amountRub: pack.priceRub,
-      description: `${siteConfig.name}: ${formatNumber(pack.amount)} шт. для ${session.name}`,
+      description: `${siteConfig.name}: игровая валюта, ${formatNumber(pack.amount)} ед., аккаунт ${session.name}`,
       returnUrl: `${siteUrl()}${routes.paymentResult}`,
       idempotenceKey: randomUUID(),
       metadata: { playerUuid: session.uuid, playerName: session.name, packId: pack.id },

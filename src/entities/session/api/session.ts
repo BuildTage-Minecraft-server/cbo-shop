@@ -5,7 +5,7 @@ import { serverEnv } from "@/shared/config/env";
 import { toDashedUuid } from "@/shared/lib";
 import type { Session } from "../model/types";
 
-const COOKIE_NAME = "obr_session";
+const COOKIE_NAME = "cbo_session";
 const MAX_AGE_SECONDS = 60 * 60 * 24 * 7;
 
 function secretKey(): Uint8Array {

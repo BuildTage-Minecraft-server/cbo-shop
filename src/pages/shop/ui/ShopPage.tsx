@@ -4,7 +4,7 @@ import { PackShowcase } from "@/widgets/pack-showcase";
 export function ShopPage() {
   return (
     <>
-      <h1 className="sr-only">Магазин Обрыгаций</h1>
+      <h1 className="sr-only">Магазин игровой валюты</h1>
       <PackShowcase />
       <HowItWorks />
     </>

@@ -9,13 +9,13 @@ export function BuyButton({ packId, label }: { packId: string; label: string }) 
   const [state, formAction, pending] = useActionState(createPaymentAction, initialBuyState);
 
   return (
-    <form action={formAction} className="flex flex-col gap-2">
+    <form action={formAction} className="flex flex-col gap-3">
       <input type="hidden" name="packId" value={packId} />
-      <Button type="submit" size="lg" disabled={pending} className="w-full">
+      <Button type="submit" size="lg" icon="cart" disabled={pending} className="w-full">
         {pending ? "Создаём платёж..." : label}
       </Button>
       {state.error ? (
-        <p role="alert" className="text-sm text-neon-pink">
+        <p role="alert" className="text-sm text-hud-red">
           {state.error}
         </p>
       ) : null}

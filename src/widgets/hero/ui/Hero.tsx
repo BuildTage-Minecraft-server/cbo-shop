@@ -1,43 +1,47 @@
 import Image from "next/image";
 import { donatShopScreen } from "@/shared/assets";
 import { routes, siteConfig } from "@/shared/config";
-import { ButtonLink, Container } from "@/shared/ui";
+import { ButtonLink, Container, Frame, TitleOrnament } from "@/shared/ui";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden">
-      <Container className="grid items-center gap-12 py-16 md:grid-cols-2 md:py-24">
+    <section className="relative">
+      <Container className="grid items-center gap-12 py-14 md:grid-cols-2 md:py-20">
         <div>
-          <p className="font-pixel text-[10px] uppercase tracking-widest text-neon-cyan">Донат-магазин</p>
-          <h1 className="mt-4 text-4xl font-extrabold leading-tight text-fg sm:text-5xl">
-            Пополните баланс <span className="text-gold">Обрыгаций</span> за пару минут
+          <p className="font-pixel text-base uppercase tracking-widest text-neon-cyan">Магазин игровой валюты</p>
+          <h1 className="pixel-shadow mt-3 font-pixel text-[32px] uppercase leading-[1.15] text-white sm:text-5xl">
+            Пополните игровой баланс на сервере <span className="text-gold">{siteConfig.name}</span>
           </h1>
-          <p className="mt-5 max-w-xl text-lg text-muted">
-            Обрыгации: внутриигровая валюта сервера. Они тратятся в донат-шопе на темы меню, скины, бустеры и
-            дополнительные слоты. Войдите через аккаунт сервера, выберите пакет и оплатите, а валюта придёт на баланс
-            автоматически.
+          <TitleOrnament />
+          <p className="mt-6 max-w-xl text-lg text-body">
+            Внутриигровая валюта тратится в донат-шопе на темы меню, скины, бустеры и дополнительные слоты. Войдите через
+            аккаунт сервера, выберите пакет и оплатите: валюта автоматически поступит на баланс.
           </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <ButtonLink href={routes.shop} size="lg">
-              Купить Обрыгации
+          <div className="mt-8 flex flex-wrap gap-4">
+            <ButtonLink href={routes.shop} size="lg" icon="cart">
+              Купить валюту
             </ButtonLink>
-            <ButtonLink href="#how" variant="secondary" size="lg">
+            <ButtonLink href="#how" variant="secondary" size="lg" icon="list">
               Как это работает
             </ButtonLink>
           </div>
-          <p className="mt-6 text-xs text-muted">Оплата через {siteConfig.paymentProvider}. Данные карты мы не получаем.</p>
+          <p className="mt-6 text-xs text-muted">
+            Оплата через {siteConfig.paymentProvider}. Данные банковской карты мы не получаем.
+          </p>
         </div>
 
-        <figure className="rounded-xl border border-line-strong bg-surface p-2 shadow-[0_0_80px_-24px_var(--color-neon-pink)]">
-          <Image
-            src={donatShopScreen}
-            alt="Донат-шоп игрового сервера: темы меню, скины, бустеры и слоты, баланс в Обрыгациях"
-            loading="eager"
-            fetchPriority="high"
-            sizes="(min-width: 768px) 560px, 100vw"
-            className="h-auto w-full rounded-lg"
-          />
-          <figcaption className="px-2 pb-1 pt-3 text-xs text-muted">Донат-шоп внутри игры, где тратятся Обрыгации.</figcaption>
+        <figure>
+          <Frame>
+            <Image
+              src={donatShopScreen}
+              alt={`Донат-шоп игры ${siteConfig.name}: темы меню, скины, бустеры и слоты, баланс игровой валюты`}
+              loading="eager"
+              fetchPriority="high"
+              sizes="(min-width: 768px) 560px, 100vw"
+              className="block h-auto w-full border border-line-strong"
+            />
+          </Frame>
+          <figcaption className="mt-3 font-pixel text-base text-muted">Донат-шоп внутри игры.</figcaption>
         </figure>
       </Container>
     </section>

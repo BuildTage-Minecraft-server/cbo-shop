@@ -1,6 +1,9 @@
 import Link from "next/link";
 import type { ButtonHTMLAttributes, ComponentProps } from "react";
 import { cn } from "@/shared/lib";
+import type { Accent } from "./accent";
+import { IconBox } from "./IconBox";
+import type { IconName } from "./PixelIcon";
 
 type Variant = "primary" | "secondary" | "ghost";
 type Size = "md" | "lg";
@@ -8,37 +11,59 @@ type Size = "md" | "lg";
 type StyleProps = {
   variant?: Variant;
   size?: Size;
+  accent?: Accent;
+  icon?: IconName;
 };
 
-const base =
-  "inline-flex items-center justify-center gap-2 rounded-md border font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neon-cyan disabled:cursor-not-allowed disabled:opacity-60";
-
 const variants: Record<Variant, string> = {
-  primary:
-    "border-neon-pink bg-neon-pink/15 text-white shadow-[0_0_28px_-8px_var(--color-neon-pink)] hover:bg-neon-pink/30",
-  secondary: "border-line-strong bg-surface-2 text-fg hover:border-neon-cyan hover:text-white",
-  ghost: "border-transparent text-muted hover:text-white",
+  primary: "hud-button--primary",
+  secondary: "hud-button--secondary",
+  ghost: "hud-button--ghost",
 };
 
 const sizes: Record<Size, string> = {
-  md: "h-10 px-4 text-sm",
-  lg: "h-12 px-6 text-base",
+  md: "",
+  lg: "hud-button--lg",
 };
 
-export function buttonStyles({ variant = "primary", size = "md", className }: StyleProps & { className?: string }): string {
-  return cn(base, variants[variant], sizes[size], className);
+export function buttonStyles({
+  variant = "primary",
+  size = "md",
+  accent,
+  className,
+}: Pick<StyleProps, "variant" | "size" | "accent"> & { className?: string }): string {
+  const tone: Accent = accent ?? (variant === "secondary" ? "cyan" : "pink");
+  return cn("hud-button", variants[variant], sizes[size], `tone-${tone}`, className);
 }
 
 export function Button({
   variant,
   size,
+  accent,
+  icon,
   className,
+  children,
   type = "button",
   ...props
 }: ButtonHTMLAttributes<HTMLButtonElement> & StyleProps) {
-  return <button type={type} className={buttonStyles({ variant, size, className })} {...props} />;
+  return (
+    <button
+      type={type}
+      data-icon={icon ? "" : undefined}
+      className={buttonStyles({ variant, size, accent, className })}
+      {...props}
+    >
+      {icon ? <IconBox icon={icon} /> : null}
+      <span className="hud-button__label">{children}</span>
+    </button>
+  );
 }
 
-export function ButtonLink({ variant, size, className, ...props }: ComponentProps<typeof Link> & StyleProps) {
-  return <Link className={buttonStyles({ variant, size, className })} {...props} />;
+export function ButtonLink({ variant, size, accent, icon, className, children, ...props }: ComponentProps<typeof Link> & StyleProps) {
+  return (
+    <Link data-icon={icon ? "" : undefined} className={buttonStyles({ variant, size, accent, className })} {...props}>
+      {icon ? <IconBox icon={icon} /> : null}
+      <span className="hud-button__label">{children}</span>
+    </Link>
+  );
 }

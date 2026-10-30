@@ -1,6 +1,8 @@
-# Obrygatsii Shop
+# CBO Shop
 
-Web storefront for the in-game currency of a Minecraft game server. Players sign in with their server account, pick a currency pack, pay through YooKassa, and the balance is credited to the game automatically.
+Web storefront for the in-game currency of the CBO Minecraft game server. Players sign in with their server account, pick a currency pack, pay through YooKassa, and the balance is credited to the game automatically.
+
+Live: https://shop.nekrasovdev.space
 
 > Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft.
 
@@ -11,12 +13,13 @@ Web storefront for the in-game currency of a Minecraft game server. Players sign
 - YooKassa checkout with the redirect flow and an idempotent payment webhook.
 - Currency is credited to the game server through a small authenticated HTTP contract.
 - Legal and compliance pages needed by payment providers: public offer, privacy policy, delivery terms, contacts and requisites.
-- Responsive UI themed after the game, Next.js image optimization, security headers.
+- Responsive UI that mirrors the in-game HUD: pixel typography, accent-bar panels, corner brackets and a neon floor grid, built from a small set of shared primitives.
+- Next.js image optimization and security headers.
 
 ## Tech stack
 
 - Next.js 16 (App Router, Server Actions), React 19, TypeScript
-- Tailwind CSS 4
+- Tailwind CSS 4 with a custom HUD design layer (plain CSS in `src/app/styles/globals.css`)
 - Zod for environment and input validation, jose for session tokens
 - Vercel for hosting
 
@@ -82,8 +85,13 @@ The webhook never trusts the request body: it re-fetches the payment from YooKas
 | `YOOKASSA_SECRET_KEY` | for payments | YooKassa secret key |
 | `GAME_API_URL` | for crediting | Base URL of the game server credit API |
 | `GAME_API_TOKEN` | for crediting | Bearer token for the game server credit API |
+| `SELLER_FULL_NAME` | for legal pages | Seller name shown in the footer, offer and contacts |
+| `SELLER_INN` | for legal pages | Seller tax identification number |
+| `SELLER_EMAIL` | for legal pages | Support and requisites email |
+| `SELLER_PHONE` | for legal pages | Contact phone number |
+| `SELLER_STATUS`, `SELLER_SUPPORT_HOURS` | no | Optional overrides for the status line and support hours |
 
-Seller details and legal copy live in `src/shared/config/site.ts`. The pack catalog lives in `src/entities/currency-pack/model/packs.ts`.
+Seller details are read from the environment, so personal data never lands in the repository. Brand copy lives in `src/shared/config/site.ts`, the pack catalog in `src/entities/currency-pack/model/packs.ts`.
 
 ## Game server contract
 

@@ -1,37 +1,34 @@
 import type { ReactNode } from "react";
 import { cn, formatNumber, formatRub } from "@/shared/lib";
+import { Panel } from "@/shared/ui";
+import type { Accent } from "@/shared/ui";
 import { packDiscountPercent, packUnitPrice } from "../model/packs";
 import type { CurrencyPack } from "../model/types";
 import { CurrencyIcon } from "./CurrencyIcon";
 
-export function PackCard({ pack, action }: { pack: CurrencyPack; action: ReactNode }) {
+export function PackCard({ pack, action, accent = "cyan" }: { pack: CurrencyPack; action: ReactNode; accent?: Accent }) {
   const discount = packDiscountPercent(pack);
 
   return (
-    <article
-      className={cn(
-        "relative flex flex-col rounded-xl border bg-surface/80 p-6 backdrop-blur",
-        pack.featured
-          ? "border-neon-pink shadow-[0_0_48px_-18px_var(--color-neon-pink)]"
-          : "border-line hover:border-line-strong",
-      )}
-    >
-      {pack.featured ? (
-        <span className="absolute -top-3 left-6 rounded bg-neon-pink px-2 py-1 font-pixel text-[9px] uppercase text-ink">
-          Популярный
-        </span>
-      ) : null}
+    <Panel as="article" accent={accent} bar="top" className={cn("flex flex-col p-6", pack.featured && "hud-glow")}>
+      {pack.featured ? <span className="hud-tag absolute -top-3 right-4">Популярный</span> : null}
 
-      <CurrencyIcon className="h-12 w-12" />
-      <p className="mt-4 font-pixel text-2xl text-gold">{formatNumber(pack.amount)}</p>
-      <p className="mt-1 text-sm text-muted">Обрыгаций</p>
+      <div className="flex items-center gap-4">
+        <CurrencyIcon className="h-12 w-12 shrink-0" />
+        <div>
+          <p className="pixel-shadow font-pixel text-[32px] leading-none text-gold">{formatNumber(pack.amount)}</p>
+          <p className="mt-2 font-pixel text-base text-muted">ед. валюты</p>
+        </div>
+      </div>
 
-      <p className="mt-6 text-3xl font-bold text-fg">{formatRub(pack.priceRub)}</p>
-      <p className="mt-1 text-xs text-muted">
-        {packUnitPrice(pack)} за 1 Обрыгацию{discount > 0 ? `, выгода ${discount}%` : ""}
-      </p>
+      <div className="mt-6 border-t border-line pt-4">
+        <p className="pixel-shadow font-pixel text-[32px] leading-none text-white">{formatRub(pack.priceRub)}</p>
+        <p className="mt-2 text-xs text-muted">
+          {packUnitPrice(pack)} за 1 ед.{discount > 0 ? `, выгода ${discount}%` : ""}
+        </p>
+      </div>
 
       <div className="mt-6">{action}</div>
-    </article>
+    </Panel>
   );
 }

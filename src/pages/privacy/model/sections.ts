@@ -1,7 +1,7 @@
-import { siteConfig } from "@/shared/config";
+import { seller, siteConfig } from "@/shared/config";
 import type { DocumentSection } from "@/widgets/legal-document";
 
-const { name, seller, paymentProvider } = siteConfig;
+const { name, paymentProvider } = siteConfig;
 
 export const privacySections: readonly DocumentSection[] = [
   {
@@ -26,7 +26,7 @@ export const privacySections: readonly DocumentSection[] = [
     title: "Цели обработки",
     clauses: [
       "Идентификация аккаунта и вход на Сайт.",
-      "Оформление и исполнение заказов, начисление Обрыгаций.",
+      "Оформление и исполнение заказов, начисление игровой валюты.",
       "Ответы на обращения, предотвращение мошенничества и обеспечение безопасности Сайта.",
       "Выполнение требований законодательства.",
     ],

@@ -1,24 +1,29 @@
 import { siteConfig } from "@/shared/config";
-import { Container, SectionHeading } from "@/shared/ui";
+import { Container, Panel, SectionHeading } from "@/shared/ui";
+import type { Accent } from "@/shared/ui";
 
-const steps = [
+const steps: ReadonlyArray<{ title: string; text: string; accent: Accent }> = [
   {
-    title: "Войдите через аккаунт сервера",
+    title: "Войдите через аккаунт",
     text: "Используйте тот же ник и пароль, что и в лаунчере. Проверка выполняется через сервер авторизации Drasl.",
+    accent: "blue",
   },
   {
     title: "Выберите пакет",
-    text: "Выберите количество Обрыгаций. Цена указана в рублях и фиксируется в момент создания платежа.",
+    text: "Выберите количество валюты. Цена указана в рублях и фиксируется в момент создания платежа.",
+    accent: "purple",
   },
   {
     title: `Оплатите через ${siteConfig.paymentProvider}`,
     text: "Откроется защищённая страница оплаты. Данные банковской карты мы не получаем и не храним.",
+    accent: "yellow",
   },
   {
     title: "Получите валюту в игре",
-    text: "Обрыгации автоматически начисляются на аккаунт, обычно в течение нескольких минут.",
+    text: "Валюта автоматически начисляется на аккаунт, обычно в течение нескольких минут.",
+    accent: "green",
   },
-] as const;
+];
 
 export function HowItWorks() {
   return (
@@ -27,11 +32,11 @@ export function HowItWorks() {
         <SectionHeading kicker="Как это работает" title="Четыре шага до баланса" />
         <ol className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((step, index) => (
-            <li key={step.title} className="rounded-xl border border-line bg-surface/70 p-6">
-              <span className="font-pixel text-xl text-neon-pink">{index + 1}</span>
-              <h3 className="mt-4 font-semibold text-fg">{step.title}</h3>
-              <p className="mt-2 text-sm text-muted">{step.text}</p>
-            </li>
+            <Panel key={step.title} as="li" accent={step.accent} bar="top" className="p-5">
+              <span className="hud-icon-box">{index + 1}</span>
+              <h3 className="pixel-shadow mt-4 font-pixel text-base uppercase text-white">{step.title}</h3>
+              <p className="mt-2 text-sm text-body">{step.text}</p>
+            </Panel>
           ))}
         </ol>
       </Container>
