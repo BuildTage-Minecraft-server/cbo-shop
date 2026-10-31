@@ -11,6 +11,7 @@ Live: https://shop.nekrasovdev.space
 - Sign-in through [Drasl](https://github.com/unmojang/drasl) (Yggdrasil and authlib-injector compatible auth server). Passwords are forwarded to Drasl and discarded, the session is a signed `httpOnly` cookie.
 - Server-side catalog: prices never come from the client.
 - YooKassa checkout with the redirect flow and an idempotent payment webhook.
+- Payment result page that asks YooKassa for the real status of the buyer's last payment, so leaving the checkout never shows a success message.
 - Currency is credited to the game server through a small authenticated HTTP contract.
 - Legal and compliance pages needed by payment providers: public offer, privacy policy, delivery terms, contacts and requisites.
 - Responsive UI that mirrors the in-game HUD: accent-bar panels, pixel icons, corner brackets and a neon floor grid, built from a small set of shared primitives and set in Exo 2 and Inter.
@@ -32,8 +33,8 @@ The project follows [Feature-Sliced Design](https://feature-sliced.design). Next
 | `app` | root layout, global styles, API route handlers |
 | `pages` | home, shop, login, delivery, offer, privacy, contacts, payment-result, not-found |
 | `widgets` | header, footer, hero, pack-showcase, screens-gallery, how-it-works, faq, legal-document |
-| `features` | auth-by-drasl, buy-currency, confirm-payment |
-| `entities` | currency-pack, session |
+| `features` | auth-by-drasl, buy-currency, check-payment-status, confirm-payment |
+| `entities` | currency-pack, payment, session |
 | `shared` | config, lib, ui, assets, api clients (Drasl, YooKassa, game server) |
 
 Imports only go downwards, slices expose a public API through `index.ts`, and server-only modules are guarded with `server-only`.
@@ -73,6 +74,8 @@ sequenceDiagram
 ```
 
 The webhook never trusts the request body: it re-fetches the payment from YooKassa and checks status, currency and amount against the catalog before crediting. A failed credit returns a non-2xx response, so YooKassa retries the notification.
+
+The checkout page returns the buyer to `/payment/result` both after a successful payment and after leaving the checkout, so the redirect itself proves nothing. The id of the last payment is kept in a short-lived `httpOnly` cookie, and the result page asks YooKassa for its actual status before choosing between the paid, pending, canceled and unknown states.
 
 ## Configuration
 
@@ -128,3 +131,4 @@ Useful scripts: `npm run build`, `npm run start`, `npm run typecheck`.
 - The session is an HS256 token in an `httpOnly`, `sameSite=lax` cookie, `secure` in production.
 - The temporary Drasl access token is invalidated right after the profile is read.
 - Redirect targets after sign-in are restricted to internal paths.
+- The result page reports a payment only when its metadata matches the signed-in player.

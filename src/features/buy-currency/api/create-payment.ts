@@ -4,6 +4,7 @@ import { randomUUID } from "node:crypto";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { findPack } from "@/entities/currency-pack";
+import { rememberPayment } from "@/entities/payment";
 import { getSession } from "@/entities/session";
 import { createPayment } from "@/shared/api/yookassa";
 import { routes, siteConfig } from "@/shared/config";
@@ -26,6 +27,7 @@ export async function createPaymentAction(_previous: BuyState, formData: FormDat
     return { error: "Пакет не найден. Обновите страницу и попробуйте снова." };
   }
 
+  let paymentId: string | undefined;
   let confirmationUrl: string | undefined;
   try {
     const credentials = paymentsConfig();
@@ -40,15 +42,17 @@ export async function createPaymentAction(_previous: BuyState, formData: FormDat
       idempotenceKey: randomUUID(),
       metadata: { playerUuid: session.uuid, playerName: session.name, packId: pack.id },
     });
+    paymentId = payment.id;
     confirmationUrl = payment.confirmation?.confirmation_url;
   } catch (error) {
     console.error("Failed to create a payment", error);
     return { error: "Не удалось создать платёж. Попробуйте ещё раз чуть позже." };
   }
 
-  if (!confirmationUrl) {
+  if (!paymentId || !confirmationUrl) {
     return { error: "Платёжная система не вернула ссылку на оплату. Попробуйте ещё раз." };
   }
 
+  await rememberPayment(paymentId);
   redirect(confirmationUrl);
 }
