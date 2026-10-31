@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { lobbyScreen } from "@/shared/assets";
 import { gameServer, routes, siteConfig } from "@/shared/config";
-import { ButtonLink, Container, Frame, Panel, TitleOrnament } from "@/shared/ui";
+import { ButtonAnchor, ButtonLink, Container, Frame, Panel, TitleOrnament } from "@/shared/ui";
 
 export function Hero() {
   return (
@@ -18,13 +18,29 @@ export function Hero() {
             собирайте коллекцию скинов оружия.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
-            <ButtonLink href={routes.join} size="lg" icon="target">
-              Начать играть
-            </ButtonLink>
-            <ButtonLink href={routes.features} variant="secondary" size="lg" icon="list">
-              Что внутри
-            </ButtonLink>
+            {gameServer.launcherUrl ? (
+              <>
+                <ButtonAnchor href={gameServer.launcherUrl} size="lg" icon="download">
+                  Скачать лаунчер
+                </ButtonAnchor>
+                <ButtonLink href={routes.join} variant="secondary" size="lg" icon="target">
+                  Как начать
+                </ButtonLink>
+              </>
+            ) : (
+              <>
+                <ButtonLink href={routes.join} size="lg" icon="target">
+                  Начать играть
+                </ButtonLink>
+                <ButtonLink href={routes.features} variant="secondary" size="lg" icon="list">
+                  Что внутри
+                </ButtonLink>
+              </>
+            )}
           </div>
+          {gameServer.launcherUrl && gameServer.launcherNote ? (
+            <p className="mt-3 text-xs text-muted">{gameServer.launcherNote}</p>
+          ) : null}
           {gameServer.address ? (
             <Panel accent="green" bar="left" className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-1 px-5 py-3">
               <span className="font-display text-sm font-medium text-muted">Адрес сервера</span>

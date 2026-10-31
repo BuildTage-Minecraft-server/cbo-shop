@@ -1,6 +1,6 @@
 export { ACCENTS } from "./accent";
 export type { Accent } from "./accent";
-export { Button, ButtonLink, buttonStyles } from "./Button";
+export { Button, ButtonAnchor, ButtonLink, buttonStyles } from "./Button";
 export { Container } from "./Container";
 export { Frame } from "./Frame";
 export { HudBackdrop } from "./HudBackdrop";

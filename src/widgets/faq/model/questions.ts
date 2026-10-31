@@ -1,4 +1,4 @@
-import { seller, siteConfig } from "@/shared/config";
+import { gameServer, seller, siteConfig } from "@/shared/config";
 
 export type FaqItem = {
   question: string;
@@ -41,8 +41,9 @@ export const shopFaqItems: readonly FaqItem[] = [
 export const serverFaqItems: readonly FaqItem[] = [
   {
     question: "Как зайти на сервер?",
-    answer:
-      "Создайте аккаунт на сервере авторизации, добавьте его в лаунчер с поддержкой authlib-injector и подключитесь к серверу. Подробности в разделе «Как начать».",
+    answer: gameServer.launcherUrl
+      ? "Создайте аккаунт на сервере авторизации, скачайте лаунчер, войдите в него этим аккаунтом и подключитесь к серверу. Подробности в разделе «Как начать»."
+      : "Создайте аккаунт на сервере авторизации, добавьте его в лаунчер с поддержкой authlib-injector и подключитесь к серверу. Подробности в разделе «Как начать».",
   },
   {
     question: "Нужен ли отдельный аккаунт?",

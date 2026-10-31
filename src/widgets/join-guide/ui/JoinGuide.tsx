@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { gameServer, siteConfig } from "@/shared/config";
-import { ButtonLink, Container, Panel, SectionHeading } from "@/shared/ui";
+import { ButtonAnchor, Container, Panel, SectionHeading } from "@/shared/ui";
 import type { Accent } from "@/shared/ui";
 
 type Step = {
@@ -9,11 +9,12 @@ type Step = {
   accent: Accent;
   code?: string | null;
   meta?: string | null;
+  hint?: { text: string; code: string } | null;
   action?: ReactNode;
 };
 
 function buildSteps(): Step[] {
-  const { accountsUrl, authServerUrl, address, version, communityUrl, communityLabel } = gameServer;
+  const { accountsUrl, authServerUrl, address, version, communityUrl, communityLabel, launcherUrl, launcherNote } = gameServer;
 
   return [
     {
@@ -21,19 +22,34 @@ function buildSteps(): Step[] {
       text: `Аккаунт создаётся на сервере авторизации ${siteConfig.name}. Он же открывает вход на этот сайт.`,
       accent: "blue",
       action: accountsUrl ? (
-        <ButtonLink href={accountsUrl} target="_blank" rel="noopener noreferrer" variant="secondary" icon="user">
+        <ButtonAnchor href={accountsUrl} target="_blank" rel="noopener noreferrer" variant="secondary" icon="user">
           Создать аккаунт
-        </ButtonLink>
+        </ButtonAnchor>
       ) : null,
     },
-    {
-      title: "Добавьте аккаунт в лаунчер",
-      text: authServerUrl
-        ? "Подойдёт лаунчер с поддержкой authlib-injector, например HMCL. Укажите адрес сервера авторизации:"
-        : "Подойдёт лаунчер с поддержкой authlib-injector, например HMCL. Адрес сервера авторизации уточняйте в сообществе.",
-      accent: "purple",
-      code: authServerUrl,
-    },
+    launcherUrl
+      ? {
+          title: "Скачайте лаунчер",
+          text: "Установите лаунчер и войдите в него аккаунтом, созданным на первом шаге.",
+          accent: "purple",
+          meta: launcherNote,
+          action: (
+            <ButtonAnchor href={launcherUrl} icon="download">
+              Скачать лаунчер
+            </ButtonAnchor>
+          ),
+          hint: authServerUrl
+            ? { text: "Свой лаунчер с поддержкой authlib-injector? Адрес сервера авторизации:", code: authServerUrl }
+            : null,
+        }
+      : {
+          title: "Добавьте аккаунт в лаунчер",
+          text: authServerUrl
+            ? "Подойдёт лаунчер с поддержкой authlib-injector, например HMCL. Укажите адрес сервера авторизации:"
+            : "Подойдёт лаунчер с поддержкой authlib-injector, например HMCL. Адрес сервера авторизации уточняйте в сообществе.",
+          accent: "purple",
+          code: authServerUrl,
+        },
     {
       title: "Зайдите на сервер",
       text: address
@@ -43,9 +59,9 @@ function buildSteps(): Step[] {
       code: address,
       meta: version ? `Версия игры: ${version}` : null,
       action: communityUrl ? (
-        <ButtonLink href={communityUrl} target="_blank" rel="noopener noreferrer" variant="secondary" icon="list">
+        <ButtonAnchor href={communityUrl} target="_blank" rel="noopener noreferrer" variant="secondary" icon="list">
           {communityLabel}
-        </ButtonLink>
+        </ButtonAnchor>
       ) : null,
     },
   ];
@@ -75,6 +91,12 @@ export function JoinGuide() {
               ) : null}
               {step.meta ? <p className="mt-2 text-xs text-muted">{step.meta}</p> : null}
               {step.action ? <div className="mt-4">{step.action}</div> : null}
+              {step.hint ? (
+                <div className="mt-4 border-t border-line pt-3">
+                  <p className="text-xs text-muted">{step.hint.text}</p>
+                  <code className="mt-2 block break-all font-mono text-xs text-body">{step.hint.code}</code>
+                </div>
+              ) : null}
             </Panel>
           ))}
         </ol>

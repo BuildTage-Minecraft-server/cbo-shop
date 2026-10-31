@@ -2,8 +2,8 @@ import Link from "next/link";
 import { CurrencyIcon } from "@/entities/currency-pack";
 import { getSession } from "@/entities/session";
 import { LogoutButton } from "@/features/auth-by-drasl";
-import { routes, siteConfig } from "@/shared/config";
-import { ButtonLink, Container, Panel, PixelIcon } from "@/shared/ui";
+import { gameServer, routes, siteConfig } from "@/shared/config";
+import { ButtonAnchor, ButtonLink, Container, Panel, PixelIcon } from "@/shared/ui";
 
 const navigation = [
   { href: routes.home, label: "Сервер" },
@@ -40,6 +40,11 @@ export async function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
+          {gameServer.launcherUrl ? (
+            <ButtonAnchor href={gameServer.launcherUrl} icon="download" className="hidden sm:inline-flex">
+              Скачать
+            </ButtonAnchor>
+          ) : null}
           {session ? (
             <>
               <Panel accent="cyan" bar="left" className="hidden h-10 items-center gap-2 px-4 sm:flex">

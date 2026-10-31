@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { ButtonHTMLAttributes, ComponentProps } from "react";
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ComponentProps } from "react";
 import { cn } from "@/shared/lib";
 import type { Accent } from "./accent";
 import { IconBox } from "./IconBox";
@@ -65,5 +65,22 @@ export function ButtonLink({ variant, size, accent, icon, className, children, .
       {icon ? <IconBox icon={icon} /> : null}
       <span className="hud-button__label">{children}</span>
     </Link>
+  );
+}
+
+export function ButtonAnchor({
+  variant,
+  size,
+  accent,
+  icon,
+  className,
+  children,
+  ...props
+}: AnchorHTMLAttributes<HTMLAnchorElement> & StyleProps) {
+  return (
+    <a data-icon={icon ? "" : undefined} className={buttonStyles({ variant, size, accent, className })} {...props}>
+      {icon ? <IconBox icon={icon} /> : null}
+      <span className="hud-button__label">{children}</span>
+    </a>
   );
 }

@@ -8,7 +8,7 @@ Live: https://shop.nekrasovdev.space
 
 ## Features
 
-- Server landing page: game features, screenshots and a join guide that builds the authlib-injector address from the Drasl URL.
+- Server landing page: game features, screenshots, a launcher download button and a join guide that builds the authlib-injector address from the Drasl URL.
 - Sign-in through [Drasl](https://github.com/unmojang/drasl) (Yggdrasil and authlib-injector compatible auth server). Passwords are forwarded to Drasl and discarded, the session is a signed `httpOnly` cookie.
 - Server-side catalog: prices never come from the client.
 - YooKassa checkout with the redirect flow and an idempotent payment webhook.
@@ -97,6 +97,8 @@ The checkout page returns the buyer to `/payment/result` both after a successful
 | `SERVER_ADDRESS` | no | Game server address shown on the home page |
 | `SERVER_VERSION` | no | Game version shown next to the address |
 | `COMMUNITY_URL`, `COMMUNITY_LABEL` | no | Link to the community chat and its button label |
+| `LAUNCHER_URL` | no | Launcher download link, an absolute URL or a path such as `/launcher.zip`. The download buttons appear only when it is set |
+| `LAUNCHER_NOTE` | no | Short note under the download button, for example the supported platforms |
 
 Seller details are read from the environment, so personal data never lands in the repository. Brand copy lives in `src/shared/config/site.ts`, the pack catalog in `src/entities/currency-pack/model/packs.ts`.
 
