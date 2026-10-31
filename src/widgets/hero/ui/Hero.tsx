@@ -9,7 +9,7 @@ export function Hero() {
       <Container className="grid items-center gap-12 py-14 md:grid-cols-2 md:py-20">
         <div>
           <p className="font-pixel text-base uppercase tracking-widest text-neon-cyan">Магазин игровой валюты</p>
-          <h1 className="pixel-shadow mt-3 font-pixel text-[32px] uppercase leading-[1.15] text-white sm:text-5xl">
+          <h1 className="pixel-shadow mt-3 font-pixel text-[32px] leading-[1.15] text-white sm:text-5xl">
             Пополните игровой баланс на сервере <span className="text-gold">{siteConfig.name}</span>
           </h1>
           <TitleOrnament />
