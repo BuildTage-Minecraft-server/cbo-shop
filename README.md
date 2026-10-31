@@ -1,6 +1,6 @@
-# CBO Shop
+# cbo
 
-Web storefront for the in-game currency of the CBO Minecraft game server. Players sign in with their server account, pick a currency pack, pay through YooKassa, and the balance is credited to the game automatically.
+Website of the cbo Minecraft game server. It presents the game, explains how to join, and includes a store where players top up the in-game currency: they sign in with their server account, pick a pack, pay through YooKassa, and the balance is credited to the game automatically.
 
 Live: https://shop.nekrasovdev.space
 
@@ -8,6 +8,7 @@ Live: https://shop.nekrasovdev.space
 
 ## Features
 
+- Server landing page: game features, screenshots and a join guide that builds the authlib-injector address from the Drasl URL.
 - Sign-in through [Drasl](https://github.com/unmojang/drasl) (Yggdrasil and authlib-injector compatible auth server). Passwords are forwarded to Drasl and discarded, the session is a signed `httpOnly` cookie.
 - Server-side catalog: prices never come from the client.
 - YooKassa checkout with the redirect flow and an idempotent payment webhook.
@@ -32,7 +33,7 @@ The project follows [Feature-Sliced Design](https://feature-sliced.design). Next
 | --- | --- |
 | `app` | root layout, global styles, API route handlers |
 | `pages` | home, shop, login, delivery, offer, privacy, contacts, payment-result, not-found |
-| `widgets` | header, footer, hero, pack-showcase, screens-gallery, how-it-works, faq, legal-document |
+| `widgets` | header, footer, hero, game-features, screens-gallery, join-guide, shop-teaser, pack-showcase, how-it-works, faq, legal-document |
 | `features` | auth-by-drasl, buy-currency, check-payment-status, confirm-payment |
 | `entities` | currency-pack, payment, session |
 | `shared` | config, lib, ui, assets, api clients (Drasl, YooKassa, game server) |
@@ -93,6 +94,9 @@ The checkout page returns the buyer to `/payment/result` both after a successful
 | `SELLER_EMAIL` | for legal pages | Support and requisites email |
 | `SELLER_PHONE` | for legal pages | Contact phone number |
 | `SELLER_STATUS`, `SELLER_SUPPORT_HOURS` | no | Optional overrides for the status line and support hours |
+| `SERVER_ADDRESS` | no | Game server address shown on the home page |
+| `SERVER_VERSION` | no | Game version shown next to the address |
+| `COMMUNITY_URL`, `COMMUNITY_LABEL` | no | Link to the community chat and its button label |
 
 Seller details are read from the environment, so personal data never lands in the repository. Brand copy lives in `src/shared/config/site.ts`, the pack catalog in `src/entities/currency-pack/model/packs.ts`.
 

@@ -22,8 +22,7 @@ export function Footer() {
             <span className="font-display text-3xl font-bold leading-none tracking-tight text-white">{siteConfig.name}</span>
           </div>
           <p className="mt-4 text-sm text-body">
-            Магазин внутриигровой валюты игрового сервера {siteConfig.name}. Валюта тратится на темы, скины, бустеры и
-            слоты в игре.
+            Игровой сервер {siteConfig.name}. Внутриигровую валюту для донат-шопа можно пополнить в магазине на сайте.
           </p>
           <p className="mt-4 text-xs text-muted">{disclaimer.ru}</p>
           <p className="mt-2 text-[10px] uppercase tracking-wide text-muted/70">{disclaimer.en}</p>

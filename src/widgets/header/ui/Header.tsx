@@ -6,9 +6,9 @@ import { routes, siteConfig } from "@/shared/config";
 import { ButtonLink, Container, Panel, PixelIcon } from "@/shared/ui";
 
 const navigation = [
+  { href: routes.home, label: "Сервер" },
+  { href: routes.join, label: "Как начать" },
   { href: routes.shop, label: "Магазин" },
-  { href: routes.delivery, label: "Получение" },
-  { href: routes.offer, label: "Оферта" },
   { href: routes.contacts, label: "Контакты" },
 ] as const;
 

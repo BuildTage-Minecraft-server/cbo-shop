@@ -1,13 +1,21 @@
 import { Container, Panel, PixelIcon, SectionHeading } from "@/shared/ui";
-import { faqItems } from "../model/questions";
+import type { FaqItem } from "../model/questions";
 
-export function Faq() {
+export function Faq({
+  items,
+  kicker = "FAQ",
+  title = "Частые вопросы",
+}: {
+  items: readonly FaqItem[];
+  kicker?: string;
+  title?: string;
+}) {
   return (
     <section className="py-16 md:py-20">
       <Container>
-        <SectionHeading kicker="FAQ" title="Частые вопросы" />
+        <SectionHeading kicker={kicker} title={title} />
         <div className="mt-10 grid gap-4 lg:max-w-3xl">
-          {faqItems.map((item) => (
+          {items.map((item) => (
             <Panel key={item.question} as="details" accent="purple" bar="left" className="group px-5 py-4">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-base font-semibold text-white [&::-webkit-details-marker]:hidden">
                 {item.question}
