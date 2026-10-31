@@ -20,8 +20,8 @@ export async function LoginPage({ searchParams }: { searchParams: Promise<{ next
       <div className="mx-auto max-w-md">
         <Frame>
           <Panel accent="cyan" bar="top" className="p-6 sm:p-8">
-            <p className="font-pixel text-base uppercase tracking-widest text-neon-cyan">Вход</p>
-            <h1 className="pixel-shadow mt-2 font-pixel text-[32px] uppercase leading-tight text-white">Аккаунт сервера</h1>
+            <p className="font-display text-sm font-semibold uppercase tracking-[0.16em] text-neon-cyan">Вход</p>
+            <h1 className="mt-2 font-display text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">Аккаунт сервера</h1>
             <TitleOrnament />
             <p className="mt-5 text-sm text-body">
               Введите ник и пароль от аккаунта игрового сервера (Drasl). Это те же данные, что вы используете в лаунчере.

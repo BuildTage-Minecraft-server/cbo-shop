@@ -9,7 +9,7 @@ export function Faq() {
         <div className="mt-10 grid gap-4 lg:max-w-3xl">
           {faqItems.map((item) => (
             <Panel key={item.question} as="details" accent="purple" bar="left" className="group px-5 py-4">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-pixel text-base text-white [&::-webkit-details-marker]:hidden">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-base font-semibold text-white [&::-webkit-details-marker]:hidden">
                 {item.question}
                 <span aria-hidden="true" className="hud-icon-box h-8 w-8 transition group-open:rotate-45">
                   <PixelIcon name="plus" />

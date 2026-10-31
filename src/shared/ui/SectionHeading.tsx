@@ -16,8 +16,8 @@ export function SectionHeading({
 }) {
   return (
     <header className={cn("max-w-2xl", align === "center" && "mx-auto text-center", className)}>
-      {kicker ? <p className="font-pixel text-base uppercase tracking-widest text-neon-cyan">{kicker}</p> : null}
-      <h2 className="pixel-shadow mt-2 font-pixel text-[32px] uppercase leading-tight text-white">{title}</h2>
+      {kicker ? <p className="font-display text-sm font-semibold uppercase tracking-[0.16em] text-neon-cyan">{kicker}</p> : null}
+      <h2 className="mt-2 font-display text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">{title}</h2>
       <TitleOrnament align={align} />
       {description ? <p className="mt-4 text-base text-body sm:text-lg">{description}</p> : null}
     </header>

@@ -16,13 +16,13 @@ export function PackCard({ pack, action, accent = "cyan" }: { pack: CurrencyPack
       <div className="flex items-center gap-4">
         <CurrencyIcon className="h-12 w-12 shrink-0" />
         <div>
-          <p className="pixel-shadow font-pixel text-[32px] leading-none text-gold">{formatNumber(pack.amount)}</p>
-          <p className="mt-2 font-pixel text-base text-muted">ед. валюты</p>
+          <p className="font-display text-4xl font-bold leading-none tabular-nums text-gold">{formatNumber(pack.amount)}</p>
+          <p className="mt-2 text-sm text-muted">ед. валюты</p>
         </div>
       </div>
 
       <div className="mt-6 border-t border-line pt-4">
-        <p className="pixel-shadow font-pixel text-[32px] leading-none text-white">{formatRub(pack.priceRub)}</p>
+        <p className="font-display text-3xl font-bold leading-none tabular-nums text-white">{formatRub(pack.priceRub)}</p>
         <p className="mt-2 text-xs text-muted">
           {packUnitPrice(pack)} за 1 ед.{discount > 0 ? `, выгода ${discount}%` : ""}
         </p>

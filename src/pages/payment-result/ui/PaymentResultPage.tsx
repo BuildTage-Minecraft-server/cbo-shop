@@ -9,7 +9,7 @@ export function PaymentResultPage() {
         <Frame accent="yellow">
           <Panel accent="yellow" bar="top" className="p-8 text-center">
             <CurrencyIcon className="mx-auto h-14 w-14" />
-            <h1 className="pixel-shadow mt-6 font-pixel text-[32px] uppercase leading-tight text-white">Спасибо за покупку</h1>
+            <h1 className="mt-6 font-display text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">Спасибо за покупку</h1>
             <p className="mt-4 text-body">
               Если оплата прошла успешно, валюта появится на балансе в течение нескольких минут. Проверить баланс можно в
               донатном магазине внутри игры.

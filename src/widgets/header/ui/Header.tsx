@@ -32,7 +32,7 @@ export async function Header() {
       <Container className="flex h-16 items-center justify-between gap-4">
         <Link href={routes.home} className="flex items-center gap-3" aria-label={`${siteConfig.name}: на главную`}>
           <CurrencyIcon className="h-8 w-8" />
-          <span className="pixel-shadow font-pixel text-[32px] leading-none text-white">{siteConfig.name}</span>
+          <span className="font-display text-3xl font-bold leading-none tracking-tight text-white">{siteConfig.name}</span>
         </Link>
 
         <nav aria-label="Основная навигация" className="hidden items-center gap-1 md:flex">
@@ -44,7 +44,7 @@ export async function Header() {
             <>
               <Panel accent="cyan" bar="left" className="hidden h-10 items-center gap-2 px-4 sm:flex">
                 <PixelIcon name="user" className="text-neon-cyan" />
-                <span className="max-w-40 truncate font-pixel text-base text-white">{session.name}</span>
+                <span className="max-w-40 truncate font-display text-base font-medium text-white">{session.name}</span>
               </Panel>
               <LogoutButton />
             </>

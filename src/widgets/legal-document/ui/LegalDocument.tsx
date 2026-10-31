@@ -17,16 +17,16 @@ export function LegalDocument({ title, updatedAt, intro, sections, numbered = tr
   return (
     <Container className="py-12 md:py-16">
       <article className="mx-auto max-w-3xl">
-        <h1 className="pixel-shadow font-pixel text-[32px] uppercase leading-tight text-white">{title}</h1>
+        <h1 className="font-display text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">{title}</h1>
         <TitleOrnament />
-        {updatedAt ? <p className="mt-4 font-pixel text-base text-muted">Редакция от {updatedAt}</p> : null}
+        {updatedAt ? <p className="mt-4 text-sm text-muted">Редакция от {updatedAt}</p> : null}
 
         <Panel accent="purple" bar="left" className="mt-8 space-y-10 p-6 sm:p-8">
           {intro ? <p className="leading-7 text-body">{intro}</p> : null}
 
           {sections.map((section, sectionIndex) => (
             <section key={section.title}>
-              <h2 className="font-pixel text-base uppercase text-neon-cyan">
+              <h2 className="font-display text-lg font-semibold text-neon-cyan">
                 {numbered ? `${sectionIndex + 1}. ${section.title}` : section.title}
               </h2>
               <div className="mt-3 space-y-3">

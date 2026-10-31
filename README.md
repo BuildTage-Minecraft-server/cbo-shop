@@ -13,7 +13,7 @@ Live: https://shop.nekrasovdev.space
 - YooKassa checkout with the redirect flow and an idempotent payment webhook.
 - Currency is credited to the game server through a small authenticated HTTP contract.
 - Legal and compliance pages needed by payment providers: public offer, privacy policy, delivery terms, contacts and requisites.
-- Responsive UI that mirrors the in-game HUD: pixel typography, accent-bar panels, corner brackets and a neon floor grid, built from a small set of shared primitives.
+- Responsive UI that mirrors the in-game HUD: accent-bar panels, pixel icons, corner brackets and a neon floor grid, built from a small set of shared primitives and set in Exo 2 and Inter.
 - Next.js image optimization and security headers.
 
 ## Tech stack

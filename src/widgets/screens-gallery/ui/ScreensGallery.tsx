@@ -47,7 +47,7 @@ export function ScreensGallery() {
               <Panel key={category.title} as="li" accent={category.accent} bar="left" className="flex gap-4 p-4">
                 <IconBox icon={category.icon} scale={3} className="h-12 w-12" />
                 <div>
-                  <h3 className="pixel-shadow font-pixel text-base uppercase text-white">{category.title}</h3>
+                  <h3 className="font-display text-lg font-semibold text-white">{category.title}</h3>
                   <p className="mt-2 text-sm text-body">{category.text}</p>
                 </div>
               </Panel>
@@ -63,7 +63,7 @@ export function ScreensGallery() {
                 className="block h-auto w-full border border-line-strong"
               />
             </Frame>
-            <figcaption className="mt-3 font-pixel text-base text-muted">Лобби: донатный магазин в главном меню.</figcaption>
+            <figcaption className="mt-3 text-sm text-muted">Лобби: донатный магазин в главном меню.</figcaption>
           </figure>
         </div>
       </Container>

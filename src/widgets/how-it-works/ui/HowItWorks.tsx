@@ -34,7 +34,7 @@ export function HowItWorks() {
           {steps.map((step, index) => (
             <Panel key={step.title} as="li" accent={step.accent} bar="top" className="p-5">
               <span className="hud-icon-box">{index + 1}</span>
-              <h3 className="pixel-shadow mt-4 font-pixel text-base uppercase text-white">{step.title}</h3>
+              <h3 className="mt-4 font-display text-lg font-semibold text-white">{step.title}</h3>
               <p className="mt-2 text-sm text-body">{step.text}</p>
             </Panel>
           ))}

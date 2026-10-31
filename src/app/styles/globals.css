@@ -24,7 +24,7 @@
 }
 
 @theme inline {
-  --font-pixel: var(--font-dotgothic), ui-monospace, monospace;
+  --font-display: var(--font-exo), ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -54,10 +54,6 @@
   .tone-red { --accent: var(--color-hud-red); }
   .tone-purple { --accent: var(--color-hud-purple); }
   .tone-cyan { --accent: var(--color-hud-cyan); }
-
-  .pixel-shadow {
-    text-shadow: 2px 2px 0 rgb(0 0 0 / 0.65);
-  }
 
   .hud-backdrop {
     position: fixed;
@@ -102,8 +98,9 @@
     padding: 0.5rem 0.75rem;
     border: 1px solid transparent;
     color: var(--color-muted);
-    font-family: var(--font-dotgothic), ui-monospace, monospace;
+    font-family: var(--font-exo), ui-sans-serif, system-ui, sans-serif;
     font-size: 1rem;
+    font-weight: 500;
     line-height: 1;
     white-space: nowrap;
     transition: color 120ms, border-color 120ms, background-color 120ms;
@@ -155,8 +152,9 @@
     border: 1px solid color-mix(in srgb, var(--accent, var(--color-hud-cyan)) 45%, transparent);
     background: rgb(5 5 11 / 0.75);
     color: var(--accent, var(--color-hud-cyan));
-    font-family: var(--font-dotgothic), ui-monospace, monospace;
+    font-family: var(--font-exo), ui-sans-serif, system-ui, sans-serif;
     font-size: 1rem;
+    font-weight: 600;
     line-height: 1;
   }
 
@@ -171,10 +169,11 @@
     border: 1px solid rgb(74 71 92 / 0.8);
     background: linear-gradient(180deg, #171628, #0e0e18);
     color: #fff;
-    font-family: var(--font-dotgothic), ui-monospace, monospace;
+    font-family: var(--font-exo), ui-sans-serif, system-ui, sans-serif;
     font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
     line-height: 1;
-    text-shadow: 1px 1px 0 rgb(0 0 0 / 0.6);
     white-space: nowrap;
     cursor: pointer;
     transition: border-color 120ms, box-shadow 120ms, color 120ms;
@@ -229,7 +228,6 @@
     border-color: transparent;
     background: transparent;
     color: var(--color-muted);
-    text-shadow: none;
   }
   .hud-button--ghost:hover:not(:disabled) {
     color: #fff;
@@ -307,8 +305,10 @@
     padding: 4px 8px;
     background: var(--color-gold);
     color: #1a1205;
-    font-family: var(--font-dotgothic), ui-monospace, monospace;
-    font-size: 1rem;
+    font-family: var(--font-exo), ui-sans-serif, system-ui, sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
     line-height: 1;
     text-transform: uppercase;
   }

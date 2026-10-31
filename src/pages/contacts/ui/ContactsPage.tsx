@@ -22,7 +22,7 @@ export function ContactsPage() {
   return (
     <Container className="py-12 md:py-16">
       <div className="mx-auto max-w-3xl">
-        <h1 className="pixel-shadow font-pixel text-[32px] uppercase leading-tight text-white">Контакты и реквизиты</h1>
+        <h1 className="font-display text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">Контакты и реквизиты</h1>
         <TitleOrnament />
         <p className="mt-6 leading-7 text-body">
           По вопросам оплаты, начисления игровой валюты и возвратов пишите на электронную почту. В обращении укажите ник,
@@ -33,7 +33,7 @@ export function ContactsPage() {
           <dl className="divide-y divide-line">
             {rows.map((row) => (
               <div key={row.label} className="grid gap-1 px-5 py-4 sm:grid-cols-[200px_1fr] sm:gap-4">
-                <dt className="font-pixel text-base text-muted">{row.label}</dt>
+                <dt className="font-display text-base font-medium text-muted">{row.label}</dt>
                 <dd className="text-white">{row.value}</dd>
               </div>
             ))}

@@ -19,7 +19,7 @@ export function Footer() {
         <div>
           <div className="flex items-center gap-3">
             <CurrencyIcon className="h-8 w-8" />
-            <span className="pixel-shadow font-pixel text-[32px] leading-none text-white">{siteConfig.name}</span>
+            <span className="font-display text-3xl font-bold leading-none tracking-tight text-white">{siteConfig.name}</span>
           </div>
           <p className="mt-4 text-sm text-body">
             Магазин внутриигровой валюты игрового сервера {siteConfig.name}. Валюта тратится на темы, скины, бустеры и
@@ -30,7 +30,7 @@ export function Footer() {
         </div>
 
         <nav aria-label="Документы">
-          <h2 className="font-pixel text-base uppercase text-neon-cyan">Документы</h2>
+          <h2 className="font-display text-sm font-semibold uppercase tracking-[0.16em] text-neon-cyan">Документы</h2>
           <ul className="mt-4 space-y-2 text-sm text-body">
             {documents.map((item) => (
               <li key={item.href}>
@@ -43,7 +43,7 @@ export function Footer() {
         </nav>
 
         <address className="not-italic">
-          <h2 className="font-pixel text-base uppercase text-neon-cyan">Исполнитель</h2>
+          <h2 className="font-display text-sm font-semibold uppercase tracking-[0.16em] text-neon-cyan">Исполнитель</h2>
           <ul className="mt-4 space-y-2 text-sm text-body">
             <li>{seller.fullName}</li>
             <li>{seller.status}</li>

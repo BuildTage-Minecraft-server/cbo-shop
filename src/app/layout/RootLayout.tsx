@@ -1,4 +1,4 @@
-import { DotGothic16, Inter } from "next/font/google";
+import { Exo_2, Inter } from "next/font/google";
 import type { ReactNode } from "react";
 import { HudBackdrop } from "@/shared/ui";
 import { Footer } from "@/widgets/footer";
@@ -11,16 +11,15 @@ const inter = Inter({
   display: "swap",
 });
 
-const dotGothic = DotGothic16({
-  weight: "400",
+const exo = Exo_2({
   subsets: ["latin", "cyrillic"],
-  variable: "--font-dotgothic",
+  variable: "--font-exo",
   display: "swap",
 });
 
 export function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="ru" className={`${inter.variable} ${dotGothic.variable}`}>
+    <html lang="ru" className={`${inter.variable} ${exo.variable}`}>
       <body className="flex min-h-dvh flex-col">
         <HudBackdrop />
         <Header />

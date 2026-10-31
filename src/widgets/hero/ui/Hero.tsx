@@ -8,8 +8,8 @@ export function Hero() {
     <section className="relative">
       <Container className="grid items-center gap-12 py-14 md:grid-cols-2 md:py-20">
         <div>
-          <p className="font-pixel text-base uppercase tracking-widest text-neon-cyan">Магазин игровой валюты</p>
-          <h1 className="pixel-shadow mt-3 font-pixel text-[32px] leading-[1.15] text-white sm:text-5xl">
+          <p className="font-display text-sm font-semibold uppercase tracking-[0.16em] text-neon-cyan">Магазин игровой валюты</p>
+          <h1 className="mt-3 font-display text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl">
             Пополните игровой баланс на сервере <span className="text-gold">{siteConfig.name}</span>
           </h1>
           <TitleOrnament />
@@ -41,7 +41,7 @@ export function Hero() {
               className="block h-auto w-full border border-line-strong"
             />
           </Frame>
-          <figcaption className="mt-3 font-pixel text-base text-muted">Донат-шоп внутри игры.</figcaption>
+          <figcaption className="mt-3 text-sm text-muted">Донат-шоп внутри игры.</figcaption>
         </figure>
       </Container>
     </section>

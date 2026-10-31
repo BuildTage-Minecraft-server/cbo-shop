@@ -13,7 +13,7 @@ export function LoginForm({ next }: { next: string }) {
       <input type="hidden" name="next" value={next} />
 
       <label className="flex flex-col gap-2">
-        <span className="font-pixel text-base text-muted">Ник или логин</span>
+        <span className="font-display text-sm font-medium text-muted">Ник или логин</span>
         <input
           name="username"
           type="text"
@@ -26,7 +26,7 @@ export function LoginForm({ next }: { next: string }) {
       </label>
 
       <label className="flex flex-col gap-2">
-        <span className="font-pixel text-base text-muted">Пароль</span>
+        <span className="font-display text-sm font-medium text-muted">Пароль</span>
         <input
           name="password"
           type="password"
