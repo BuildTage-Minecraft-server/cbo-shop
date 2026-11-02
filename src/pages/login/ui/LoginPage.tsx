@@ -3,7 +3,7 @@ import { getSession } from "@/entities/session";
 import { LoginForm } from "@/features/auth-by-drasl";
 import { routes } from "@/shared/config";
 import { safeInternalPath } from "@/shared/lib";
-import { Container, Frame, Panel, TitleOrnament } from "@/shared/ui";
+import { Container, Panel } from "@/shared/ui";
 
 export async function LoginPage({ searchParams }: { searchParams: Promise<{ next?: string | string[] }> }) {
   const params = await searchParams;
@@ -18,22 +18,16 @@ export async function LoginPage({ searchParams }: { searchParams: Promise<{ next
   return (
     <Container className="py-12 md:py-20">
       <div className="mx-auto max-w-md">
-        <Frame>
-          <Panel accent="cyan" bar="top" className="p-6 sm:p-8">
-            <p className="font-display text-sm font-semibold uppercase tracking-[0.16em] text-neon-cyan">Вход</p>
-            <h1 className="mt-2 font-display text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">Аккаунт сервера</h1>
-            <TitleOrnament />
-            <p className="mt-5 text-sm text-body">
-              Введите ник и пароль от аккаунта игрового сервера (Drasl). Это те же данные, что вы используете в лаунчере.
-            </p>
-            <div className="mt-6">
-              <LoginForm next={next} />
-            </div>
-            <p className="mt-6 text-xs text-muted">
-              Пароль передаётся только на сервер авторизации для проверки и не сохраняется на сайте.
-            </p>
-          </Panel>
-        </Frame>
+        <h1 className="font-display text-5xl font-bold uppercase leading-none tracking-wide text-white">Вход</h1>
+        <p className="mt-4 leading-7 text-body">
+          Введите ник и пароль от аккаунта игрового сервера (Drasl). Это те же данные, что вы используете в лаунчере.
+        </p>
+        <Panel accent="cyan" className="mt-8 p-6 sm:p-8">
+          <LoginForm next={next} />
+        </Panel>
+        <p className="mt-4 text-xs leading-5 text-muted">
+          Пароль передаётся только на сервер авторизации для проверки и не сохраняется на сайте.
+        </p>
       </div>
     </Container>
   );

@@ -1,8 +1,8 @@
 export const siteConfig = {
-  name: "cbo",
+  name: "CBO",
   tagline: "игровой сервер Minecraft",
   description:
-    "cbo: игровой сервер Minecraft с матчами, рангами, рейтингом и собственным интерфейсом. Создайте аккаунт, зайдите в лобби и найдите матч.",
+    "CBO: игровой сервер Minecraft с матчами, рангами, рейтингом и собственным интерфейсом. Создайте аккаунт, зайдите в лобби и найдите матч.",
   documentsUpdatedAt: "29 октября 2026 г.",
   paymentProvider: "ЮKassa",
   currency: {

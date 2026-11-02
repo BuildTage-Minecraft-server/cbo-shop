@@ -2,25 +2,23 @@ import type { ElementType, ReactNode } from "react";
 import { cn } from "@/shared/lib";
 import type { Accent } from "./accent";
 
-type Bar = "none" | "left" | "right" | "top";
-
 export function Panel({
   as,
-  accent = "cyan",
-  bar = "none",
+  accent,
+  highlight = false,
   className,
   children,
 }: {
   as?: ElementType;
   accent?: Accent;
-  bar?: Bar;
+  highlight?: boolean;
   className?: string;
   children: ReactNode;
 }) {
   const Tag = as ?? "div";
 
   return (
-    <Tag className={cn("hud-panel", `tone-${accent}`, className)} data-bar={bar}>
+    <Tag className={cn("card", accent && `tone-${accent} card--accent`, highlight && "card--gold", className)}>
       {children}
     </Tag>
   );

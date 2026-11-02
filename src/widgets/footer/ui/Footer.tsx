@@ -1,7 +1,6 @@
 import Link from "next/link";
-import { CurrencyIcon } from "@/entities/currency-pack";
 import { routes, seller, siteConfig } from "@/shared/config";
-import { Container } from "@/shared/ui";
+import { Container, Logo } from "@/shared/ui";
 
 const documents = [
   { href: routes.offer, label: "Публичная оферта" },
@@ -10,26 +9,25 @@ const documents = [
   { href: routes.contacts, label: "Контакты и реквизиты" },
 ] as const;
 
+const headingClass = "font-display text-base font-semibold uppercase tracking-[0.12em] text-white";
+
 export function Footer() {
   const { disclaimer } = siteConfig;
 
   return (
-    <footer className="hud-footer mt-20">
-      <Container className="grid gap-10 py-12 md:grid-cols-3">
+    <footer className="mt-12 border-t border-line">
+      <Container className="grid gap-10 py-12 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
-          <div className="flex items-center gap-3">
-            <CurrencyIcon className="h-8 w-8" />
-            <span className="font-display text-3xl font-bold leading-none tracking-tight text-white">{siteConfig.name}</span>
-          </div>
-          <p className="mt-4 text-sm text-body">
+          <Logo name={siteConfig.name} />
+          <p className="mt-4 max-w-sm text-sm leading-6 text-body">
             Игровой сервер {siteConfig.name}. Внутриигровую валюту для донат-шопа можно пополнить в магазине на сайте.
           </p>
-          <p className="mt-4 text-xs text-muted">{disclaimer.ru}</p>
-          <p className="mt-2 text-[10px] uppercase tracking-wide text-muted/70">{disclaimer.en}</p>
+          <p className="mt-4 max-w-sm text-xs leading-5 text-muted">{disclaimer.ru}</p>
+          <p className="mt-2 max-w-sm text-[10px] uppercase tracking-wide text-muted/70">{disclaimer.en}</p>
         </div>
 
         <nav aria-label="Документы">
-          <h2 className="font-display text-sm font-semibold uppercase tracking-[0.16em] text-neon-cyan">Документы</h2>
+          <h2 className={headingClass}>Документы</h2>
           <ul className="mt-4 space-y-2 text-sm text-body">
             {documents.map((item) => (
               <li key={item.href}>
@@ -42,7 +40,7 @@ export function Footer() {
         </nav>
 
         <address className="not-italic">
-          <h2 className="font-display text-sm font-semibold uppercase tracking-[0.16em] text-neon-cyan">Исполнитель</h2>
+          <h2 className={headingClass}>Исполнитель</h2>
           <ul className="mt-4 space-y-2 text-sm text-body">
             <li>{seller.fullName}</li>
             <li>{seller.status}</li>

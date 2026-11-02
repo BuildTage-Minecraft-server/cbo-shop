@@ -1,8 +1,7 @@
 import Link from "next/link";
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ComponentProps } from "react";
 import { cn } from "@/shared/lib";
-import type { Accent } from "./accent";
-import { IconBox } from "./IconBox";
+import { PixelIcon } from "./PixelIcon";
 import type { IconName } from "./PixelIcon";
 
 type Variant = "primary" | "secondary" | "ghost";
@@ -11,35 +10,20 @@ type Size = "md" | "lg";
 type StyleProps = {
   variant?: Variant;
   size?: Size;
-  accent?: Accent;
   icon?: IconName;
-};
-
-const variants: Record<Variant, string> = {
-  primary: "hud-button--primary",
-  secondary: "hud-button--secondary",
-  ghost: "hud-button--ghost",
-};
-
-const sizes: Record<Size, string> = {
-  md: "",
-  lg: "hud-button--lg",
 };
 
 export function buttonStyles({
   variant = "primary",
   size = "md",
-  accent,
   className,
-}: Pick<StyleProps, "variant" | "size" | "accent"> & { className?: string }): string {
-  const tone: Accent = accent ?? (variant === "secondary" ? "cyan" : "pink");
-  return cn("hud-button", variants[variant], sizes[size], `tone-${tone}`, className);
+}: Pick<StyleProps, "variant" | "size"> & { className?: string }): string {
+  return cn("btn", `btn--${variant}`, size === "lg" && "btn--lg", className);
 }
 
 export function Button({
   variant,
   size,
-  accent,
   icon,
   className,
   children,
@@ -47,23 +31,18 @@ export function Button({
   ...props
 }: ButtonHTMLAttributes<HTMLButtonElement> & StyleProps) {
   return (
-    <button
-      type={type}
-      data-icon={icon ? "" : undefined}
-      className={buttonStyles({ variant, size, accent, className })}
-      {...props}
-    >
-      {icon ? <IconBox icon={icon} /> : null}
-      <span className="hud-button__label">{children}</span>
+    <button type={type} className={buttonStyles({ variant, size, className })} {...props}>
+      {icon ? <PixelIcon name={icon} /> : null}
+      {children}
     </button>
   );
 }
 
-export function ButtonLink({ variant, size, accent, icon, className, children, ...props }: ComponentProps<typeof Link> & StyleProps) {
+export function ButtonLink({ variant, size, icon, className, children, ...props }: ComponentProps<typeof Link> & StyleProps) {
   return (
-    <Link data-icon={icon ? "" : undefined} className={buttonStyles({ variant, size, accent, className })} {...props}>
-      {icon ? <IconBox icon={icon} /> : null}
-      <span className="hud-button__label">{children}</span>
+    <Link className={buttonStyles({ variant, size, className })} {...props}>
+      {icon ? <PixelIcon name={icon} /> : null}
+      {children}
     </Link>
   );
 }
@@ -71,16 +50,15 @@ export function ButtonLink({ variant, size, accent, icon, className, children, .
 export function ButtonAnchor({
   variant,
   size,
-  accent,
   icon,
   className,
   children,
   ...props
 }: AnchorHTMLAttributes<HTMLAnchorElement> & StyleProps) {
   return (
-    <a data-icon={icon ? "" : undefined} className={buttonStyles({ variant, size, accent, className })} {...props}>
-      {icon ? <IconBox icon={icon} /> : null}
-      <span className="hud-button__label">{children}</span>
+    <a className={buttonStyles({ variant, size, className })} {...props}>
+      {icon ? <PixelIcon name={icon} /> : null}
+      {children}
     </a>
   );
 }

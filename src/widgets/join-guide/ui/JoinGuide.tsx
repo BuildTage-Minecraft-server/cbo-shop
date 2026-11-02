@@ -1,105 +1,89 @@
 import type { ReactNode } from "react";
 import { gameServer, siteConfig } from "@/shared/config";
-import { ButtonAnchor, Container, Panel, SectionHeading } from "@/shared/ui";
-import type { Accent } from "@/shared/ui";
+import { ButtonAnchor, Container, SectionHeading, Steps } from "@/shared/ui";
+import type { StepItem } from "@/shared/ui";
 
-type Step = {
-  title: string;
-  text: string;
-  accent: Accent;
-  code?: string | null;
-  meta?: string | null;
-  hint?: { text: string; code: string } | null;
-  action?: ReactNode;
-};
+function Code({ children }: { children: string }) {
+  return (
+    <code className="block break-all border border-line-strong bg-surface px-3 py-2 font-mono text-sm text-white">{children}</code>
+  );
+}
 
-function buildSteps(): Step[] {
+function buildSteps(): StepItem[] {
   const { accountsUrl, authServerUrl, address, version, communityUrl, communityLabel, launcherUrl, launcherNote } = gameServer;
+
+  const accountExtra: ReactNode = accountsUrl ? (
+    <ButtonAnchor href={accountsUrl} target="_blank" rel="noopener noreferrer" variant="secondary" icon="user">
+      Создать аккаунт
+    </ButtonAnchor>
+  ) : null;
+
+  const launcherStep: StepItem = launcherUrl
+    ? {
+        title: "Скачайте лаунчер",
+        text: "Установите лаунчер и войдите в него аккаунтом, созданным на первом шаге.",
+        extra: (
+          <div className="space-y-4">
+            <ButtonAnchor href={launcherUrl} icon="download">
+              Скачать лаунчер
+            </ButtonAnchor>
+            {launcherNote ? <p className="text-xs text-muted">{launcherNote}</p> : null}
+            {authServerUrl ? (
+              <div className="border-t border-line pt-4">
+                <p className="text-xs text-muted">Свой лаунчер с поддержкой authlib-injector? Адрес сервера авторизации:</p>
+                <code className="mt-2 block break-all font-mono text-xs text-body">{authServerUrl}</code>
+              </div>
+            ) : null}
+          </div>
+        ),
+      }
+    : {
+        title: "Добавьте аккаунт в лаунчер",
+        text: authServerUrl
+          ? "Подойдёт лаунчер с поддержкой authlib-injector, например HMCL. Укажите адрес сервера авторизации:"
+          : "Подойдёт лаунчер с поддержкой authlib-injector, например HMCL. Адрес сервера авторизации уточняйте в сообществе.",
+        extra: authServerUrl ? <Code>{authServerUrl}</Code> : null,
+      };
 
   return [
     {
       title: "Создайте аккаунт",
       text: `Аккаунт создаётся на сервере авторизации ${siteConfig.name}. Он же открывает вход на этот сайт.`,
-      accent: "blue",
-      action: accountsUrl ? (
-        <ButtonAnchor href={accountsUrl} target="_blank" rel="noopener noreferrer" variant="secondary" icon="user">
-          Создать аккаунт
-        </ButtonAnchor>
-      ) : null,
+      extra: accountExtra,
     },
-    launcherUrl
-      ? {
-          title: "Скачайте лаунчер",
-          text: "Установите лаунчер и войдите в него аккаунтом, созданным на первом шаге.",
-          accent: "purple",
-          meta: launcherNote,
-          action: (
-            <ButtonAnchor href={launcherUrl} icon="download">
-              Скачать лаунчер
-            </ButtonAnchor>
-          ),
-          hint: authServerUrl
-            ? { text: "Свой лаунчер с поддержкой authlib-injector? Адрес сервера авторизации:", code: authServerUrl }
-            : null,
-        }
-      : {
-          title: "Добавьте аккаунт в лаунчер",
-          text: authServerUrl
-            ? "Подойдёт лаунчер с поддержкой authlib-injector, например HMCL. Укажите адрес сервера авторизации:"
-            : "Подойдёт лаунчер с поддержкой authlib-injector, например HMCL. Адрес сервера авторизации уточняйте в сообществе.",
-          accent: "purple",
-          code: authServerUrl,
-        },
+    launcherStep,
     {
       title: "Зайдите на сервер",
       text: address
         ? "Добавьте сервер в список и подключитесь по адресу:"
         : "Добавьте сервер в список и подключитесь. Адрес и версию игры уточняйте в сообществе.",
-      accent: "green",
-      code: address,
-      meta: version ? `Версия игры: ${version}` : null,
-      action: communityUrl ? (
-        <ButtonAnchor href={communityUrl} target="_blank" rel="noopener noreferrer" variant="secondary" icon="list">
-          {communityLabel}
-        </ButtonAnchor>
-      ) : null,
+      extra:
+        address || version || communityUrl ? (
+          <div className="space-y-4">
+            {address ? <Code>{address}</Code> : null}
+            {version ? <p className="text-xs text-muted">Версия игры: {version}</p> : null}
+            {communityUrl ? (
+              <ButtonAnchor href={communityUrl} target="_blank" rel="noopener noreferrer" variant="secondary" icon="list">
+                {communityLabel}
+              </ButtonAnchor>
+            ) : null}
+          </div>
+        ) : null,
     },
   ];
 }
 
 export function JoinGuide() {
-  const steps = buildSteps();
-
   return (
-    <section id="join" className="scroll-mt-24 py-16 md:py-20">
-      <Container>
+    <section id="join" className="scroll-mt-24 border-t border-line">
+      <Container className="py-12 md:py-20">
         <SectionHeading
-          kicker="Как начать"
-          title="Три шага до первого матча"
+          title="Как начать"
           description="Нужен только аккаунт на нашем сервере авторизации и лаунчер, который его поддерживает."
         />
-        <ol className="mt-10 grid gap-5 lg:grid-cols-3">
-          {steps.map((step, index) => (
-            <Panel key={step.title} as="li" accent={step.accent} bar="top" className="flex flex-col p-5">
-              <span className="hud-icon-box">{index + 1}</span>
-              <h3 className="mt-4 font-display text-lg font-semibold text-white">{step.title}</h3>
-              <p className="mt-2 text-sm text-body">{step.text}</p>
-              {step.code ? (
-                <code className="mt-3 block break-all border border-line-strong bg-ink/70 px-3 py-2 font-mono text-sm text-white">
-                  {step.code}
-                </code>
-              ) : null}
-              {step.meta ? <p className="mt-2 text-xs text-muted">{step.meta}</p> : null}
-              {step.action ? <div className="mt-4">{step.action}</div> : null}
-              {step.hint ? (
-                <div className="mt-4 border-t border-line pt-3">
-                  <p className="text-xs text-muted">{step.hint.text}</p>
-                  <code className="mt-2 block break-all font-mono text-xs text-body">{step.hint.code}</code>
-                </div>
-              ) : null}
-            </Panel>
-          ))}
-        </ol>
+        <div className="mt-10">
+          <Steps items={buildSteps()} />
+        </div>
       </Container>
     </section>
   );

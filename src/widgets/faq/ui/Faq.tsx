@@ -1,30 +1,22 @@
-import { Container, Panel, PixelIcon, SectionHeading } from "@/shared/ui";
+import { Container, SectionHeading } from "@/shared/ui";
 import type { FaqItem } from "../model/questions";
 
-export function Faq({
-  items,
-  kicker = "FAQ",
-  title = "Частые вопросы",
-}: {
-  items: readonly FaqItem[];
-  kicker?: string;
-  title?: string;
-}) {
+export function Faq({ items, title = "Частые вопросы" }: { items: readonly FaqItem[]; title?: string }) {
   return (
-    <section className="py-16 md:py-20">
-      <Container>
-        <SectionHeading kicker={kicker} title={title} />
-        <div className="mt-10 grid gap-4 lg:max-w-3xl">
+    <section className="border-t border-line">
+      <Container className="py-12 md:py-20">
+        <SectionHeading title={title} />
+        <div className="mt-8 max-w-3xl divide-y divide-line border-y border-line">
           {items.map((item) => (
-            <Panel key={item.question} as="details" accent="purple" bar="left" className="group px-5 py-4">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-base font-semibold text-white [&::-webkit-details-marker]:hidden">
+            <details key={item.question} className="group py-5">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-lg font-semibold text-white [&::-webkit-details-marker]:hidden">
                 {item.question}
-                <span aria-hidden="true" className="hud-icon-box h-8 w-8 transition group-open:rotate-45">
-                  <PixelIcon name="plus" />
+                <span aria-hidden="true" className="font-display text-3xl font-normal leading-none text-accent transition group-open:rotate-45">
+                  +
                 </span>
               </summary>
-              <p className="mt-3 text-sm leading-6 text-body">{item.answer}</p>
-            </Panel>
+              <p className="mt-3 max-w-2xl leading-7 text-body">{item.answer}</p>
+            </details>
           ))}
         </div>
       </Container>

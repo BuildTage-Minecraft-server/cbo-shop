@@ -5,15 +5,17 @@ import { Button } from "@/shared/ui";
 import { loginAction } from "../api/login";
 import { initialLoginState } from "../model/state";
 
+const labelClass = "font-display text-sm font-medium uppercase tracking-wider text-muted";
+
 export function LoginForm({ next }: { next: string }) {
   const [state, formAction, pending] = useActionState(loginAction, initialLoginState);
 
   return (
-    <form action={formAction} className="flex flex-col gap-4">
+    <form action={formAction} className="flex flex-col gap-5">
       <input type="hidden" name="next" value={next} />
 
       <label className="flex flex-col gap-2">
-        <span className="font-display text-sm font-medium text-muted">Ник или логин</span>
+        <span className={labelClass}>Ник или логин</span>
         <input
           name="username"
           type="text"
@@ -21,20 +23,13 @@ export function LoginForm({ next }: { next: string }) {
           defaultValue={state.username}
           required
           maxLength={64}
-          className="hud-input"
+          className="field"
         />
       </label>
 
       <label className="flex flex-col gap-2">
-        <span className="font-display text-sm font-medium text-muted">Пароль</span>
-        <input
-          name="password"
-          type="password"
-          autoComplete="current-password"
-          required
-          maxLength={256}
-          className="hud-input"
-        />
+        <span className={labelClass}>Пароль</span>
+        <input name="password" type="password" autoComplete="current-password" required maxLength={256} className="field" />
       </label>
 
       {state.error ? (
@@ -43,7 +38,7 @@ export function LoginForm({ next }: { next: string }) {
         </p>
       ) : null}
 
-      <Button type="submit" size="lg" accent="cyan" icon="user" disabled={pending} className="w-full">
+      <Button type="submit" size="lg" icon="user" disabled={pending} className="w-full">
         {pending ? "Проверяем..." : "Войти"}
       </Button>
     </form>

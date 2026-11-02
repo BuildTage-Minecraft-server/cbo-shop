@@ -1,6 +1,5 @@
-import { Exo_2, Inter } from "next/font/google";
+import { Inter, Oswald } from "next/font/google";
 import type { ReactNode } from "react";
-import { HudBackdrop } from "@/shared/ui";
 import { Footer } from "@/widgets/footer";
 import { Header } from "@/widgets/header";
 import "../styles/globals.css";
@@ -11,17 +10,16 @@ const inter = Inter({
   display: "swap",
 });
 
-const exo = Exo_2({
+const oswald = Oswald({
   subsets: ["latin", "cyrillic"],
-  variable: "--font-exo",
+  variable: "--font-oswald",
   display: "swap",
 });
 
 export function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="ru" className={`${inter.variable} ${exo.variable}`}>
+    <html lang="ru" className={`${inter.variable} ${oswald.variable}`}>
       <body className="flex min-h-dvh flex-col">
-        <HudBackdrop />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

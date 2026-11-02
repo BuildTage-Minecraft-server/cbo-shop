@@ -1,9 +1,8 @@
 import Link from "next/link";
-import { CurrencyIcon } from "@/entities/currency-pack";
 import { getSession } from "@/entities/session";
 import { LogoutButton } from "@/features/auth-by-drasl";
 import { gameServer, routes, siteConfig } from "@/shared/config";
-import { ButtonAnchor, ButtonLink, Container, Panel, PixelIcon } from "@/shared/ui";
+import { ButtonAnchor, ButtonLink, Container, Logo } from "@/shared/ui";
 
 const navigation = [
   { href: routes.home, label: "Сервер" },
@@ -16,7 +15,7 @@ function NavLinks() {
   return (
     <>
       {navigation.map((item) => (
-        <Link key={item.href} href={item.href} className="hud-link">
+        <Link key={item.href} href={item.href} className="nav-link">
           {item.label}
         </Link>
       ))}
@@ -28,14 +27,13 @@ export async function Header() {
   const session = await getSession();
 
   return (
-    <header className="hud-header sticky top-0 z-40 backdrop-blur">
-      <Container className="flex h-16 items-center justify-between gap-4">
-        <Link href={routes.home} className="flex items-center gap-3" aria-label={`${siteConfig.name}: на главную`}>
-          <CurrencyIcon className="h-8 w-8" />
-          <span className="font-display text-3xl font-bold leading-none tracking-tight text-white">{siteConfig.name}</span>
+    <header className="sticky top-0 z-40 border-b border-line bg-ink/90 backdrop-blur">
+      <Container className="flex h-16 items-center justify-between gap-6">
+        <Link href={routes.home} aria-label={`${siteConfig.name}: на главную`}>
+          <Logo name={siteConfig.name} />
         </Link>
 
-        <nav aria-label="Основная навигация" className="hidden items-center gap-1 md:flex">
+        <nav aria-label="Основная навигация" className="hidden items-center gap-8 md:flex">
           <NavLinks />
         </nav>
 
@@ -47,10 +45,9 @@ export async function Header() {
           ) : null}
           {session ? (
             <>
-              <Panel accent="cyan" bar="left" className="hidden h-10 items-center gap-2 px-4 sm:flex">
-                <PixelIcon name="user" className="text-neon-cyan" />
-                <span className="max-w-40 truncate font-display text-base font-medium text-white">{session.name}</span>
-              </Panel>
+              <span className="hidden max-w-40 truncate font-display text-lg tracking-wide text-white sm:inline">
+                {session.name}
+              </span>
               <LogoutButton />
             </>
           ) : (
@@ -61,10 +58,7 @@ export async function Header() {
         </div>
       </Container>
 
-      <nav
-        aria-label="Мобильная навигация"
-        className="flex gap-1 overflow-x-auto border-t border-line px-3 py-2 md:hidden"
-      >
+      <nav aria-label="Мобильная навигация" className="flex gap-6 overflow-x-auto border-t border-line px-5 py-3 md:hidden">
         <NavLinks />
       </nav>
     </header>
