@@ -4,7 +4,7 @@ import { gameServer, routes, siteConfig } from "@/shared/config";
 import { ButtonAnchor, ButtonLink, Container, CopyField } from "@/shared/ui";
 
 export function Hero() {
-  const { launcherUrl, launcherNote, address, version } = gameServer;
+  const { launcherUrl, launcherNote, address } = gameServer;
 
   return (
     <section>
@@ -15,12 +15,12 @@ export function Hero() {
               {siteConfig.name}
             </span>
             <span className="mt-5 block font-display text-2xl font-medium uppercase tracking-[0.12em] text-accent sm:text-3xl">
-              Игровой сервер Minecraft
+              Тактический PvP-шутер в Minecraft
             </span>
           </h1>
           <p className="mt-6 max-w-lg text-lg leading-8 text-body">
-            Матчи, ранги и своё снаряжение. Находите матч или создавайте свой, растите в рейтинге и собирайте коллекцию
-            скинов оружия.
+            Соревновательный шутер на сервере {gameServer.platform}: лобби с поиском матчей, отдельные арены, ранги и
+            рейтинги, магазин и реплеи. Всё построено на собственном моде LobbyShooter.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-4">
@@ -48,7 +48,7 @@ export function Hero() {
 
           {address ? (
             <div className="mt-8">
-              <CopyField label={version ? `Адрес сервера, версия ${version}` : "Адрес сервера"} value={address} />
+              <CopyField label={`Адрес сервера, ${gameServer.platform}`} value={address} />
             </div>
           ) : null}
         </div>

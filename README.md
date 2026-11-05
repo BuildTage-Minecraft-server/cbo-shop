@@ -32,8 +32,8 @@ The project follows [Feature-Sliced Design](https://feature-sliced.design). Next
 | Layer | Slices |
 | --- | --- |
 | `app` | root layout, global styles, API route handlers |
-| `pages` | home, shop, login, delivery, offer, privacy, contacts, payment-result, not-found |
-| `widgets` | header, footer, hero, game-features, screens-gallery, join-guide, pack-showcase, how-it-works, faq, legal-document |
+| `pages` | home, game, shop, login, delivery, offer, privacy, contacts, payment-result, not-found |
+| `widgets` | header, footer, hero, game-features, modes-preview, game-sections, server-mods, screens-gallery, join-guide, pack-showcase, how-it-works, faq, legal-document |
 | `features` | auth-by-drasl, buy-currency, check-payment-status, confirm-payment |
 | `entities` | currency-pack, payment, session |
 | `shared` | config, lib, ui, assets, api clients (Drasl, YooKassa, game server) |
@@ -95,7 +95,7 @@ The checkout page returns the buyer to `/payment/result` both after a successful
 | `SELLER_PHONE` | for legal pages | Contact phone number |
 | `SELLER_STATUS`, `SELLER_SUPPORT_HOURS` | no | Optional overrides for the status line and support hours |
 | `SERVER_ADDRESS` | no | Game server address shown on the home page |
-| `SERVER_VERSION` | no | Game version shown next to the address |
+| `SERVER_VERSION` | no | Minecraft version shown next to the address, defaults to `1.20.1` |
 | `COMMUNITY_URL`, `COMMUNITY_LABEL` | no | Link to the community chat and its button label |
 | `LAUNCHER_URL` | no | Launcher download link, an absolute URL or a path such as `/launcher.zip`. The download buttons appear only when it is set |
 | `LAUNCHER_NOTE` | no | Short note under the download button, for example the supported platforms |

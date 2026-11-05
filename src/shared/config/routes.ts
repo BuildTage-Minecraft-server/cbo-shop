@@ -1,5 +1,6 @@
 export const routes = {
   home: "/",
+  game: "/game",
   join: "/#join",
   features: "/#features",
   shop: "/shop",

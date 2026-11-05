@@ -10,7 +10,7 @@ function Code({ children }: { children: string }) {
 }
 
 function buildSteps(): StepItem[] {
-  const { accountsUrl, authServerUrl, address, version, communityUrl, communityLabel, launcherUrl, launcherNote } = gameServer;
+  const { accountsUrl, authServerUrl, address, platform, communityUrl, communityLabel, launcherUrl, launcherNote } = gameServer;
 
   const accountExtra: ReactNode = accountsUrl ? (
     <ButtonAnchor href={accountsUrl} target="_blank" rel="noopener noreferrer" variant="secondary" icon="user">
@@ -57,18 +57,17 @@ function buildSteps(): StepItem[] {
       text: address
         ? "Добавьте сервер в список и подключитесь по адресу:"
         : "Добавьте сервер в список и подключитесь. Адрес и версию игры уточняйте в сообществе.",
-      extra:
-        address || version || communityUrl ? (
-          <div className="space-y-4">
-            {address ? <Code>{address}</Code> : null}
-            {version ? <p className="text-xs text-muted">Версия игры: {version}</p> : null}
-            {communityUrl ? (
-              <ButtonAnchor href={communityUrl} target="_blank" rel="noopener noreferrer" variant="secondary" icon="list">
-                {communityLabel}
-              </ButtonAnchor>
-            ) : null}
-          </div>
-        ) : null,
+      extra: (
+        <div className="space-y-4">
+          {address ? <Code>{address}</Code> : null}
+          <p className="text-xs text-muted">{platform}</p>
+          {communityUrl ? (
+            <ButtonAnchor href={communityUrl} target="_blank" rel="noopener noreferrer" variant="secondary" icon="list">
+              {communityLabel}
+            </ButtonAnchor>
+          ) : null}
+        </div>
+      ),
     },
   ];
 }
