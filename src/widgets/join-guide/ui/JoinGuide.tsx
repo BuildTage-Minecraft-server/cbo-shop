@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { gameServer, siteConfig } from "@/shared/config";
-import { ButtonAnchor, Container, SectionHeading, Steps } from "@/shared/ui";
+import { gameServer, routes, siteConfig } from "@/shared/config";
+import { ButtonAnchor, ButtonLink, Container, SectionHeading, Steps } from "@/shared/ui";
 import type { StepItem } from "@/shared/ui";
 
 function Code({ children }: { children: string }) {
@@ -10,9 +10,13 @@ function Code({ children }: { children: string }) {
 }
 
 function buildSteps(): StepItem[] {
-  const { accountsUrl, authServerUrl, address, platform, communityUrl, communityLabel, launcherUrl, launcherNote } = gameServer;
+  const { accountsUrl, authServerUrl, address, platform, communityUrl, communityLabel, launcherUrl, launcherNote, registrationEnabled } = gameServer;
 
-  const accountExtra: ReactNode = accountsUrl ? (
+  const accountExtra: ReactNode = registrationEnabled ? (
+    <ButtonLink href={routes.register} variant="secondary" icon="user">
+      Создать аккаунт
+    </ButtonLink>
+  ) : accountsUrl ? (
     <ButtonAnchor href={accountsUrl} target="_blank" rel="noopener noreferrer" variant="secondary" icon="user">
       Создать аккаунт
     </ButtonAnchor>

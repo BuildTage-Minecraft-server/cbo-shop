@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSession } from "@/entities/session";
 import { LoginForm } from "@/features/auth-by-drasl";
@@ -27,6 +28,12 @@ export async function LoginPage({ searchParams }: { searchParams: Promise<{ next
         </Panel>
         <p className="mt-4 text-xs leading-5 text-muted">
           Пароль передаётся только на сервер авторизации для проверки и не сохраняется на сайте.
+        </p>
+        <p className="mt-6 text-sm text-body">
+          Нет аккаунта?{" "}
+          <Link href={`${routes.register}?next=${encodeURIComponent(next)}`} className="text-accent underline underline-offset-4">
+            Зарегистрироваться
+          </Link>
         </p>
       </div>
     </Container>

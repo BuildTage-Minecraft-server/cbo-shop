@@ -5,6 +5,7 @@ export const routes = {
   features: "/#features",
   shop: "/shop",
   login: "/login",
+  register: "/register",
   delivery: "/delivery",
   offer: "/offer",
   privacy: "/privacy",

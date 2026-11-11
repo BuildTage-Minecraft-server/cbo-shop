@@ -8,6 +8,7 @@ Live: https://shop.nekrasovdev.space
 
 ## Features
 
+- Account registration on the site itself: the form creates the account through the Drasl admin API and signs the player in, so players never see the Drasl web UI.
 - Server landing page: game features, screenshots, a launcher download button and a join guide that builds the authlib-injector address from the Drasl URL.
 - Sign-in through [Drasl](https://github.com/unmojang/drasl) (Yggdrasil and authlib-injector compatible auth server). Passwords are forwarded to Drasl and discarded, the session is a signed `httpOnly` cookie.
 - Server-side catalog: prices never come from the client.
@@ -32,9 +33,9 @@ The project follows [Feature-Sliced Design](https://feature-sliced.design). Next
 | Layer | Slices |
 | --- | --- |
 | `app` | root layout, global styles, API route handlers |
-| `pages` | home, game, shop, login, delivery, offer, privacy, contacts, payment-result, not-found |
+| `pages` | home, game, shop, login, register, delivery, offer, privacy, contacts, payment-result, not-found |
 | `widgets` | header, footer, hero, game-features, modes-preview, game-sections, server-mods, screens-gallery, join-guide, pack-showcase, how-it-works, faq, legal-document |
-| `features` | auth-by-drasl, buy-currency, check-payment-status, confirm-payment |
+| `features` | auth-by-drasl, register-by-drasl, buy-currency, check-payment-status, confirm-payment |
 | `entities` | currency-pack, payment, session |
 | `shared` | config, lib, ui, assets, api clients (Drasl, YooKassa, game server) |
 
@@ -84,6 +85,7 @@ The checkout page returns the buyer to `/payment/result` both after a successful
 | --- | --- | --- |
 | `SESSION_SECRET` | yes | Random string, at least 32 characters, used to sign sessions |
 | `DRASL_URL` | yes | Base URL of the Drasl instance, including a path prefix if it has one |
+| `DRASL_ADMIN_TOKEN` | for registration | API token of a Drasl admin account. Without it the register page links to the Drasl web form instead |
 | `SITE_URL` | no | Public URL of the shop, defaults to the Vercel production URL or `http://localhost:3000` |
 | `YOOKASSA_SHOP_ID` | for payments | YooKassa shop identifier |
 | `YOOKASSA_SECRET_KEY` | for payments | YooKassa secret key |
@@ -101,6 +103,10 @@ The checkout page returns the buyer to `/payment/result` both after a successful
 | `LAUNCHER_NOTE` | no | Short note under the download button, for example the supported platforms |
 
 Seller details are read from the environment, so personal data never lands in the repository. Brand copy lives in `src/shared/config/site.ts`, the pack catalog in `src/entities/currency-pack/model/packs.ts`.
+
+## Account registration
+
+Drasl only lets admin API tokens create users, so the shop calls `POST /drasl/api/v2/users` (falling back to `v1`) with the token from `DRASL_ADMIN_TOKEN`, then signs the player in through the same authlib-injector endpoint used for login. The token never leaves the server. Use a dedicated admin account for it and rotate the token if it leaks. The form has a honeypot field, and Drasl itself validates the username and password rules.
 
 ## Game server contract
 

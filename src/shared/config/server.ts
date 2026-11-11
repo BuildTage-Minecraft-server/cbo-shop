@@ -19,6 +19,7 @@ export const gameServer = {
   communityLabel: fromEnv("COMMUNITY_LABEL") ?? "Сообщество",
   launcherUrl: asLink(fromEnv("LAUNCHER_URL")),
   launcherNote: fromEnv("LAUNCHER_NOTE"),
+  registrationEnabled: fromEnv("DRASL_ADMIN_TOKEN") !== null,
   accountsUrl: accounts,
   authServerUrl: accounts ? `${accounts}/authlib-injector` : null,
 };
