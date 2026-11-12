@@ -15,7 +15,7 @@ export class DraslRegisterError extends Error {
   }
 }
 
-const API_VERSIONS = ["v2", "v1"] as const;
+const API_VERSIONS = ["v3"] as const;
 
 async function readMessage(response: Response): Promise<string> {
   try {
