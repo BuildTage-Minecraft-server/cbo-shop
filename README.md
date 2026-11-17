@@ -9,6 +9,7 @@ Live: https://shop.nekrasovdev.space
 ## Features
 
 - Account registration on the site itself: the form creates the account through the Drasl admin API and signs the player in, so players never see the Drasl web UI.
+- A small JSON endpoint, `POST /api/account/register`, that lets the game launcher create accounts through the same Drasl admin API.
 - Server landing page: game features, screenshots, a launcher download button and a join guide that builds the authlib-injector address from the Drasl URL.
 - Sign-in through [Drasl](https://github.com/unmojang/drasl) (Yggdrasil and authlib-injector compatible auth server). Passwords are forwarded to Drasl and discarded, the session is a signed `httpOnly` cookie.
 - Server-side catalog: prices never come from the client.
