@@ -1,49 +1,52 @@
 import "server-only";
 import { z } from "zod";
 import { DraslRegisterError, registerInDrasl } from "@/shared/api/drasl";
+import { proofOfWorkBits, proofOfWorkKey } from "../lib/pow-config";
+import { verifyProof } from "../lib/proof-of-work";
+import { passwordSchema, usernameSchema } from "../lib/rules";
+import { codeReply, readJsonBody } from "./http";
 
 const MAX_BODY_LENGTH = 2048;
 
 const requestSchema = z.object({
-  username: z.string().regex(/^[A-Za-z0-9_]{3,16}$/),
-  password: z.string().min(8).max(128),
+  username: usernameSchema,
+  password: passwordSchema,
+  challenge: z.string().max(200).optional(),
+  nonce: z.string().max(32).optional(),
 });
 
-function reply(status: number, code: string): Response {
-  return Response.json({ code }, { status, headers: { "Cache-Control": "no-store" } });
-}
-
 export async function handleAccountRegistration(request: Request): Promise<Response> {
-  const raw = await request.text().catch(() => "");
-  if (raw.length === 0 || raw.length > MAX_BODY_LENGTH) {
-    return reply(400, "rejected");
-  }
-
-  let body: unknown;
-  try {
-    body = JSON.parse(raw);
-  } catch {
-    return reply(400, "rejected");
-  }
-
-  const parsed = requestSchema.safeParse(body);
+  const parsed = requestSchema.safeParse(await readJsonBody(request, MAX_BODY_LENGTH));
   if (!parsed.success) {
-    return reply(400, "rejected");
+    return codeReply(400, "rejected");
   }
 
+  const { username, password, challenge, nonce } = parsed.data;
+
   try {
-    await registerInDrasl(parsed.data.username, parsed.data.password);
-    return reply(201, "ok");
+    const bits = proofOfWorkBits();
+    if (bits > 0) {
+      const key = proofOfWorkKey();
+      if (!key) {
+        return codeReply(502, "unavailable");
+      }
+      if (!challenge || !nonce || !verifyProof(key, username, bits, challenge, nonce)) {
+        return codeReply(400, "rejected");
+      }
+    }
+
+    await registerInDrasl(username, password);
+    return codeReply(201, "ok");
   } catch (error) {
     if (error instanceof DraslRegisterError) {
       if (error.kind === "username-taken") {
-        return reply(409, "nameTaken");
+        return codeReply(409, "nameTaken");
       }
       if (error.kind === "invalid-username" || error.kind === "invalid-password") {
-        return reply(400, "rejected");
+        return codeReply(400, "rejected");
       }
     }
     console.error("Registration for the launcher failed", error);
-    return reply(502, "unavailable");
+    return codeReply(502, "unavailable");
   }
 }

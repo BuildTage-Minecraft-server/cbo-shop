@@ -5,6 +5,7 @@ const schema = z.object({
   SESSION_SECRET: z.string().min(32),
   DRASL_URL: z.string().url(),
   DRASL_ADMIN_TOKEN: z.string().min(1).optional(),
+  ACCOUNT_REGISTER_POW_BITS: z.coerce.number().int().min(0).max(26).optional(),
   YOOKASSA_SHOP_ID: z.string().min(1).optional(),
   YOOKASSA_SECRET_KEY: z.string().min(1).optional(),
   GAME_API_URL: z.string().url().optional(),
