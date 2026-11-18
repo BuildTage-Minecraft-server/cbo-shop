@@ -8,6 +8,10 @@ function asLink(value: string | null): string | null {
   return /^https?:\/\//.test(value) || (value.startsWith("/") && !value.startsWith("//")) ? value : null;
 }
 
+function asAbsoluteUrl(value: string | null): string | null {
+  return value && /^https?:\/\//.test(value) ? value.replace(/\/+$/, "") : null;
+}
+
 const version = fromEnv("SERVER_VERSION") ?? "1.20.1";
 const accounts = fromEnv("DRASL_URL")?.replace(/\/+$/, "") ?? null;
 
@@ -18,6 +22,7 @@ export const gameServer = {
   communityUrl: fromEnv("COMMUNITY_URL"),
   communityLabel: fromEnv("COMMUNITY_LABEL") ?? "Сообщество",
   launcherUrl: asLink(fromEnv("LAUNCHER_URL")),
+  launcherCdnUrl: asAbsoluteUrl(fromEnv("LAUNCHER_CDN_URL")) ?? "https://cdn.nekrasovdev.space/launcher",
   launcherNote: fromEnv("LAUNCHER_NOTE"),
   registrationEnabled: fromEnv("DRASL_ADMIN_TOKEN") !== null,
   accountsUrl: accounts,

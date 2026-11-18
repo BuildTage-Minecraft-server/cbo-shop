@@ -10,7 +10,8 @@ Live: https://shop.nekrasovdev.space
 
 - Account registration on the site itself: the form creates the account through the Drasl admin API and signs the player in, so players never see the Drasl web UI.
 - A small JSON endpoint, `POST /api/account/register`, that lets the game launcher create accounts through the same Drasl admin API. It can require a stateless, HMAC-signed proof of work (`ACCOUNT_REGISTER_POW_BITS`), so automated signups cost the sender CPU time while verification costs the server one hash.
-- Server landing page: game features, screenshots, a launcher download button and a join guide that builds the authlib-injector address from the Drasl URL.
+- Server landing page: game modes and features, screenshots, one-click launcher download and a three-step join guide. The authlib-injector address for third-party launchers is built from the Drasl URL.
+- Launcher download: the site reads the electron-updater manifests published next to the launcher builds (`latest.yml`, `latest-mac.yml`, `latest-linux.yml`, `latest-linux-arm64.yml`), picks the newest build for each platform and links straight to the installer. The visitor's system is detected from the user agent on the server and refined in the browser through client hints, so the button already says "Download for Windows", "macOS" or "Linux". Manifests are cached for five minutes, and the last known builds are kept if the CDN is briefly unreachable.
 - Sign-in through [Drasl](https://github.com/unmojang/drasl) (Yggdrasil and authlib-injector compatible auth server). Passwords are forwarded to Drasl and discarded, the session is a signed `httpOnly` cookie.
 - Server-side catalog: prices never come from the client.
 - YooKassa checkout with the redirect flow and an idempotent payment webhook.
@@ -35,9 +36,9 @@ The project follows [Feature-Sliced Design](https://feature-sliced.design). Next
 | --- | --- |
 | `app` | root layout, global styles, API route handlers |
 | `pages` | home, game, shop, login, register, delivery, offer, privacy, contacts, payment-result, not-found |
-| `widgets` | header, footer, hero, game-features, modes-preview, game-sections, server-mods, screens-gallery, join-guide, pack-showcase, how-it-works, faq, legal-document |
-| `features` | auth-by-drasl, register-by-drasl, buy-currency, check-payment-status, confirm-payment |
-| `entities` | currency-pack, payment, session |
+| `widgets` | header, footer, hero, game-features, modes-preview, game-highlights, game-sections, server-mods, screens-gallery, join-guide, pack-showcase, how-it-works, faq, legal-document |
+| `features` | auth-by-drasl, register-by-drasl, download-launcher, buy-currency, check-payment-status, confirm-payment |
+| `entities` | currency-pack, launcher, payment, session |
 | `shared` | config, lib, ui, assets, api clients (Drasl, YooKassa, game server) |
 
 Imports only go downwards, slices expose a public API through `index.ts`, and server-only modules are guarded with `server-only`.
@@ -100,8 +101,9 @@ The checkout page returns the buyer to `/payment/result` both after a successful
 | `SERVER_ADDRESS` | no | Game server address shown on the home page |
 | `SERVER_VERSION` | no | Minecraft version shown next to the address, defaults to `1.20.1` |
 | `COMMUNITY_URL`, `COMMUNITY_LABEL` | no | Link to the community chat and its button label |
-| `LAUNCHER_URL` | no | Launcher download link, an absolute URL or a path such as `/launcher.zip`. The download buttons appear only when it is set |
-| `LAUNCHER_NOTE` | no | Short note under the download button, for example the supported platforms |
+| `LAUNCHER_CDN_URL` | no | Public address of the folder with launcher builds and update manifests, defaults to `https://cdn.nekrasovdev.space/launcher` |
+| `LAUNCHER_URL` | no | Fallback download link (an absolute URL or a path such as `/launcher.zip`), used only when the manifests cannot be read |
+| `LAUNCHER_NOTE` | no | Short note under the hero download button |
 
 Seller details are read from the environment, so personal data never lands in the repository. Brand copy lives in `src/shared/config/site.ts`, the pack catalog in `src/entities/currency-pack/model/packs.ts`.
 

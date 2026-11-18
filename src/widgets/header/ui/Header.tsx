@@ -1,8 +1,10 @@
 import Link from "next/link";
+import { getLauncherDownloads } from "@/entities/launcher";
 import { getSession } from "@/entities/session";
 import { LogoutButton } from "@/features/auth-by-drasl";
-import { gameServer, routes, siteConfig } from "@/shared/config";
-import { ButtonAnchor, ButtonLink, Container, Logo } from "@/shared/ui";
+import { DownloadButton, getInitialPlatform, hasDownloads } from "@/features/download-launcher";
+import { routes, siteConfig } from "@/shared/config";
+import { ButtonLink, Container, Logo } from "@/shared/ui";
 
 const navigation = [
   { href: routes.home, label: "Сервер" },
@@ -25,7 +27,7 @@ function NavLinks() {
 }
 
 export async function Header() {
-  const session = await getSession();
+  const [session, downloads, initialPlatform] = await Promise.all([getSession(), getLauncherDownloads(), getInitialPlatform()]);
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-ink/90 backdrop-blur">
@@ -39,10 +41,8 @@ export async function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
-          {gameServer.launcherUrl ? (
-            <ButtonAnchor href={gameServer.launcherUrl} icon="download" className="hidden sm:inline-flex">
-              Скачать
-            </ButtonAnchor>
+          {hasDownloads(downloads) ? (
+            <DownloadButton downloads={downloads} initialPlatform={initialPlatform} short className="hidden sm:inline-flex" />
           ) : null}
           {session ? (
             <>

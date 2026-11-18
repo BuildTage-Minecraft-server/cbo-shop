@@ -9,3 +9,7 @@ export function formatRub(value: number): string {
 export function formatRubPrecise(value: number): string {
   return `${value.toFixed(2).replace(".", ",")}\u00A0₽`;
 }
+
+export function formatMegabytes(bytes: number): string {
+  return `${Math.max(1, Math.round(bytes / 1048576))}\u00A0МБ`;
+}

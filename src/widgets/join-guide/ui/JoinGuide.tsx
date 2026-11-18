@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
-import { gameServer, routes, siteConfig } from "@/shared/config";
+import { getLauncherDownloads } from "@/entities/launcher";
+import { DownloadPanel, getInitialPlatform } from "@/features/download-launcher";
+import { gameServer, routes } from "@/shared/config";
 import { ButtonAnchor, ButtonLink, Container, SectionHeading, Steps } from "@/shared/ui";
 import type { StepItem } from "@/shared/ui";
 
@@ -9,84 +11,90 @@ function Code({ children }: { children: string }) {
   );
 }
 
-function buildSteps(): StepItem[] {
-  const { accountsUrl, authServerUrl, address, platform, communityUrl, communityLabel, launcherUrl, launcherNote, registrationEnabled } = gameServer;
+function accountAction(): ReactNode {
+  const { registrationEnabled, accountsUrl } = gameServer;
 
-  const accountExtra: ReactNode = registrationEnabled ? (
-    <ButtonLink href={routes.register} variant="secondary" icon="user">
-      Создать аккаунт
-    </ButtonLink>
-  ) : accountsUrl ? (
-    <ButtonAnchor href={accountsUrl} target="_blank" rel="noopener noreferrer" variant="secondary" icon="user">
-      Создать аккаунт
-    </ButtonAnchor>
-  ) : null;
+  if (registrationEnabled) {
+    return (
+      <ButtonLink href={routes.register} variant="secondary" icon="user">
+        Создать аккаунт на сайте
+      </ButtonLink>
+    );
+  }
 
-  const launcherStep: StepItem = launcherUrl
-    ? {
-        title: "Скачайте лаунчер",
-        text: "Установите лаунчер и войдите в него аккаунтом, созданным на первом шаге.",
-        extra: (
-          <div className="space-y-4">
-            <ButtonAnchor href={launcherUrl} icon="download">
-              Скачать лаунчер
-            </ButtonAnchor>
-            {launcherNote ? <p className="text-xs text-muted">{launcherNote}</p> : null}
-            {authServerUrl ? (
-              <div className="border-t border-line pt-4">
-                <p className="text-xs text-muted">Свой лаунчер с поддержкой authlib-injector? Адрес сервера авторизации:</p>
-                <code className="mt-2 block break-all font-mono text-xs text-body">{authServerUrl}</code>
-              </div>
-            ) : null}
-          </div>
-        ),
-      }
-    : {
-        title: "Добавьте аккаунт в лаунчер",
-        text: authServerUrl
-          ? "Подойдёт лаунчер с поддержкой authlib-injector, например HMCL. Укажите адрес сервера авторизации:"
-          : "Подойдёт лаунчер с поддержкой authlib-injector, например HMCL. Адрес сервера авторизации уточняйте в сообществе.",
-        extra: authServerUrl ? <Code>{authServerUrl}</Code> : null,
-      };
+  if (accountsUrl) {
+    return (
+      <ButtonAnchor href={accountsUrl} target="_blank" rel="noopener noreferrer" variant="secondary" icon="user">
+        Создать аккаунт на сайте
+      </ButtonAnchor>
+    );
+  }
 
-  return [
-    {
-      title: "Создайте аккаунт",
-      text: `Аккаунт создаётся на сервере авторизации ${siteConfig.name}. Он же открывает вход на этот сайт.`,
-      extra: accountExtra,
-    },
-    launcherStep,
-    {
-      title: "Зайдите на сервер",
-      text: address
-        ? "Добавьте сервер в список и подключитесь по адресу:"
-        : "Добавьте сервер в список и подключитесь. Адрес и версию игры уточняйте в сообществе.",
-      extra: (
-        <div className="space-y-4">
-          {address ? <Code>{address}</Code> : null}
-          <p className="text-xs text-muted">{platform}</p>
-          {communityUrl ? (
-            <ButtonAnchor href={communityUrl} target="_blank" rel="noopener noreferrer" variant="secondary" icon="list">
-              {communityLabel}
-            </ButtonAnchor>
-          ) : null}
-        </div>
-      ),
-    },
-  ];
+  return null;
 }
 
-export function JoinGuide() {
+export async function JoinGuide() {
+  const { address, platform, communityUrl, communityLabel, authServerUrl } = gameServer;
+  const [downloads, initialPlatform] = await Promise.all([getLauncherDownloads(), getInitialPlatform()]);
+
+  const steps: StepItem[] = [
+    {
+      title: "Скачайте лаунчер",
+      text: "Установите его как обычную программу. Он сам поставит Java, игру и все моды сервера.",
+      extra: <DownloadPanel downloads={downloads} initialPlatform={initialPlatform} />,
+    },
+    {
+      title: "Создайте аккаунт",
+      text: "В окне лаунчера нажмите «Регистрация», придумайте ник и пароль. Этот же аккаунт работает на сайте и в магазине.",
+      extra: accountAction(),
+    },
+    {
+      title: "Нажмите «Играть»",
+      text: "При первом запуске лаунчер скачает игру и моды, а затем сам подключит вас к серверу. Дальше нажмите «Найти матч» в лобби.",
+      extra: communityUrl ? (
+        <ButtonAnchor href={communityUrl} target="_blank" rel="noopener noreferrer" variant="secondary" icon="list">
+          {communityLabel}
+        </ButtonAnchor>
+      ) : null,
+    },
+  ];
+
   return (
     <section id="join" className="scroll-mt-24 border-t border-line">
       <Container className="py-12 md:py-20">
-        <SectionHeading
-          title="Как начать"
-          description="Нужен только аккаунт на нашем сервере авторизации и лаунчер, который его поддерживает."
-        />
+        <SectionHeading title="Как начать" description="Три шага. Остальное лаунчер сделает сам." />
         <div className="mt-10">
-          <Steps items={buildSteps()} />
+          <Steps items={steps} />
         </div>
+
+        <details className="group mt-12 max-w-3xl border border-line bg-surface">
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-6 px-5 py-4 font-semibold text-white [&::-webkit-details-marker]:hidden">
+            Играете через другой лаунчер?
+            <span aria-hidden="true" className="font-display text-3xl font-normal leading-none text-accent transition group-open:rotate-45">
+              +
+            </span>
+          </summary>
+          <div className="space-y-4 border-t border-line px-5 py-5 text-sm leading-6 text-body">
+            <p>
+              Подойдёт лаунчер с поддержкой authlib-injector, например HMCL. Мы рекомендуем свой лаунчер: в другом придётся самому
+              поставить Forge и все моды сервера.
+            </p>
+            {authServerUrl ? (
+              <div className="space-y-2">
+                <p className="text-xs uppercase tracking-wider text-muted">Адрес сервера авторизации</p>
+                <Code>{authServerUrl}</Code>
+              </div>
+            ) : null}
+            {address ? (
+              <div className="space-y-2">
+                <p className="text-xs uppercase tracking-wider text-muted">Адрес сервера, {platform}</p>
+                <Code>{address}</Code>
+              </div>
+            ) : (
+              <p className="text-xs text-muted">{platform}. Адрес сервера уточняйте в сообществе.</p>
+            )}
+          </div>
+        </details>
       </Container>
     </section>
   );

@@ -1,10 +1,16 @@
 import Image from "next/image";
+import { getLauncherDownloads } from "@/entities/launcher";
+import { DownloadButton, getInitialPlatform, hasDownloads } from "@/features/download-launcher";
 import { lobbyScreen } from "@/shared/assets";
 import { gameServer, routes, siteConfig } from "@/shared/config";
-import { ButtonAnchor, ButtonLink, Container, CopyField } from "@/shared/ui";
+import { ButtonLink, Container, CopyField } from "@/shared/ui";
 
-export function Hero() {
-  const { launcherUrl, launcherNote, address } = gameServer;
+const perks = ["Java, игра и моды ставятся сами", "Аккаунт создаётся прямо в лаунчере", "Лаунчер сам подключает к серверу"] as const;
+
+export async function Hero() {
+  const { launcherNote, address } = gameServer;
+  const [downloads, initialPlatform] = await Promise.all([getLauncherDownloads(), getInitialPlatform()]);
+  const canDownload = hasDownloads(downloads);
 
   return (
     <section>
@@ -19,32 +25,34 @@ export function Hero() {
             </span>
           </h1>
           <p className="mt-6 max-w-lg text-lg leading-8 text-body">
-            Соревновательный шутер на сервере {gameServer.platform}: лобби с поиском матчей, отдельные арены, ранги и
-            рейтинги, магазин и реплеи. Всё построено на собственном моде LobbyShooter.
+            Заходите в лобби, нажимайте «Найти матч» и играйте командой против команды. Своё снаряжение, прокачка, рейтинги и
+            реплеи: всё внутри {gameServer.platform}.
           </p>
 
-          <div className="mt-8 flex flex-wrap gap-4">
-            {launcherUrl ? (
-              <>
-                <ButtonAnchor href={launcherUrl} size="lg" icon="download">
-                  Скачать лаунчер
-                </ButtonAnchor>
-                <ButtonLink href={routes.join} variant="secondary" size="lg">
-                  Как начать
-                </ButtonLink>
-              </>
+          <div className="mt-8 flex flex-wrap items-start gap-4">
+            {canDownload ? (
+              <DownloadButton downloads={downloads} initialPlatform={initialPlatform} size="lg" withNote />
             ) : (
-              <>
-                <ButtonLink href={routes.join} size="lg" icon="target">
-                  Начать играть
-                </ButtonLink>
-                <ButtonLink href={routes.features} variant="secondary" size="lg">
-                  Что внутри
-                </ButtonLink>
-              </>
+              <ButtonLink href={routes.join} size="lg" icon="target">
+                Начать играть
+              </ButtonLink>
             )}
+            <ButtonLink href={routes.game} variant="secondary" size="lg">
+              Об игре
+            </ButtonLink>
           </div>
-          {launcherUrl && launcherNote ? <p className="mt-3 text-xs text-muted">{launcherNote}</p> : null}
+          {canDownload && launcherNote ? <p className="mt-3 text-xs text-muted">{launcherNote}</p> : null}
+
+          {canDownload ? (
+            <ul className="mt-8 space-y-2">
+              {perks.map((perk) => (
+                <li key={perk} className="flex gap-3 text-sm text-body">
+                  <span aria-hidden="true" className="mt-1.5 h-2 w-2 shrink-0 bg-accent" />
+                  {perk}
+                </li>
+              ))}
+            </ul>
+          ) : null}
 
           {address ? (
             <div className="mt-8">
