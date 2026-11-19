@@ -4,7 +4,6 @@ export { Button, ButtonAnchor, ButtonLink, buttonStyles } from "./Button";
 export { Container } from "./Container";
 export { CopyField } from "./CopyField";
 export { Logo } from "./Logo";
-export { MediaSlot } from "./MediaSlot";
 export { Panel } from "./Panel";
 export { PixelIcon } from "./PixelIcon";
 export type { IconName } from "./PixelIcon";

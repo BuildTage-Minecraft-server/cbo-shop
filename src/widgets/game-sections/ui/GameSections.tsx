@@ -1,5 +1,6 @@
 import { cn } from "@/shared/lib";
-import { ButtonLink, Container, MediaSlot } from "@/shared/ui";
+import { ButtonLink, Container } from "@/shared/ui";
+import { MediaSlot } from "@/shared/ui/MediaSlot";
 import { gameSections } from "../model/sections";
 
 export function GameSections() {

@@ -1,5 +1,6 @@
 import { routes } from "@/shared/config";
-import { ButtonLink, Container, MediaSlot, Panel, PixelIcon, SectionHeading } from "@/shared/ui";
+import { ButtonLink, Container, Panel, PixelIcon, SectionHeading } from "@/shared/ui";
+import { MediaSlot } from "@/shared/ui/MediaSlot";
 import type { Accent, IconName } from "@/shared/ui";
 
 type Mode = {
