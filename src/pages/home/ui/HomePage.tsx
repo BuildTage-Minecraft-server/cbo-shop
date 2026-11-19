@@ -1,4 +1,3 @@
-import { CustomPlay } from "@/widgets/custom-play";
 import { Faq, serverFaqItems } from "@/widgets/faq";
 import { FeatureShowcase } from "@/widgets/feature-showcase";
 import { GameFeatures } from "@/widgets/game-features";
@@ -17,7 +16,6 @@ export function HomePage() {
       <GameLoop />
       <ModesPreview />
       <FeatureShowcase />
-      <CustomPlay />
       <ScreensReel />
       <JoinGuide />
       <ShopsPreview />

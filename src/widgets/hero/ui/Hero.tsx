@@ -4,11 +4,7 @@ import { gameServer, routes, siteConfig } from "@/shared/config";
 import { ButtonLink, Container, CopyField } from "@/shared/ui";
 import { MediaSlot } from "@/shared/ui/MediaSlot";
 
-const perks = [
-  "Java, игра и моды устанавливаются автоматически",
-  "Аккаунт создаётся прямо в лаунчере",
-  "Лаунчер сам подключает вас к серверу",
-] as const;
+const perks = ["Всё устанавливается автоматически", "Регистрация прямо в лаунчере", "Лаунчер сам заходит на сервер"] as const;
 const badges = [gameServer.platform, "Windows, macOS, Linux"] as const;
 
 export async function Hero() {
@@ -40,8 +36,7 @@ export async function Hero() {
             </span>
           </h1>
           <p className="mt-6 max-w-lg text-lg leading-8 text-body">
-            Огнестрельное оружие с обвесами, командные матчи на отдельных аренах и рейтинги игроков. Нажмите «Найти матч», и
-            игра соберёт для вас бой.
+            Стрельба с обвесами, командные матчи и рейтинги. Нажмите «Найти матч», и в бой.
           </p>
 
           <div className="mt-8 flex flex-wrap items-start gap-4">

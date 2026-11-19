@@ -12,7 +12,7 @@ export async function ScreensReel() {
   return (
     <section id="gallery" className="scroll-mt-24 border-t border-line">
       <Container className="py-12 md:py-20">
-        <SectionHeading title="Кадры из игры" description="Матчи, карты и оформление в реальной игре. Нажмите на кадр, чтобы открыть его крупнее." />
+        <SectionHeading title="Кадры из игры" />
         <div className="mt-10">
           {images.length > 0 ? (
             <ReelGrid images={images} alt={`Кадр из игры ${siteConfig.name}`} />

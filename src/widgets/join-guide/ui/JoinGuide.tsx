@@ -40,17 +40,17 @@ export async function JoinGuide() {
   const steps: StepItem[] = [
     {
       title: "Скачайте лаунчер",
-      text: "Установите его, как любую программу. Он сам загрузит Java, игру и все моды сервера.",
+      text: "Он сам загрузит Java, игру и моды.",
       extra: <DownloadPanel downloads={downloads} initialPlatform={initialPlatform} />,
     },
     {
       title: "Создайте аккаунт",
-      text: "В окне лаунчера нажмите «Регистрация», придумайте ник и пароль. Тот же аккаунт подходит для сайта и магазина.",
+      text: "Нажмите «Регистрация» в окне лаунчера.",
       extra: accountAction(),
     },
     {
       title: "Нажмите «Играть»",
-      text: "При первом запуске лаунчер скачает игру и моды, а затем сам подключит вас к серверу. В лобби нажмите «Найти матч».",
+      text: "Лаунчер подключит вас к серверу.",
       extra: communityUrl ? (
         <ButtonAnchor href={communityUrl} target="_blank" rel="noopener noreferrer" variant="secondary" icon="list">
           {communityLabel}
@@ -62,7 +62,7 @@ export async function JoinGuide() {
   return (
     <section id="join" className="scroll-mt-24 border-t border-line">
       <Container className="py-12 md:py-20">
-        <SectionHeading title="Как начать" description="Всего три шага, остальное лаунчер сделает сам." />
+        <SectionHeading title="Как начать" />
         <div className="mt-10">
           <Steps items={steps} />
         </div>
@@ -75,10 +75,7 @@ export async function JoinGuide() {
             </span>
           </summary>
           <div className="space-y-4 border-t border-line px-5 py-5 text-sm leading-6 text-body">
-            <p>
-              Подойдёт любой лаунчер с поддержкой authlib-injector, например HMCL. Мы советуем наш: в другом Forge и все моды сервера
-              придётся устанавливать самостоятельно.
-            </p>
+            <p>Подойдёт лаунчер с поддержкой authlib-injector, например HMCL. Forge и моды придётся ставить вручную.</p>
             {authServerUrl ? (
               <div className="space-y-2">
                 <p className="text-xs uppercase tracking-wider text-muted">Адрес сервера авторизации</p>
