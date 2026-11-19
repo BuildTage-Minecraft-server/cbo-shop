@@ -1,8 +1,8 @@
 export const siteConfig = {
-  name: "CBO",
+  name: "cbo",
   tagline: "тактический PvP-шутер в Minecraft",
   description:
-    "CBO: тактический PvP-шутер на сервере Minecraft 1.20.1. Поиск матчей, три режима, снаряжение и скины оружия, ранги, рейтинги и реплеи. Бесплатный лаунчер для Windows, macOS и Linux.",
+    "cbo: тактический PvP-шутер на сервере Minecraft 1.20.1. Поиск матчей, три режима, снаряжение и скины оружия, ранги, рейтинги и реплеи. Бесплатный лаунчер для Windows, macOS и Linux.",
   documentsUpdatedAt: "29 октября 2026 г.",
   paymentProvider: "ЮKassa",
   currency: {
