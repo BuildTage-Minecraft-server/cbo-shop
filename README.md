@@ -147,3 +147,16 @@ Useful scripts: `npm run build`, `npm run start`, `npm run typecheck`.
 - The temporary Drasl access token is invalidated right after the profile is read.
 - Redirect targets after sign-in are restricted to internal paths.
 - The result page reports a payment only when its metadata matches the signed-in player.
+
+## Screenshots
+
+Images are picked up from `public/screens` automatically, no code changes needed. Supported formats: `webp`, `avif`, `png`, `jpg`.
+
+| Path | Where it appears |
+| --- | --- |
+| `public/screens/hero.webp` | Hero frame on the home page (16:9, falls back to the lobby screenshot) |
+| `public/screens/modes/team.webp`, `capture.webp`, `ffa.webp` | Top of the three mode cards |
+| `public/screens/gallery/*` | "In-game shots" grid with a lightbox, as many files as you like, sorted by name |
+| `public/screens/game/<section-id>.webp` | Game page sections: `matches`, `custom-match`, `loadout`, `skins`, `progress`, `seasons`, `combat`, `replays`, `economy`, `maps` |
+
+Missing images show a labelled placeholder in `next dev` and are hidden or neutral in production. For the gallery, multiples of three images (3, 6, 9) give the cleanest layout.

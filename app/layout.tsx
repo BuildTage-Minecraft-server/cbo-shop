@@ -4,7 +4,7 @@ import { createMetadata, RootLayout } from "@/app/layout";
 export const metadata: Metadata = createMetadata();
 
 export const viewport: Viewport = {
-  themeColor: "#0a0b10",
+  themeColor: "#0d0610",
   colorScheme: "dark",
 };
 

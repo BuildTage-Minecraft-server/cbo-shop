@@ -1,4 +1,3 @@
-import type { StaticImageData } from "next/image";
 import { routes } from "@/shared/config";
 
 export type GameSection = {
@@ -7,7 +6,7 @@ export type GameSection = {
   lead: string;
   points?: readonly string[];
   chips?: readonly string[];
-  media: { label: string; src?: StaticImageData };
+  media: { label: string };
   action?: { label: string; href: string };
 };
 

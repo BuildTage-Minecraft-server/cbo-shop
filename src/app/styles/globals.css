@@ -1,18 +1,19 @@
 @import "tailwindcss";
 
 @theme static {
-  --color-ink: #0a0b10;
-  --color-surface: #11131a;
-  --color-surface-2: #171a23;
-  --color-line: #232733;
-  --color-line-strong: #343a4b;
-  --color-fg: #f5f6f9;
-  --color-body: #b7bccb;
-  --color-muted: #828899;
-  --color-accent: #4dc9dc;
-  --color-accent-ink: #031418;
+  --color-ink: #0d0610;
+  --color-surface: #150b1a;
+  --color-surface-2: #1e1126;
+  --color-line: #2f1b3a;
+  --color-line-strong: #46294f;
+  --color-fg: #fcf5f7;
+  --color-body: #cdb9c8;
+  --color-muted: #94809a;
+  --color-accent: #ff8f45;
+  --color-brand: #b9467f;
+  --color-accent-ink: #2a0e02;
   --color-gold: #f2c230;
-  --color-neon-cyan: #4dc9dc;
+  --color-neon-cyan: #ff8f45;
   --color-hud-blue: #6fa3f7;
   --color-hud-pink: #d77ad0;
   --color-hud-green: #5fb36b;
@@ -41,7 +42,7 @@
   }
 
   ::selection {
-    background: rgb(77 201 220 / 0.3);
+    background: rgb(255 143 69 / 0.3);
   }
 }
 
@@ -142,14 +143,14 @@
     color: var(--color-accent-ink);
   }
   .btn--primary:hover:not(:disabled) {
-    background: #86e0ee;
+    background: #ffb27c;
   }
   .btn--secondary {
-    background: #1b1e29;
+    background: #271532;
     color: #fff;
   }
   .btn--secondary:hover:not(:disabled) {
-    background: #262b3a;
+    background: #34203f;
   }
   .btn--ghost {
     padding: 0 0.75rem;
@@ -175,7 +176,7 @@
     width: 100%;
     height: 2.75rem;
     padding: 0 0.75rem;
-    background: #0c0e14;
+    background: #0a050d;
     border: 1px solid var(--color-line-strong);
     color: var(--color-fg);
     font-size: 1rem;
@@ -198,5 +199,27 @@
     mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent),
       linear-gradient(to bottom, transparent, #000 7%, #000 93%, transparent);
     mask-composite: intersect;
+  }
+
+  .hero-bg {
+    background-image:
+      radial-gradient(820px 480px at 82% 8%, rgb(185 70 127 / 0.32), transparent 62%),
+      radial-gradient(640px 420px at 2% 102%, rgb(255 143 69 / 0.16), transparent 62%);
+  }
+
+  .pixel-grid {
+    background-image:
+      linear-gradient(rgb(255 255 255 / 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(255 255 255 / 0.035) 1px, transparent 1px);
+    background-size: 32px 32px;
+    -webkit-mask-image: radial-gradient(ellipse at 70% 30%, #000, transparent 70%);
+    mask-image: radial-gradient(ellipse at 70% 30%, #000, transparent 70%);
+  }
+
+  .frame-glow {
+    box-shadow:
+      0 0 0 1px rgb(255 255 255 / 0.05),
+      0 30px 80px -30px rgb(185 70 127 / 0.55),
+      0 0 120px -40px rgb(255 143 69 / 0.35);
   }
 }

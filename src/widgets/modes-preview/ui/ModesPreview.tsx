@@ -1,21 +1,20 @@
-import Image from "next/image";
-import type { StaticImageData } from "next/image";
 import { routes } from "@/shared/config";
-import { ButtonLink, Container, Panel, PixelIcon, SectionHeading } from "@/shared/ui";
+import { ButtonLink, Container, MediaSlot, Panel, PixelIcon, SectionHeading } from "@/shared/ui";
 import type { Accent, IconName } from "@/shared/ui";
 
 type Mode = {
+  slot: string;
   title: string;
   tag: string;
   text: string;
   points: readonly string[];
   icon: IconName;
   accent: Accent;
-  src?: StaticImageData;
 };
 
 const modes: readonly Mode[] = [
   {
+    slot: "modes/team",
     title: "Командный бой",
     tag: "Команда на команду",
     text: "Красные против синих. Команда видит друг друга и общие метки, поэтому играть вместе проще.",
@@ -24,6 +23,7 @@ const modes: readonly Mode[] = [
     accent: "red",
   },
   {
+    slot: "modes/capture",
     title: "Захват точек",
     tag: "Контроль карты",
     text: "Захватывайте точки и не отдавайте их врагу. Прогресс всегда на виду.",
@@ -36,6 +36,7 @@ const modes: readonly Mode[] = [
     accent: "yellow",
   },
   {
+    slot: "modes/ffa",
     title: "Все против всех",
     tag: "Каждый за себя",
     text: "Здесь нет союзников: каждый играет сам за себя.",
@@ -56,14 +57,15 @@ export function ModesPreview() {
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {modes.map((mode) => (
             <Panel key={mode.title} as="article" accent={mode.accent} className="flex flex-col p-6">
-              {mode.src ? (
-                <Image
-                  src={mode.src}
-                  alt={`Режим «${mode.title}»`}
-                  sizes="(min-width: 768px) 360px, 100vw"
-                  className="-mx-6 -mt-6 mb-6 block h-auto w-[calc(100%+3rem)] max-w-none"
-                />
-              ) : null}
+              <MediaSlot
+                slot={mode.slot}
+                alt={`Режим «${mode.title}»`}
+                label={mode.title}
+                whenMissing="hide"
+                glow={false}
+                sizes="(min-width: 768px) 360px, 100vw"
+                className="-mx-6 -mt-6 mb-6 w-[calc(100%+3rem)] max-w-none border-0 border-b"
+              />
               <div className="flex h-7 items-center gap-3">
                 <PixelIcon name={mode.icon} scale={3} className="tone-text" />
                 <span className="font-display text-sm uppercase tracking-[0.14em] text-muted">{mode.tag}</span>

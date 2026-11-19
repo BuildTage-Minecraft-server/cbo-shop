@@ -5,6 +5,7 @@ import { Hero } from "@/widgets/hero";
 import { JoinGuide } from "@/widgets/join-guide";
 import { ModesPreview } from "@/widgets/modes-preview";
 import { ScreensGallery } from "@/widgets/screens-gallery";
+import { ScreensReel } from "@/widgets/screens-reel";
 
 export function HomePage() {
   return (
@@ -13,6 +14,7 @@ export function HomePage() {
       <GameFeatures />
       <ModesPreview />
       <GameHighlights />
+      <ScreensReel />
       <ScreensGallery />
       <JoinGuide />
       <Faq items={serverFaqItems} />

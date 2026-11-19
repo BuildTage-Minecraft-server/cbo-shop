@@ -9,7 +9,7 @@ export function GameSections() {
         <section key={section.id} id={section.id} className="scroll-mt-24 border-t border-line">
           <Container className="grid items-start gap-8 py-12 md:grid-cols-2 md:gap-14 md:py-16">
             <div className={cn(index % 2 === 1 && "md:order-last")}>
-              <MediaSlot src={section.media.src} alt={section.media.label} label={section.media.label} />
+              <MediaSlot slot={`game/${section.id}`} alt={section.media.label} label={section.media.label} />
             </div>
             <div>
               <h2 className="font-display text-4xl font-bold uppercase leading-tight tracking-wide text-white">{section.title}</h2>
