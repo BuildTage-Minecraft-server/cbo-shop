@@ -9,7 +9,6 @@ type Props = {
   label: string;
   sizes?: string;
   ratio?: string;
-  whenMissing?: "placeholder" | "hide";
   priority?: boolean;
   glow?: boolean;
   className?: string;
@@ -23,7 +22,6 @@ export async function MediaSlot({
   label,
   sizes = "(min-width: 1024px) 560px, 100vw",
   ratio = "aspect-video",
-  whenMissing = "placeholder",
   priority = false,
   glow = true,
   className,
@@ -38,14 +36,13 @@ export async function MediaSlot({
     );
   }
 
-  if (whenMissing === "hide" && !isDev) return null;
-
   return (
     <div
       role="img"
       aria-label={alt}
       className={cn(
-        "relative flex w-full flex-col items-center justify-center gap-3 overflow-hidden border border-dashed border-line-strong bg-gradient-to-br from-surface-2 to-ink",
+        glow && "frame-glow",
+        "relative flex flex-col items-center justify-center gap-3 overflow-hidden border border-dashed border-line-strong bg-gradient-to-br from-surface-2 to-ink",
         ratio,
         className,
       )}

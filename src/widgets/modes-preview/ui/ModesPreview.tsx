@@ -1,7 +1,7 @@
 import { routes } from "@/shared/config";
 import { ButtonLink, Container, Panel, PixelIcon, SectionHeading } from "@/shared/ui";
-import { MediaSlot } from "@/shared/ui/MediaSlot";
 import type { Accent, IconName } from "@/shared/ui";
+import { MediaSlot } from "@/shared/ui/MediaSlot";
 
 type Mode = {
   slot: string;
@@ -18,8 +18,8 @@ const modes: readonly Mode[] = [
     slot: "modes/team",
     title: "Командный бой",
     tag: "Команда на команду",
-    text: "Красные против синих. Команда видит друг друга и общие метки, поэтому играть вместе проще.",
-    points: ["Метки команды и контуры союзников", "Пинги видны всей команде", "Свой набор карт"],
+    text: "Красные против синих. Метки команды и контуры союзников помогают играть слаженно.",
+    points: ["Метки команды и контуры союзников", "Общие метки видны всей команде", "Свой набор карт"],
     icon: "user",
     accent: "red",
   },
@@ -27,11 +27,11 @@ const modes: readonly Mode[] = [
     slot: "modes/capture",
     title: "Захват точек",
     tag: "Контроль карты",
-    text: "Захватывайте точки и не отдавайте их врагу. Прогресс всегда на виду.",
+    text: "Захватывайте точки и удерживайте их. Ход захвата всегда виден на экране.",
     points: [
-      "Прогресс-бар и стрелка показывают, кто захватывает точку",
-      "Над точкой буква-метка",
-      "Если на точке никого нет, захват постепенно спадает",
+      "Полоса прогресса и стрелка показывают, кто захватывает точку",
+      "Над точкой отображается её буква",
+      "Если на точке никого нет, захват постепенно сбрасывается",
     ],
     icon: "target",
     accent: "yellow",
@@ -39,9 +39,9 @@ const modes: readonly Mode[] = [
   {
     slot: "modes/ffa",
     title: "Все против всех",
-    tag: "Каждый за себя",
-    text: "Здесь нет союзников: каждый играет сам за себя.",
-    points: ["Враг каждый, кроме вас", "Для режима есть свой набор карт"],
+    tag: "Каждый сам за себя",
+    text: "Здесь нет союзников: каждый игрок сражается только за себя.",
+    points: ["Враг каждый, кроме вас", "Для режима подготовлен свой набор карт"],
     icon: "bolt",
     accent: "green",
   },
@@ -49,11 +49,11 @@ const modes: readonly Mode[] = [
 
 export function ModesPreview() {
   return (
-    <section id="modes" className="scroll-mt-24">
+    <section id="modes" className="scroll-mt-24 border-t border-line">
       <Container className="py-12 md:py-20">
         <SectionHeading
           title="Три режима"
-          description="Нажимаете «Найти матч» и встаёте в очередь. Матч стартует с обратным отсчётом, как только набирается минимум игроков."
+          description="Нажмите «Найти матч» и встаньте в очередь. Матч начнётся с обратного отсчёта, как только наберётся минимум игроков."
         />
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {modes.map((mode) => (
@@ -61,8 +61,7 @@ export function ModesPreview() {
               <MediaSlot
                 slot={mode.slot}
                 alt={`Режим «${mode.title}»`}
-                label={mode.title}
-                whenMissing="hide"
+                label={`Скриншот: ${mode.title.toLowerCase()}`}
                 glow={false}
                 sizes="(min-width: 768px) 360px, 100vw"
                 className="-mx-6 -mt-6 mb-6 w-[calc(100%+3rem)] max-w-none border-0 border-b"
@@ -86,7 +85,7 @@ export function ModesPreview() {
         </div>
         <div className="mt-10">
           <ButtonLink href={routes.game} variant="secondary" size="lg">
-            Об игре подробнее
+            Всё об игре
           </ButtonLink>
         </div>
       </Container>

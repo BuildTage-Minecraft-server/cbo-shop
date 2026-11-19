@@ -1,23 +1,20 @@
-import Image from "next/image";
 import { getLauncherDownloads } from "@/entities/launcher";
 import { DownloadButton, getInitialPlatform, hasDownloads } from "@/features/download-launcher";
-import { lobbyScreen } from "@/shared/assets";
 import { gameServer, routes, siteConfig } from "@/shared/config";
-import { findScreen } from "@/shared/lib/screens";
 import { ButtonLink, Container, CopyField } from "@/shared/ui";
+import { MediaSlot } from "@/shared/ui/MediaSlot";
 
-const perks = ["Java, игра и моды ставятся сами", "Аккаунт создаётся прямо в лаунчере", "Лаунчер сам подключает к серверу"] as const;
+const perks = [
+  "Java, игра и моды устанавливаются автоматически",
+  "Аккаунт создаётся прямо в лаунчере",
+  "Лаунчер сам подключает вас к серверу",
+] as const;
 const badges = [gameServer.platform, "Windows, macOS, Linux"] as const;
 
 export async function Hero() {
   const { launcherNote, address } = gameServer;
-  const [downloads, initialPlatform, heroScreen] = await Promise.all([
-    getLauncherDownloads(),
-    getInitialPlatform(),
-    findScreen("hero"),
-  ]);
+  const [downloads, initialPlatform] = await Promise.all([getLauncherDownloads(), getInitialPlatform()]);
   const canDownload = hasDownloads(downloads);
-  const alt = `Игра ${siteConfig.name}: тактический PvP-шутер в Minecraft`;
 
   return (
     <section className="hero-bg relative overflow-hidden">
@@ -43,8 +40,8 @@ export async function Hero() {
             </span>
           </h1>
           <p className="mt-6 max-w-lg text-lg leading-8 text-body">
-            Заходите в лобби, нажимайте «Найти матч» и играйте командой против команды. Своё снаряжение, прокачка, рейтинги и
-            реплеи: всё внутри {gameServer.platform}.
+            Огнестрельное оружие с обвесами, командные матчи на отдельных аренах и рейтинги игроков. Нажмите «Найти матч», и
+            игра соберёт для вас бой.
           </p>
 
           <div className="mt-8 flex flex-wrap items-start gap-4">
@@ -55,8 +52,8 @@ export async function Hero() {
                 Начать играть
               </ButtonLink>
             )}
-            <ButtonLink href={routes.game} variant="secondary" size="lg">
-              Об игре
+            <ButtonLink href="/#how" variant="secondary" size="lg">
+              Подробнее
             </ButtonLink>
           </div>
           {canDownload && launcherNote ? <p className="mt-3 text-xs text-muted">{launcherNote}</p> : null}
@@ -81,22 +78,13 @@ export async function Hero() {
 
         <div className="relative">
           <div aria-hidden="true" className="absolute -inset-6 -z-10 bg-gradient-to-tr from-brand/25 via-transparent to-accent/20 blur-3xl" />
-          <div className="frame-glow relative overflow-hidden border border-line-strong bg-surface">
-            {heroScreen ? (
-              <div className="relative aspect-video">
-                <Image src={heroScreen} alt={alt} fill priority sizes="(min-width: 768px) 640px, 100vw" className="object-cover" />
-              </div>
-            ) : (
-              <Image
-                src={lobbyScreen}
-                alt={`Лобби игры ${siteConfig.name}: матчи, статистика, лидеры, снаряжение, задания и магазины в одном меню`}
-                loading="eager"
-                fetchPriority="high"
-                sizes="(min-width: 768px) 640px, 100vw"
-                className="block h-auto w-full"
-              />
-            )}
-          </div>
+          <MediaSlot
+            slot="hero"
+            alt={`Игра ${siteConfig.name}: тактический PvP-шутер в Minecraft`}
+            label="Главный кадр: бой или лобби"
+            sizes="(min-width: 768px) 640px, 100vw"
+            priority
+          />
         </div>
       </Container>
     </section>

@@ -1,10 +1,10 @@
 import { Container } from "@/shared/ui";
 
 const stats = [
-  { value: "3", label: "режима: командный бой, захват точек и все против всех" },
-  { value: "100", label: "уровней прогрессии" },
+  { value: "3", label: "режима: командный бой, захват точек и «все против всех»" },
+  { value: "100", label: "уровней развития" },
   { value: "21", label: "звание, от «Новобранца» до «Легенды»" },
-  { value: "600+", label: "скинов оружия в коллекции" },
+  { value: "600+", label: "скинов оружия" },
 ] as const;
 
 export function GameFeatures() {

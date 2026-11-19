@@ -36,7 +36,7 @@ The project follows [Feature-Sliced Design](https://feature-sliced.design). Next
 | --- | --- |
 | `app` | root layout, global styles, API route handlers |
 | `pages` | home, game, shop, login, register, delivery, offer, privacy, contacts, payment-result, not-found |
-| `widgets` | header, footer, hero, game-features, modes-preview, game-highlights, game-sections, server-mods, screens-gallery, join-guide, pack-showcase, how-it-works, faq, legal-document |
+| `widgets` | header, footer, hero, game-features, modes-preview, game-loop, feature-showcase, custom-play, shops-preview, screens-reel, game-sections, server-mods, join-guide, pack-showcase, how-it-works, faq, legal-document |
 | `features` | auth-by-drasl, register-by-drasl, download-launcher, buy-currency, check-payment-status, confirm-payment |
 | `entities` | currency-pack, launcher, payment, session |
 | `shared` | config, lib, ui, assets, api clients (Drasl, YooKassa, game server) |
@@ -150,13 +150,15 @@ Useful scripts: `npm run build`, `npm run start`, `npm run typecheck`.
 
 ## Screenshots
 
-Images are picked up from `public/screens` automatically, no code changes needed. Supported formats: `webp`, `avif`, `png`, `jpg`.
+Every picture on the landing page is a slot filled from `public/screens`. Drop a file in, and it replaces the placeholder, no code changes needed. Supported formats: `webp`, `avif`, `png`, `jpg`. Use 16:9 for everything.
 
 | Path | Where it appears |
 | --- | --- |
-| `public/screens/hero.webp` | Hero frame on the home page (16:9, falls back to the lobby screenshot) |
-| `public/screens/modes/team.webp`, `capture.webp`, `ffa.webp` | Top of the three mode cards |
-| `public/screens/gallery/*` | "In-game shots" grid with a lightbox, as many files as you like, sorted by name |
-| `public/screens/game/<section-id>.webp` | Game page sections: `matches`, `custom-match`, `loadout`, `skins`, `progress`, `seasons`, `combat`, `replays`, `economy`, `maps` |
+| `hero.webp` | Main frame next to the headline |
+| `modes/team.webp`, `capture.webp`, `ffa.webp` | Top of the three mode cards |
+| `features/loadout.webp`, `progress.webp`, `replays.webp` | The three feature sections |
+| `gallery/*` | Screenshot grid with a lightbox, any number of files, sorted by name |
+| `shops/coin.webp`, `donat.webp` | The two shop cards |
+| `game/<section-id>.webp` | Game page sections: `matches`, `custom-match`, `loadout`, `skins`, `progress`, `seasons`, `combat`, `replays`, `economy`, `maps` |
 
-Missing images show a labelled placeholder in `next dev` and are hidden or neutral in production. For the gallery, multiples of three images (3, 6, 9) give the cleanest layout.
+A missing file leaves a labelled placeholder. The exact file path is printed on the placeholder in `next dev`. In the gallery, a multiple of three images (3, 6, 9) gives the cleanest layout.

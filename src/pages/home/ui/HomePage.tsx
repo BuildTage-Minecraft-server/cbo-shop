@@ -1,22 +1,26 @@
+import { CustomPlay } from "@/widgets/custom-play";
 import { Faq, serverFaqItems } from "@/widgets/faq";
+import { FeatureShowcase } from "@/widgets/feature-showcase";
 import { GameFeatures } from "@/widgets/game-features";
-import { GameHighlights } from "@/widgets/game-highlights";
+import { GameLoop } from "@/widgets/game-loop";
 import { Hero } from "@/widgets/hero";
 import { JoinGuide } from "@/widgets/join-guide";
 import { ModesPreview } from "@/widgets/modes-preview";
-import { ScreensGallery } from "@/widgets/screens-gallery";
 import { ScreensReel } from "@/widgets/screens-reel";
+import { ShopsPreview } from "@/widgets/shops-preview";
 
 export function HomePage() {
   return (
     <>
       <Hero />
       <GameFeatures />
+      <GameLoop />
       <ModesPreview />
-      <GameHighlights />
+      <FeatureShowcase />
+      <CustomPlay />
       <ScreensReel />
-      <ScreensGallery />
       <JoinGuide />
+      <ShopsPreview />
       <Faq items={serverFaqItems} />
     </>
   );
