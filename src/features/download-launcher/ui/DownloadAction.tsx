@@ -1,8 +1,6 @@
 import Link from "next/link";
 import type { LauncherDownloads } from "@/entities/launcher";
-import { formatMegabytes } from "@/shared/lib";
 import { ButtonAnchor, ButtonLink } from "@/shared/ui";
-import { fileKinds } from "../lib/platform";
 import type { DetectedPlatform } from "../lib/platform";
 import { resolveTarget } from "../lib/resolve";
 
@@ -47,12 +45,6 @@ export function DownloadAction({ downloads, platform, size = "md", short = false
       <div className={noteClass}>
         {platform === "mobile" ? (
           <p>Лаунчер устанавливается на компьютер (Windows, macOS или Linux). Откройте эту страницу на компьютере.</p>
-        ) : null}
-        {target.build ? (
-          <p>
-            Версия {target.build.version} · {fileKinds[target.build.platform]}
-            {target.build.size ? ` · ${formatMegabytes(target.build.size)}` : ""}
-          </p>
         ) : null}
         {sibling ? (
           <p>
