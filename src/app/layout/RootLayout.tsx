@@ -1,5 +1,6 @@
 import { Inter, Oswald } from "next/font/google";
 import type { ReactNode } from "react";
+import { MotionObserver } from "@/shared/ui/MotionObserver";
 import { Footer } from "@/widgets/footer";
 import { Header } from "@/widgets/header";
 import "../styles/globals.css";
@@ -23,6 +24,7 @@ export function RootLayout({ children }: { children: ReactNode }) {
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
+        <MotionObserver />
       </body>
     </html>
   );

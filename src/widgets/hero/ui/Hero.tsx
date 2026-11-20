@@ -57,7 +57,7 @@ export async function Hero() {
             <ul className="mt-8 space-y-2">
               {perks.map((perk) => (
                 <li key={perk} className="flex gap-3 text-sm text-body">
-                  <span aria-hidden="true" className="mt-1.5 h-2 w-2 shrink-0 bg-accent" />
+                  <span aria-hidden="true" className="motion-blink mt-1.5 h-2 w-2 shrink-0 bg-accent" />
                   {perk}
                 </li>
               ))}
@@ -71,7 +71,7 @@ export async function Hero() {
           ) : null}
         </div>
 
-        <div className="relative">
+        <div className="motion-float relative">
           <div aria-hidden="true" className="absolute -inset-6 -z-10 bg-gradient-to-tr from-brand/25 via-transparent to-accent/20 blur-3xl" />
           <MediaSlot
             slot="hero"
