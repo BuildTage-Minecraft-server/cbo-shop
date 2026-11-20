@@ -35,8 +35,8 @@ The project follows [Feature-Sliced Design](https://feature-sliced.design). Next
 | Layer | Slices |
 | --- | --- |
 | `app` | root layout, global styles, API route handlers |
-| `pages` | home, game, shop, login, register, delivery, offer, privacy, contacts, payment-result, not-found |
-| `widgets` | header, footer, hero, game-features, modes-preview, game-loop, feature-showcase, custom-play, shops-preview, screens-reel, game-sections, server-mods, join-guide, pack-showcase, how-it-works, faq, legal-document |
+| `pages` | home, shop, login, register, delivery, offer, privacy, contacts, payment-result, not-found |
+| `widgets` | header, footer, hero, game-features, modes-preview, game-loop, feature-showcase, custom-play, shops-preview, screens-reel, server-mods, join-guide, pack-showcase, how-it-works, faq, legal-document |
 | `features` | auth-by-drasl, register-by-drasl, download-launcher, buy-currency, check-payment-status, confirm-payment |
 | `entities` | currency-pack, launcher, payment, session |
 | `shared` | config, lib, ui, assets, api clients (Drasl, YooKassa, game server) |
@@ -159,6 +159,5 @@ Every picture on the landing page is a slot filled from `public/screens`. Drop a
 | `features/loadout.webp`, `progress.webp` | The two feature sections |
 | `gallery/*` | Screenshot grid with a lightbox, any number of files, sorted by name |
 | `shops/coin.webp`, `donat.webp` | The two shop cards |
-| `game/<section-id>.webp` | Game page sections: `matches`, `custom-match`, `loadout`, `skins`, `progress`, `seasons`, `combat`, `economy` |
 
 A missing file leaves a labelled placeholder. The exact file path is printed on the placeholder in `next dev`. In the gallery, a multiple of three images (3, 6, 9) gives the cleanest layout.

@@ -8,10 +8,8 @@ import { ButtonLink, Container, Logo } from "@/shared/ui";
 
 const navigation = [
   { href: routes.home, label: "Сервер" },
-  { href: routes.game, label: "Об игре" },
   { href: routes.join, label: "Как начать" },
   { href: routes.shop, label: "Магазин" },
-  { href: routes.contacts, label: "Контакты" },
 ] as const;
 
 function NavLinks() {

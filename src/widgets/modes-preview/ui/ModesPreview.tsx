@@ -1,5 +1,4 @@
-import { routes } from "@/shared/config";
-import { ButtonLink, Container, Panel, PixelIcon, SectionHeading } from "@/shared/ui";
+import { Container, Panel, PixelIcon, SectionHeading } from "@/shared/ui";
 import type { Accent, IconName } from "@/shared/ui";
 import { MediaSlot } from "@/shared/ui/MediaSlot";
 
@@ -63,11 +62,6 @@ export function ModesPreview() {
               <p className="mt-3 leading-7 text-body">{mode.text}</p>
             </Panel>
           ))}
-        </div>
-        <div className="mt-10">
-          <ButtonLink href={routes.game} variant="secondary" size="lg">
-            Всё об игре
-          </ButtonLink>
         </div>
       </Container>
     </section>

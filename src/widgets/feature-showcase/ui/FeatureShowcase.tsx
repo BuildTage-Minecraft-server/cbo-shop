@@ -1,5 +1,3 @@
-import Link from "next/link";
-import { routes } from "@/shared/config";
 import { cn } from "@/shared/lib";
 import { Container } from "@/shared/ui";
 import { MediaSlot } from "@/shared/ui/MediaSlot";
@@ -11,7 +9,6 @@ type Feature = {
   lead: string;
   points: readonly string[];
   mediaLabel: string;
-  linkLabel: string;
 };
 
 const features: readonly Feature[] = [
@@ -22,7 +19,6 @@ const features: readonly Feature[] = [
     lead: "Основное и запасное оружие, ближний бой, граната, броня и три перка.",
     points: ["Прицелы, рукояти и другие обвесы", "Сборку можно отправить другу кодом", "Несколько наборов, менять их можно в лобби"],
     mediaLabel: "Скриншот: экран снаряжения",
-    linkLabel: "Подробнее",
   },
   {
     id: "progress",
@@ -31,7 +27,6 @@ const features: readonly Feature[] = [
     lead: "100 уровней и 21 звание, от «Новобранца» до «Легенды».",
     points: ["Ежедневные и еженедельные задания", "Рейтинги за неделю и месяц с призами", "Титулы за достижения"],
     mediaLabel: "Скриншот: профиль и звания",
-    linkLabel: "Подробнее",
   },
 ];
 
@@ -58,9 +53,6 @@ export function FeatureShowcase() {
                   </li>
                 ))}
               </ul>
-              <Link href={`${routes.game}#${feature.id}`} className="mt-7 inline-block font-semibold text-accent underline-offset-4 hover:underline">
-                {feature.linkLabel}
-              </Link>
             </div>
           </Container>
         </section>
