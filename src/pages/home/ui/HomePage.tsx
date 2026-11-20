@@ -1,4 +1,3 @@
-import { Faq, serverFaqItems } from "@/widgets/faq";
 import { FeatureShowcase } from "@/widgets/feature-showcase";
 import { GameFeatures } from "@/widgets/game-features";
 import { GameLoop } from "@/widgets/game-loop";
@@ -19,7 +18,6 @@ export function HomePage() {
       <ScreensReel />
       <JoinGuide />
       <ShopsPreview />
-      <Faq items={serverFaqItems} />
     </>
   );
 }

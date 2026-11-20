@@ -5,12 +5,6 @@ import { gameServer, routes } from "@/shared/config";
 import { ButtonAnchor, ButtonLink, Container, SectionHeading, Steps } from "@/shared/ui";
 import type { StepItem } from "@/shared/ui";
 
-function Code({ children }: { children: string }) {
-  return (
-    <code className="block break-all border border-line-strong bg-surface px-3 py-2 font-mono text-sm text-white">{children}</code>
-  );
-}
-
 function accountAction(): ReactNode {
   const { registrationEnabled, accountsUrl } = gameServer;
 
@@ -34,7 +28,7 @@ function accountAction(): ReactNode {
 }
 
 export async function JoinGuide() {
-  const { address, platform, communityUrl, communityLabel, authServerUrl } = gameServer;
+  const { communityUrl, communityLabel } = gameServer;
   const [downloads, initialPlatform] = await Promise.all([getLauncherDownloads(), getInitialPlatform()]);
 
   const steps: StepItem[] = [
@@ -66,32 +60,6 @@ export async function JoinGuide() {
         <div className="mt-10">
           <Steps items={steps} />
         </div>
-
-        <details className="group mt-12 max-w-3xl border border-line bg-surface">
-          <summary className="flex cursor-pointer list-none items-center justify-between gap-6 px-5 py-4 font-semibold text-white [&::-webkit-details-marker]:hidden">
-            Играете через другой лаунчер?
-            <span aria-hidden="true" className="font-display text-3xl font-normal leading-none text-accent transition group-open:rotate-45">
-              +
-            </span>
-          </summary>
-          <div className="space-y-4 border-t border-line px-5 py-5 text-sm leading-6 text-body">
-            <p>Подойдёт лаунчер с поддержкой authlib-injector, например HMCL. Forge и моды придётся ставить вручную.</p>
-            {authServerUrl ? (
-              <div className="space-y-2">
-                <p className="text-xs uppercase tracking-wider text-muted">Адрес сервера авторизации</p>
-                <Code>{authServerUrl}</Code>
-              </div>
-            ) : null}
-            {address ? (
-              <div className="space-y-2">
-                <p className="text-xs uppercase tracking-wider text-muted">Адрес сервера, {platform}</p>
-                <Code>{address}</Code>
-              </div>
-            ) : (
-              <p className="text-xs text-muted">{platform}. Адрес сервера уточняйте в сообществе.</p>
-            )}
-          </div>
-        </details>
       </Container>
     </section>
   );

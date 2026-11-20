@@ -26,5 +26,4 @@ export const gameServer = {
   launcherNote: fromEnv("LAUNCHER_NOTE"),
   registrationEnabled: fromEnv("DRASL_ADMIN_TOKEN") !== null,
   accountsUrl: accounts,
-  authServerUrl: accounts ? `${accounts}/authlib-injector` : null,
 };

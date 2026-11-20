@@ -10,7 +10,7 @@ Live: https://shop.nekrasovdev.space
 
 - Account registration on the site itself: the form creates the account through the Drasl admin API and signs the player in, so players never see the Drasl web UI.
 - A small JSON endpoint, `POST /api/account/register`, that lets the game launcher create accounts through the same Drasl admin API. It can require a stateless, HMAC-signed proof of work (`ACCOUNT_REGISTER_POW_BITS`), so automated signups cost the sender CPU time while verification costs the server one hash.
-- Server landing page: game modes and features, screenshots, one-click launcher download and a three-step join guide. The authlib-injector address for third-party launchers is built from the Drasl URL.
+- Server landing page: game modes and features, screenshots, one-click launcher download and a three-step join guide.
 - Launcher download: the site reads the electron-updater manifests published next to the launcher builds (`latest.yml`, `latest-mac.yml`, `latest-linux.yml`, `latest-linux-arm64.yml`), picks the newest build for each platform and links straight to the installer. The visitor's system is detected from the user agent on the server and refined in the browser through client hints, so the button already says "Download for Windows", "macOS" or "Linux". Manifests are cached for five minutes, and the last known builds are kept if the CDN is briefly unreachable.
 - Sign-in through [Drasl](https://github.com/unmojang/drasl) (Yggdrasil and authlib-injector compatible auth server). Passwords are forwarded to Drasl and discarded, the session is a signed `httpOnly` cookie.
 - Server-side catalog: prices never come from the client.
