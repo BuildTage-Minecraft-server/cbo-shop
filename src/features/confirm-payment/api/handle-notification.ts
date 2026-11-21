@@ -2,7 +2,7 @@ import "server-only";
 import { z } from "zod";
 import { findPack } from "@/entities/currency-pack";
 import { creditCurrency } from "@/shared/api/game-server";
-import { getPayment } from "@/shared/api/yookassa";
+import { getPayment } from "@/shared/api/payments";
 import { paymentsConfig } from "@/shared/config/env";
 import { isUuid } from "@/shared/lib";
 
@@ -15,7 +15,7 @@ function accepted(): Response {
   return new Response(null, { status: 200 });
 }
 
-export async function handleYookassaNotification(request: Request): Promise<Response> {
+export async function handlePaymentNotification(request: Request): Promise<Response> {
   const body: unknown = await request.json().catch(() => null);
   const notification = notificationSchema.safeParse(body);
   if (!notification.success) {

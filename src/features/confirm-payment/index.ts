@@ -1,1 +1,1 @@
-export { handleYookassaNotification } from "./api/handle-notification";
+export { handlePaymentNotification } from "./api/handle-notification";

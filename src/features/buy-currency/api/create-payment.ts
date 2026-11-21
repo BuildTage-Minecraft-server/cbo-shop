@@ -6,7 +6,7 @@ import { z } from "zod";
 import { findPack } from "@/entities/currency-pack";
 import { rememberPayment } from "@/entities/payment";
 import { getSession } from "@/entities/session";
-import { createPayment } from "@/shared/api/yookassa";
+import { createPayment } from "@/shared/api/payments";
 import { routes, siteConfig } from "@/shared/config";
 import { paymentsConfig } from "@/shared/config/env";
 import { siteUrl } from "@/shared/config/site-url";

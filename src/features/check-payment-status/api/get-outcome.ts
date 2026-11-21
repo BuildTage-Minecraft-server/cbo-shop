@@ -1,12 +1,12 @@
 import "server-only";
 import { recallPayment } from "@/entities/payment";
 import { getSession } from "@/entities/session";
-import { getPayment } from "@/shared/api/yookassa";
-import type { YookassaPayment } from "@/shared/api/yookassa";
+import { getPayment } from "@/shared/api/payments";
+import type { ProviderPayment } from "@/shared/api/payments";
 import { paymentsConfig } from "@/shared/config/env";
 import type { PaymentOutcome } from "../model/types";
 
-function toOutcome(payment: YookassaPayment): PaymentOutcome {
+function toOutcome(payment: ProviderPayment): PaymentOutcome {
   if (payment.status === "succeeded" && payment.paid) return "paid";
   if (payment.status === "canceled") return "canceled";
   return "pending";

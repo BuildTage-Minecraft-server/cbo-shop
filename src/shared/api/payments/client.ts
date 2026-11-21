@@ -3,7 +3,7 @@ import type { PaymentsConfig } from "@/shared/config/env";
 
 const API_URL = "https://api.yookassa.ru/v3";
 
-export type YookassaPayment = {
+export type ProviderPayment = {
   id: string;
   status: "pending" | "waiting_for_capture" | "succeeded" | "canceled";
   paid: boolean;
@@ -20,12 +20,12 @@ export type CreatePaymentInput = {
   metadata: Record<string, string>;
 };
 
-export class YookassaError extends Error {
+export class PaymentProviderError extends Error {
   readonly status: number;
 
   constructor(status: number, message: string) {
     super(message);
-    this.name = "YookassaError";
+    this.name = "PaymentProviderError";
     this.status = status;
   }
 }
@@ -52,14 +52,14 @@ async function request<T>(credentials: PaymentsConfig, path: string, options: Re
 
   if (!response.ok) {
     const details = await response.text().catch(() => "");
-    throw new YookassaError(response.status, `YooKassa responded with ${response.status}: ${details.slice(0, 500)}`);
+    throw new PaymentProviderError(response.status, `Payment provider responded with ${response.status}: ${details.slice(0, 500)}`);
   }
 
   return (await response.json()) as T;
 }
 
-export function createPayment(credentials: PaymentsConfig, input: CreatePaymentInput): Promise<YookassaPayment> {
-  return request<YookassaPayment>(credentials, "/payments", {
+export function createPayment(credentials: PaymentsConfig, input: CreatePaymentInput): Promise<ProviderPayment> {
+  return request<ProviderPayment>(credentials, "/payments", {
     method: "POST",
     idempotenceKey: input.idempotenceKey,
     body: {
@@ -72,6 +72,6 @@ export function createPayment(credentials: PaymentsConfig, input: CreatePaymentI
   });
 }
 
-export function getPayment(credentials: PaymentsConfig, paymentId: string): Promise<YookassaPayment> {
-  return request<YookassaPayment>(credentials, `/payments/${encodeURIComponent(paymentId)}`, { method: "GET" });
+export function getPayment(credentials: PaymentsConfig, paymentId: string): Promise<ProviderPayment> {
+  return request<ProviderPayment>(credentials, `/payments/${encodeURIComponent(paymentId)}`, { method: "GET" });
 }

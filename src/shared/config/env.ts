@@ -6,8 +6,8 @@ const schema = z.object({
   DRASL_URL: z.string().url(),
   DRASL_ADMIN_TOKEN: z.string().min(1).optional(),
   ACCOUNT_REGISTER_POW_BITS: z.coerce.number().int().min(0).max(26).optional(),
-  YOOKASSA_SHOP_ID: z.string().min(1).optional(),
-  YOOKASSA_SECRET_KEY: z.string().min(1).optional(),
+  PAYMENT_SHOP_ID: z.string().min(1).optional(),
+  PAYMENT_SECRET_KEY: z.string().min(1).optional(),
   GAME_API_URL: z.string().url().optional(),
   GAME_API_TOKEN: z.string().min(1).optional(),
 });
@@ -40,8 +40,8 @@ export type PaymentsConfig = { shopId: string; secretKey: string };
 
 export function paymentsConfig(): PaymentsConfig | null {
   const env = serverEnv();
-  if (!env.YOOKASSA_SHOP_ID || !env.YOOKASSA_SECRET_KEY) return null;
-  return { shopId: env.YOOKASSA_SHOP_ID, secretKey: env.YOOKASSA_SECRET_KEY };
+  if (!env.PAYMENT_SHOP_ID || !env.PAYMENT_SECRET_KEY) return null;
+  return { shopId: env.PAYMENT_SHOP_ID, secretKey: env.PAYMENT_SECRET_KEY };
 }
 
 export type GameServerConfig = { url: string; token: string };
