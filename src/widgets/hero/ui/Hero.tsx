@@ -28,7 +28,7 @@ export async function Hero() {
             ))}
           </ul>
           <h1>
-            <span className="block bg-gradient-to-b from-white via-[#ffe3d0] to-accent bg-clip-text font-display text-[96px] font-bold leading-[0.85] tracking-tight text-transparent sm:text-[136px]">
+            <span className="block bg-gradient-to-b from-white via-[#ffe3d0] to-accent bg-clip-text font-display text-[96px] font-bold leading-[1] pb-[0.08em] -mb-[0.23em] tracking-tight text-transparent sm:text-[136px]">
               {siteConfig.name}
             </span>
             <span className="mt-5 block font-display text-2xl font-medium uppercase tracking-[0.12em] text-accent sm:text-3xl">
