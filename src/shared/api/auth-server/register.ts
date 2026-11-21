@@ -3,14 +3,14 @@ import { serverEnv } from "@/shared/config/env";
 import { classifyRegisterFailure } from "./classify-error";
 import type { RegisterFailure } from "./classify-error";
 
-export type DraslRegisterErrorKind = RegisterFailure | "disabled" | "unavailable";
+export type AccountRegisterErrorKind = RegisterFailure | "disabled" | "unavailable";
 
-export class DraslRegisterError extends Error {
-  readonly kind: DraslRegisterErrorKind;
+export class AccountRegisterError extends Error {
+  readonly kind: AccountRegisterErrorKind;
 
-  constructor(kind: DraslRegisterErrorKind, message: string) {
+  constructor(kind: AccountRegisterErrorKind, message: string) {
     super(message);
-    this.name = "DraslRegisterError";
+    this.name = "AccountRegisterError";
     this.kind = kind;
   }
 }
@@ -30,11 +30,11 @@ async function readMessage(response: Response): Promise<string> {
   return "";
 }
 
-export async function registerInDrasl(username: string, password: string): Promise<void> {
+export async function registerAccount(username: string, password: string): Promise<void> {
   const env = serverEnv();
   const token = env.DRASL_ADMIN_TOKEN;
   if (!token) {
-    throw new DraslRegisterError("disabled", "Registration through the Drasl API is not configured");
+    throw new AccountRegisterError("disabled", "Registration through the auth server API is not configured");
   }
 
   const baseUrl = env.DRASL_URL.replace(/\/+$/, "");
@@ -50,17 +50,17 @@ export async function registerInDrasl(username: string, password: string): Promi
         signal: AbortSignal.timeout(10000),
       });
     } catch {
-      throw new DraslRegisterError("unavailable", "Drasl is unreachable");
+      throw new AccountRegisterError("unavailable", "Auth server is unreachable");
     }
 
     if (response.status === 404) continue;
     if (response.ok) return;
 
     const message = await readMessage(response);
-    const details = `Drasl responded with ${response.status}: ${message}`;
-    if (response.status >= 500) throw new DraslRegisterError("unavailable", details);
-    throw new DraslRegisterError(classifyRegisterFailure(response.status, message), details);
+    const details = `Auth server responded with ${response.status}: ${message}`;
+    if (response.status >= 500) throw new AccountRegisterError("unavailable", details);
+    throw new AccountRegisterError(classifyRegisterFailure(response.status, message), details);
   }
 
-  throw new DraslRegisterError("unavailable", "Drasl API endpoint was not found");
+  throw new AccountRegisterError("unavailable", "Auth server API endpoint was not found");
 }

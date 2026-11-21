@@ -1,6 +1,6 @@
 import "server-only";
 import { z } from "zod";
-import { DraslRegisterError, registerInDrasl } from "@/shared/api/drasl";
+import { AccountRegisterError, registerAccount } from "@/shared/api/auth-server";
 import { proofOfWorkBits, proofOfWorkKey } from "../lib/pow-config";
 import { verifyProof } from "../lib/proof-of-work";
 import { passwordSchema, usernameSchema } from "../lib/rules";
@@ -35,10 +35,10 @@ export async function handleAccountRegistration(request: Request): Promise<Respo
       }
     }
 
-    await registerInDrasl(username, password);
+    await registerAccount(username, password);
     return codeReply(201, "ok");
   } catch (error) {
-    if (error instanceof DraslRegisterError) {
+    if (error instanceof AccountRegisterError) {
       if (error.kind === "username-taken") {
         return codeReply(409, "nameTaken");
       }

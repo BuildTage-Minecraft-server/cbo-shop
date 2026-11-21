@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSession } from "@/entities/session";
-import { LoginForm } from "@/features/auth-by-drasl";
+import { LoginForm } from "@/features/sign-in";
 import { routes } from "@/shared/config";
 import { safeInternalPath } from "@/shared/lib";
 import { Container, Panel } from "@/shared/ui";
@@ -21,7 +21,7 @@ export async function LoginPage({ searchParams }: { searchParams: Promise<{ next
       <div className="mx-auto max-w-md">
         <h1 className="font-display text-5xl font-bold uppercase leading-none tracking-wide text-white">Вход</h1>
         <p className="mt-4 leading-7 text-body">
-          Введите ник и пароль от аккаунта игрового сервера (Drasl). Это те же данные, что вы используете в лаунчере.
+          Введите ник и пароль от аккаунта игрового сервера. Это те же данные, что вы используете в лаунчере.
         </p>
         <Panel accent="cyan" className="mt-8 p-6 sm:p-8">
           <LoginForm next={next} />

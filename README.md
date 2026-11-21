@@ -8,11 +8,11 @@ Live: https://shop.nekrasovdev.space
 
 ## Features
 
-- Account registration on the site itself: the form creates the account through the Drasl admin API and signs the player in, so players never see the Drasl web UI.
-- A small JSON endpoint, `POST /api/account/register`, that lets the game launcher create accounts through the same Drasl admin API. It can require a stateless, HMAC-signed proof of work (`ACCOUNT_REGISTER_POW_BITS`), so automated signups cost the sender CPU time while verification costs the server one hash.
+- Account registration on the site itself: the form creates the account on the auth server through its admin API and signs the player in.
+- A small JSON endpoint, `POST /api/account/register`, that lets the game launcher create accounts through the same admin API. It can require a stateless, HMAC-signed proof of work (`ACCOUNT_REGISTER_POW_BITS`), so automated signups cost the sender CPU time while verification costs the server one hash.
 - Server landing page: game modes and features, screenshots, one-click launcher download and a three-step join guide.
 - Launcher download: the site reads the electron-updater manifests published next to the launcher builds (`latest.yml`, `latest-mac.yml`, `latest-linux.yml`, `latest-linux-arm64.yml`), picks the newest build for each platform and links straight to the installer. The visitor's system is detected from the user agent on the server and refined in the browser through client hints, so the button already says "Download for Windows", "macOS" or "Linux". Manifests are cached for five minutes, and the last known builds are kept if the CDN is briefly unreachable.
-- Sign-in through [Drasl](https://github.com/unmojang/drasl) (Yggdrasil and authlib-injector compatible auth server). Passwords are forwarded to Drasl and discarded, the session is a signed `httpOnly` cookie.
+- Sign-in with the same account the player uses in the launcher. Passwords are forwarded to the auth server and discarded, the session is a signed `httpOnly` cookie.
 - Server-side catalog: prices never come from the client.
 - YooKassa checkout with the redirect flow and an idempotent payment webhook.
 - Payment result page that asks YooKassa for the real status of the buyer's last payment, so leaving the checkout never shows a success message.
@@ -37,9 +37,9 @@ The project follows [Feature-Sliced Design](https://feature-sliced.design). Next
 | `app` | root layout, global styles, API route handlers |
 | `pages` | home, shop, login, register, delivery, offer, privacy, contacts, payment-result, not-found |
 | `widgets` | header, footer, hero, game-features, modes-preview, game-loop, feature-showcase, custom-play, shops-preview, screens-reel, server-mods, join-guide, pack-showcase, how-it-works, faq, legal-document |
-| `features` | auth-by-drasl, register-by-drasl, download-launcher, buy-currency, check-payment-status, confirm-payment |
+| `features` | sign-in, sign-up, download-launcher, buy-currency, check-payment-status, confirm-payment |
 | `entities` | currency-pack, launcher, payment, session |
-| `shared` | config, lib, ui, assets, api clients (Drasl, YooKassa, game server) |
+| `shared` | config, lib, ui, assets, api clients (auth server, YooKassa, game server) |
 
 Imports only go downwards, slices expose a public API through `index.ts`, and server-only modules are guarded with `server-only`.
 
@@ -61,7 +61,7 @@ src/
 sequenceDiagram
     participant P as Player
     participant S as Shop
-    participant D as Drasl
+    participant D as Auth server
     participant Y as YooKassa
     participant G as Game server
     P->>S: Sign in with nick and password
@@ -86,8 +86,8 @@ The checkout page returns the buyer to `/payment/result` both after a successful
 | Variable | Required | Description |
 | --- | --- | --- |
 | `SESSION_SECRET` | yes | Random string, at least 32 characters, used to sign sessions |
-| `DRASL_URL` | yes | Base URL of the Drasl instance, including a path prefix if it has one |
-| `DRASL_ADMIN_TOKEN` | for registration | API token of a Drasl admin account. Without it the register page links to the Drasl web form instead |
+| `DRASL_URL` | yes | Base URL of the auth server, including a path prefix if it has one |
+| `DRASL_ADMIN_TOKEN` | for registration | API token of an admin account on the auth server. Without it the register page links to the auth server web form instead |
 | `SITE_URL` | no | Public URL of the shop, defaults to the Vercel production URL or `http://localhost:3000` |
 | `YOOKASSA_SHOP_ID` | for payments | YooKassa shop identifier |
 | `YOOKASSA_SECRET_KEY` | for payments | YooKassa secret key |
@@ -109,7 +109,7 @@ Seller details are read from the environment, so personal data never lands in th
 
 ## Account registration
 
-Drasl only lets admin API tokens create users, so the shop calls `POST /drasl/api/v2/users` (falling back to `v1`) with the token from `DRASL_ADMIN_TOKEN`, then signs the player in through the same authlib-injector endpoint used for login. The token never leaves the server. Use a dedicated admin account for it and rotate the token if it leaks. The form has a honeypot field, and Drasl itself validates the username and password rules.
+Only admin API tokens can create users on the auth server, so the shop calls its users endpoint with the token from `DRASL_ADMIN_TOKEN`, then signs the player in through the same endpoint used for login. The token never leaves the server. Use a dedicated admin account for it and rotate the token if it leaks. The form has a honeypot field, and the auth server validates the username and password rules.
 
 ## Game server contract
 
@@ -144,7 +144,7 @@ Useful scripts: `npm run build`, `npm run start`, `npm run typecheck`.
 
 - Secrets are read only in server-only modules and never reach the client bundle.
 - The session is an HS256 token in an `httpOnly`, `sameSite=lax` cookie, `secure` in production.
-- The temporary Drasl access token is invalidated right after the profile is read.
+- The temporary access token is invalidated right after the profile is read.
 - Redirect targets after sign-in are restricted to internal paths.
 - The result page reports a payment only when its metadata matches the signed-in player.
 

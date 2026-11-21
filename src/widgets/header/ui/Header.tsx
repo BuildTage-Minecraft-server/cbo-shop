@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getLauncherDownloads } from "@/entities/launcher";
 import { getSession } from "@/entities/session";
-import { LogoutButton } from "@/features/auth-by-drasl";
+import { LogoutButton } from "@/features/sign-in";
 import { DownloadButton, getInitialPlatform, hasDownloads } from "@/features/download-launcher";
 import { routes, siteConfig } from "@/shared/config";
 import { ButtonLink, Container, Logo } from "@/shared/ui";

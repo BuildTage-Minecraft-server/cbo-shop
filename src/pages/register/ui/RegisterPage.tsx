@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSession } from "@/entities/session";
-import { RegisterForm } from "@/features/register-by-drasl";
+import { RegisterForm } from "@/features/sign-up";
 import { gameServer, routes } from "@/shared/config";
 import { safeInternalPath } from "@/shared/lib";
 import { ButtonAnchor, Container, Panel } from "@/shared/ui";

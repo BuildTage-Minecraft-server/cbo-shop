@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { createSession } from "@/entities/session";
-import { authenticateWithDrasl, DraslRegisterError, registerInDrasl } from "@/shared/api/drasl";
+import { authenticateAccount, AccountRegisterError, registerAccount } from "@/shared/api/auth-server";
 import { gameServer, routes } from "@/shared/config";
 import { safeInternalPath } from "@/shared/lib";
 import type { RegisterState } from "../model/state";
@@ -36,9 +36,9 @@ export async function registerAction(_previous: RegisterState, formData: FormDat
   }
 
   try {
-    await registerInDrasl(username, password);
+    await registerAccount(username, password);
   } catch (error) {
-    if (error instanceof DraslRegisterError) {
+    if (error instanceof AccountRegisterError) {
       if (error.kind === "username-taken") {
         return { error: "Этот ник уже занят. Выберите другой.", username };
       }
@@ -49,12 +49,12 @@ export async function registerAction(_previous: RegisterState, formData: FormDat
         return { error: "Сервер авторизации не принял этот пароль. Придумайте другой.", username };
       }
     }
-    console.error("Registration through Drasl failed", error);
+    console.error("Account registration failed", error);
     return { error: "Не удалось создать аккаунт. Попробуйте позже.", username };
   }
 
   try {
-    const player = await authenticateWithDrasl(username, password);
+    const player = await authenticateAccount(username, password);
     await createSession(player);
   } catch (error) {
     console.error("Sign-in after registration failed", error);
