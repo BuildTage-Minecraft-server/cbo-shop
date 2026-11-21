@@ -9,7 +9,7 @@ const stats = [
 
 export function GameFeatures() {
   return (
-    <section id="features" className="scroll-mt-24 border-y border-line bg-surface/50">
+    <section id="features" className="border-y border-line bg-surface/50">
       <Container className="py-10">
         <dl className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat) => (

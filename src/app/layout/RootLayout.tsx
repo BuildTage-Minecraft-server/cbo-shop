@@ -1,5 +1,6 @@
 import { Inter, Oswald } from "next/font/google";
 import type { ReactNode } from "react";
+import { HashScroll } from "@/shared/ui/HashScroll";
 import { MotionObserver } from "@/shared/ui/MotionObserver";
 import { Footer } from "@/widgets/footer";
 import { Header } from "@/widgets/header";
@@ -25,6 +26,7 @@ export function RootLayout({ children }: { children: ReactNode }) {
         <main className="flex-1">{children}</main>
         <Footer />
         <MotionObserver />
+        <HashScroll />
       </body>
     </html>
   );

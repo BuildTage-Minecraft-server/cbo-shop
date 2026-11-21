@@ -13,7 +13,7 @@ export function DownloadPanel({ downloads, initialPlatform }: { downloads: Launc
 
   if (!hasDownloads(downloads)) {
     return (
-      <p id="download" className="scroll-mt-28 text-sm leading-6 text-muted">
+      <p id="download" className="text-sm leading-6 text-muted">
         Ссылки на лаунчер сейчас недоступны. Обновите страницу чуть позже.
       </p>
     );
@@ -22,7 +22,7 @@ export function DownloadPanel({ downloads, initialPlatform }: { downloads: Launc
   const others = downloads.builds.filter((build) => build.platform !== platform);
 
   return (
-    <div id="download" className="scroll-mt-28 space-y-5">
+    <div id="download" className="space-y-5">
       <DownloadAction downloads={downloads} platform={platform} withNote />
 
       {others.length > 0 ? (

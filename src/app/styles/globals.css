@@ -350,3 +350,15 @@ body > header {
     transform: none;
   }
 }
+
+section[id],
+#download {
+  scroll-margin-top: 5rem;
+}
+
+@media (max-width: 767px) {
+  section[id],
+  #download {
+    scroll-margin-top: 7.5rem;
+  }
+}

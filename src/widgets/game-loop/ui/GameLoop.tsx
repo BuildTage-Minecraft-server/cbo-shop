@@ -9,7 +9,7 @@ const steps = [
 
 export function GameLoop() {
   return (
-    <section id="how" className="scroll-mt-24">
+    <section id="how" className="">
       <Container className="py-12 md:py-20">
         <SectionHeading title="Как проходит игра" />
         <ol className="mt-10 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">

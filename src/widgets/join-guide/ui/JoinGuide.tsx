@@ -54,7 +54,7 @@ export async function JoinGuide() {
   ];
 
   return (
-    <section id="join" className="scroll-mt-24 border-t border-line">
+    <section id="join" className="border-t border-line">
       <Container className="py-12 md:py-20">
         <SectionHeading title="Как начать" />
         <div className="mt-10">

@@ -11,7 +11,7 @@ export async function PackShowcase() {
   const session = await getSession();
 
   return (
-    <section id="packs" className="scroll-mt-24">
+    <section id="packs">
       <Container className="py-12 md:py-16">
         <SectionHeading
           title="Пакеты игровой валюты"

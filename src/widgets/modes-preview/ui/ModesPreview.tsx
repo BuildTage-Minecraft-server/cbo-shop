@@ -40,7 +40,7 @@ const modes: readonly Mode[] = [
 
 export function ModesPreview() {
   return (
-    <section id="modes" className="scroll-mt-24 border-t border-line">
+    <section id="modes" className="border-t border-line">
       <Container className="py-12 md:py-20">
         <SectionHeading title="Три режима" />
         <div className="mt-10 grid gap-6 md:grid-cols-3">

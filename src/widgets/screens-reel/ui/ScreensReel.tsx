@@ -10,7 +10,7 @@ export async function ScreensReel() {
   const images = await listScreens("gallery");
 
   return (
-    <section id="gallery" className="scroll-mt-24 border-t border-line">
+    <section id="gallery" className="border-t border-line">
       <Container className="py-12 md:py-20">
         <SectionHeading title="Кадры из игры" />
         <div className="mt-10">

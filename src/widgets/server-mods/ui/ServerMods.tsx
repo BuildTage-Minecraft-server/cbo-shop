@@ -4,7 +4,7 @@ import { modGroups } from "../model/mods";
 
 export function ServerMods() {
   return (
-    <section id="mods" className="scroll-mt-24 border-t border-line">
+    <section id="mods" className="border-t border-line">
       <Container className="py-12 md:py-20">
         <SectionHeading
           title="На чём построен сервер"

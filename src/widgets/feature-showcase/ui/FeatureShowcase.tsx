@@ -34,7 +34,7 @@ export function FeatureShowcase() {
   return (
     <>
       {features.map((feature, index) => (
-        <section key={feature.id} id={feature.id} className="scroll-mt-24 border-t border-line">
+        <section key={feature.id} id={feature.id} className="border-t border-line">
           <Container className="grid items-center gap-10 py-12 md:grid-cols-2 md:gap-16 md:py-20">
             <div className={cn(index % 2 === 1 && "md:order-last")}>
               <MediaSlot slot={`features/${feature.id}`} alt={feature.mediaLabel} label={feature.mediaLabel} />

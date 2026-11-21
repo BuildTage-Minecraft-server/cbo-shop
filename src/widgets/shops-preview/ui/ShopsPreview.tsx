@@ -20,7 +20,7 @@ const shops = [
 
 export function ShopsPreview() {
   return (
-    <section id="shops" className="scroll-mt-24 border-t border-line">
+    <section id="shops" className="border-t border-line">
       <Container className="py-12 md:py-20">
         <SectionHeading title="Магазины" />
         <div className="mt-10 grid gap-6 md:grid-cols-2">

@@ -23,7 +23,7 @@ const steps: readonly StepItem[] = [
 
 export function HowItWorks() {
   return (
-    <section id="how" className="scroll-mt-24 border-t border-line">
+    <section id="how" className="border-t border-line">
       <Container className="py-12 md:py-20">
         <SectionHeading title="Как это работает" />
         <div className="mt-10">
