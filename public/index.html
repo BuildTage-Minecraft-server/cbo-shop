@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Droid Profile Hub</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Droid Profile Hub</h1>
+      <div class="header-actions">
+        <span id="device-state" class="badge">checking...</span>
+        <button id="refresh" class="ghost">Refresh</button>
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <div class="section-head">
+          <h2>Profiles</h2>
+          <form id="create-user" class="inline">
+            <input name="name" placeholder="New profile name" required />
+            <button>Create</button>
+          </form>
+        </div>
+        <div id="profiles" class="grid"></div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <h2>Happ servers</h2>
+        </div>
+        <form id="add-server" class="inline wide">
+          <input name="name" placeholder="Server name in Happ (optional)" />
+          <input name="link" placeholder="Subscription URL or happ:// link" required />
+          <button>Add server</button>
+        </form>
+        <ul id="servers" class="list"></ul>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <h2>Happ app</h2>
+          <button id="install-happ">Install in all profiles</button>
+        </div>
+        <p class="hint">
+          Upload the Happ APK once. It is installed for the owner profile and then added to every
+          other profile.
+        </p>
+        <div class="inline">
+          <input id="apk-file" type="file" accept=".apk" />
+          <button id="upload-apk" class="ghost">Upload APK</button>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <h2>Apps</h2>
+        </div>
+        <p class="hint">
+          Upload any APK, for example an anti-detect browser. It is installed for the owner
+          profile and then added to every other profile.
+        </p>
+        <div class="inline wide">
+          <input id="app-label" placeholder="App name" />
+          <input id="app-file" type="file" accept=".apk" />
+          <button id="upload-app" class="ghost">Upload APK</button>
+        </div>
+        <div class="inline wide">
+          <input id="app-url" placeholder="Or a direct https link to the APK" />
+          <button id="download-app" class="ghost">Download on the server</button>
+        </div>
+        <ul id="apps" class="list"></ul>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <h2>Single device identity</h2>
+          <button id="load-identity" class="ghost">Load IDs</button>
+        </div>
+        <p class="hint">
+          Copies the per-app Android ID of Happ from one profile into all others, so a VPN
+          provider sees one device. Profiles without Happ get it installed and opened once
+          automatically. Requires a reboot to take effect.
+        </p>
+        <div id="identity"></div>
+      </section>
+    </main>
+
+    <dialog id="log-dialog">
+      <h3 id="log-title"></h3>
+      <ul id="log-list" class="steps"></ul>
+      <form method="dialog"><button>Close</button></form>
+    </dialog>
+
+    <div id="toast" class="toast" hidden></div>
+    <script src="app.js" type="module"></script>
+  </body>
+</html>
