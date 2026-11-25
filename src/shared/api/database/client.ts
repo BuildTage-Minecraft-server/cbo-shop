@@ -32,10 +32,14 @@ function store(): Store {
 async function migrate(pool: Pool): Promise<void> {
   const client = await pool.connect();
   try {
-    await client.query("select pg_advisory_lock($1)", [SCHEMA_LOCK_ID]);
+    await client.query("begin");
+    await client.query("select pg_advisory_xact_lock($1)", [SCHEMA_LOCK_ID]);
     await client.query(schemaSql);
+    await client.query("commit");
+  } catch (error) {
+    await client.query("rollback").catch(() => undefined);
+    throw error;
   } finally {
-    await client.query("select pg_advisory_unlock($1)", [SCHEMA_LOCK_ID]).catch(() => undefined);
     client.release();
   }
 }
