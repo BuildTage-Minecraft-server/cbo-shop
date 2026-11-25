@@ -1,3 +1,4 @@
+export { partnerProgram } from "./partner";
 export { routes } from "./routes";
 export { seller } from "./seller";
 export { gameServer } from "./server";

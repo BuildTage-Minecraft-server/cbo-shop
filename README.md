@@ -17,6 +17,7 @@ Live: https://shop.nekrasovdev.space
 - Hosted checkout with the redirect flow and an idempotent payment webhook. The provider-specific calls live in a single module, `shared/api/payments`.
 - Payment result page that asks the payment provider for the real status of the buyer's last payment, so leaving the checkout never shows a success message.
 - Currency is credited to the game server through a small authenticated HTTP contract.
+- Referral program for content creators: a creator picks a code, shares `/r/<code>`, and earns a percentage of every payment made by the players they bring. Attribution, hold period, balance and payout requests are described in the [Referral program](#referral-program) section.
 - Legal and compliance pages needed by payment providers: public offer, privacy policy, delivery terms, contacts and requisites.
 - Responsive flat dark UI with a single accent colour, chamfered buttons, large in-game screenshots and Oswald plus Inter typography, built from a small set of shared primitives.
 - Next.js image optimization and security headers.
@@ -26,6 +27,7 @@ Live: https://shop.nekrasovdev.space
 - Next.js 16 (App Router, Server Actions), React 19, TypeScript
 - Tailwind CSS 4 with a small component layer (plain CSS in `src/app/styles/globals.css`)
 - Zod for environment and input validation, jose for session tokens
+- PostgreSQL through `pg`, used only by the referral program (the rest of the site is stateless)
 - Vercel for hosting
 
 ## Architecture
@@ -35,11 +37,11 @@ The project follows [Feature-Sliced Design](https://feature-sliced.design). Next
 | Layer | Slices |
 | --- | --- |
 | `app` | root layout, global styles, API route handlers |
-| `pages` | home, shop, login, register, delivery, offer, privacy, contacts, payment-result, not-found |
-| `widgets` | header, footer, hero, game-features, modes-preview, game-loop, feature-showcase, custom-play, shops-preview, screens-reel, server-mods, join-guide, pack-showcase, how-it-works, faq, legal-document |
-| `features` | sign-in, sign-up, download-launcher, buy-currency, check-payment-status, confirm-payment |
-| `entities` | currency-pack, launcher, payment, session |
-| `shared` | config, lib, ui, assets, api clients (auth server, payments, game server) |
+| `pages` | home, shop, login, register, partner, delivery, offer, privacy, contacts, payment-result, not-found |
+| `widgets` | header, footer, hero, game-features, modes-preview, game-loop, feature-showcase, custom-play, shops-preview, screens-reel, server-mods, join-guide, pack-showcase, how-it-works, faq, legal-document, partner-intro, partner-dashboard |
+| `features` | sign-in, sign-up, download-launcher, buy-currency, check-payment-status, confirm-payment, become-partner, request-payout, track-referral, process-payouts |
+| `entities` | currency-pack, launcher, payment, session, partner |
+| `shared` | config, lib, ui, assets, api clients (auth server, payments, game server, database) |
 
 Imports only go downwards, slices expose a public API through `index.ts`, and server-only modules are guarded with `server-only`.
 
@@ -88,6 +90,11 @@ The checkout page returns the buyer to `/payment/result` both after a successful
 | `SESSION_SECRET` | yes | Random string, at least 32 characters, used to sign sessions |
 | `DRASL_URL` | yes | Base URL of the auth server, including a path prefix if it has one |
 | `DRASL_ADMIN_TOKEN` | for registration | API token of an admin account on the auth server. Without it the register page links to the auth server web form instead |
+| `DATABASE_URL` | for referrals | PostgreSQL connection string. Without it the referral program is switched off and its links are hidden |
+| `PARTNER_ADMIN_TOKEN` | for payouts | Bearer token (16+ characters) for the payout administration endpoint. Without it the endpoint answers 404 |
+| `PARTNER_COMMISSION_PERCENT` | no | Default creator share of each payment, 1 to 50, defaults to `10`. Fixed per creator at sign-up |
+| `PARTNER_HOLD_DAYS` | no | Days before a commission becomes payable, 0 to 90, defaults to `14` |
+| `PARTNER_MIN_PAYOUT_RUB` | no | Minimum payout request in rubles, defaults to `500` |
 | `SITE_URL` | no | Public URL of the shop, defaults to the Vercel production URL or `http://localhost:3000` |
 | `PAYMENT_SHOP_ID` | for payments | Shop identifier at the payment provider |
 | `PAYMENT_SECRET_KEY` | for payments | Secret key at the payment provider |
@@ -124,6 +131,44 @@ Content-Type: application/json
 
 Respond with any 2xx status once the balance is updated. The endpoint must be idempotent on `paymentId`, because notifications can be delivered more than once.
 
+## Referral program
+
+Creators sign in with their server account on `/partner`, pick a code and get a link such as `https://<your-domain>/r/mychannel`.
+
+```mermaid
+sequenceDiagram
+    participant C as Creator
+    participant V as Viewer
+    participant S as Shop
+    participant Y as Payment provider
+    C->>V: Shares /r/mychannel
+    V->>S: GET /r/mychannel
+    S-->>V: 302 to home, httpOnly cookie with the code (30 days)
+    V->>S: Registers, signs in or starts a purchase
+    S->>S: First touch wins: player is bound to the creator
+    Y->>S: payment.succeeded webhook
+    S->>S: Currency is credited, then the commission is recorded
+```
+
+- **Attribution.** The cookie is turned into a binding on registration, sign-in and checkout. A player keeps the first creator who brought them, and a creator can never be attributed to themselves.
+- **Commission.** Recorded after the currency has been credited, keyed by the provider payment id, so repeated webhook deliveries never pay twice. Amounts are stored as integer kopecks and the share is computed in integer arithmetic.
+- **Hold period.** A commission becomes payable after `PARTNER_HOLD_DAYS`, which leaves room for refunds and chargebacks.
+- **Payouts.** A creator requests the whole available balance from the cabinet. The request runs in a transaction that locks the creator row, so double submits and parallel requests cannot over-withdraw. Only one request can be pending at a time.
+- **Storage.** `partners`, `referrals`, `commissions` and `payouts` tables are created on first use under a PostgreSQL advisory lock, so no separate migration step is needed.
+
+Payout requests are processed through a small authenticated JSON endpoint:
+
+```bash
+# list pending requests
+curl -H "Authorization: Bearer $PARTNER_ADMIN_TOKEN" https://<your-domain>/api/partner/payouts
+
+# after sending the money, mark a request as paid (or "rejected")
+curl -X POST -H "Authorization: Bearer $PARTNER_ADMIN_TOKEN" -H "Content-Type: application/json" \
+  -d '{"id": 1, "status": "paid"}' https://<your-domain>/api/partner/payouts
+```
+
+Refunds are not wired to the commission ledger. If a payment is refunded during the hold period, delete its row from `commissions` by `payment_id`.
+
 ## Local development
 
 ```bash
@@ -136,7 +181,7 @@ Useful scripts: `npm run build`, `npm run start`, `npm run typecheck`.
 
 ## Deployment
 
-1. Import the repository into Vercel and set the environment variables above.
+1. Import the repository into Vercel and set the environment variables above. For the referral program, point `DATABASE_URL` at any PostgreSQL instance reachable from the deployment.
 2. In the payment provider dashboard, add an HTTP notification for `payment.succeeded` pointing to `https://<your-domain>/api/payment/webhook`.
 3. Deploy. Every push to the main branch ships to production.
 
@@ -147,6 +192,8 @@ Useful scripts: `npm run build`, `npm run start`, `npm run typecheck`.
 - The temporary access token is invalidated right after the profile is read.
 - Redirect targets after sign-in are restricted to internal paths.
 - The result page reports a payment only when its metadata matches the signed-in player.
+- The payout endpoint compares the bearer token in constant time and is disabled unless a token is configured.
+- All referral queries are parameterised, and the referral cookie value is validated before it reaches the database.
 
 ## Screenshots
 

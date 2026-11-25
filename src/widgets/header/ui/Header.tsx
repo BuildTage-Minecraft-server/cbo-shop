@@ -3,14 +3,15 @@ import { getLauncherDownloads } from "@/entities/launcher";
 import { getSession } from "@/entities/session";
 import { LogoutButton } from "@/features/sign-in";
 import { DownloadButton, getInitialPlatform, hasDownloads } from "@/features/download-launcher";
-import { routes, siteConfig } from "@/shared/config";
+import { partnerProgram, routes, siteConfig } from "@/shared/config";
 import { ButtonLink, Container, Logo } from "@/shared/ui";
 
 const navigation = [
   { href: routes.home, label: "Сервер" },
   { href: routes.join, label: "Как начать" },
   { href: routes.shop, label: "Магазин" },
-] as const;
+  ...(partnerProgram.enabled ? [{ href: routes.partner, label: "Партнёрам" }] : []),
+];
 
 function NavLinks() {
   return (

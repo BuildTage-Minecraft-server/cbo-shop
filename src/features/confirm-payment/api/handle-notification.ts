@@ -1,6 +1,7 @@
 import "server-only";
 import { z } from "zod";
 import { findPack } from "@/entities/currency-pack";
+import { recordCommission } from "@/entities/partner";
 import { creditCurrency } from "@/shared/api/game-server";
 import { getPayment } from "@/shared/api/payments";
 import { paymentsConfig } from "@/shared/config/env";
@@ -52,6 +53,7 @@ export async function handlePaymentNotification(request: Request): Promise<Respo
     }
 
     await creditCurrency({ paymentId: payment.id, playerUuid, amount: pack.amount });
+    await recordCommission({ paymentId: payment.id, playerUuid, paidKopecks: Math.round(paidRub * 100) });
     return accepted();
   } catch (error) {
     console.error("Failed to process a payment notification", error);

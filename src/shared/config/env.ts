@@ -10,6 +10,8 @@ const schema = z.object({
   PAYMENT_SECRET_KEY: z.string().min(1).optional(),
   GAME_API_URL: z.string().url().optional(),
   GAME_API_TOKEN: z.string().min(1).optional(),
+  DATABASE_URL: z.string().min(1).optional(),
+  PARTNER_ADMIN_TOKEN: z.string().min(16).optional(),
 });
 
 export type ServerEnv = z.infer<typeof schema>;

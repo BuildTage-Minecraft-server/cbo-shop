@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { attributeReferral } from "@/entities/partner";
 import { createSession } from "@/entities/session";
 import { authenticateAccount, AuthError } from "@/shared/api/auth-server";
 import { routes } from "@/shared/config";
@@ -30,6 +31,7 @@ export async function loginAction(_previous: LoginState, formData: FormData): Pr
   try {
     const player = await authenticateAccount(parsed.data.username, parsed.data.password);
     await createSession(player);
+    await attributeReferral(player.uuid);
   } catch (error) {
     if (error instanceof AuthError && error.kind === "invalid-credentials") {
       return { error: "Неверный ник или пароль.", username };

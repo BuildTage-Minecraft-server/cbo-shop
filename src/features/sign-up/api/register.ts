@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { attributeReferral } from "@/entities/partner";
 import { createSession } from "@/entities/session";
 import { authenticateAccount, AccountRegisterError, registerAccount } from "@/shared/api/auth-server";
 import { gameServer, routes } from "@/shared/config";
@@ -56,6 +57,7 @@ export async function registerAction(_previous: RegisterState, formData: FormDat
   try {
     const player = await authenticateAccount(username, password);
     await createSession(player);
+    await attributeReferral(player.uuid);
   } catch (error) {
     console.error("Sign-in after registration failed", error);
     return { error: "Аккаунт создан, но войти автоматически не получилось. Войдите на странице входа.", username };

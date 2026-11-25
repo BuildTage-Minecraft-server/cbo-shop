@@ -4,6 +4,7 @@ import { randomUUID } from "node:crypto";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { findPack } from "@/entities/currency-pack";
+import { attributeReferral } from "@/entities/partner";
 import { rememberPayment } from "@/entities/payment";
 import { getSession } from "@/entities/session";
 import { createPayment } from "@/shared/api/payments";
@@ -26,6 +27,8 @@ export async function createPaymentAction(_previous: BuyState, formData: FormDat
   if (!pack) {
     return { error: "Пакет не найден. Обновите страницу и попробуйте снова." };
   }
+
+  await attributeReferral(session.uuid);
 
   let paymentId: string | undefined;
   let confirmationUrl: string | undefined;
