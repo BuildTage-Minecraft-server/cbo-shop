@@ -28,7 +28,7 @@ Live: https://shop.nekrasovdev.space
 - Tailwind CSS 4 with a small component layer (plain CSS in `src/app/styles/globals.css`)
 - Zod for environment and input validation, jose for session tokens
 - PostgreSQL through `pg`, used only by the referral program (the rest of the site is stateless)
-- Vercel for hosting
+- Docker, Docker Compose and a self-hosted GitHub Actions runner for deployment
 
 ## Architecture
 
@@ -90,12 +90,14 @@ The checkout page returns the buyer to `/payment/result` both after a successful
 | `SESSION_SECRET` | yes | Random string, at least 32 characters, used to sign sessions |
 | `DRASL_URL` | yes | Base URL of the auth server, including a path prefix if it has one |
 | `DRASL_ADMIN_TOKEN` | for registration | API token of an admin account on the auth server. Without it the register page links to the auth server web form instead |
+| `POSTGRES_PASSWORD` | Docker | Password of the bundled PostgreSQL container. Compose builds `DATABASE_URL` from it |
+| `PROXY_NETWORK` | no | Docker network shared with the reverse proxy, defaults to `cbo_default` |
 | `DATABASE_URL` | for referrals | PostgreSQL connection string. Without it the referral program is switched off and its links are hidden |
 | `PARTNER_ADMIN_TOKEN` | for payouts | Bearer token (16+ characters) for the payout administration endpoint. Without it the endpoint answers 404 |
 | `PARTNER_COMMISSION_PERCENT` | no | Default creator share of each payment, 1 to 50, defaults to `10`. Fixed per creator at sign-up |
 | `PARTNER_HOLD_DAYS` | no | Days before a commission becomes payable, 0 to 90, defaults to `14` |
 | `PARTNER_MIN_PAYOUT_RUB` | no | Minimum payout request in rubles, defaults to `500` |
-| `SITE_URL` | no | Public URL of the shop, defaults to the Vercel production URL or `http://localhost:3000` |
+| `SITE_URL` | no | Public URL of the shop, defaults to `http://localhost:3000`. Set it in production, it is used for metadata, referral links and redirects |
 | `PAYMENT_SHOP_ID` | for payments | Shop identifier at the payment provider |
 | `PAYMENT_SECRET_KEY` | for payments | Secret key at the payment provider |
 | `GAME_API_URL` | for crediting | Base URL of the game server credit API |
@@ -181,9 +183,27 @@ Useful scripts: `npm run build`, `npm run start`, `npm run typecheck`.
 
 ## Deployment
 
-1. Import the repository into Vercel and set the environment variables above. For the referral program, point `DATABASE_URL` at any PostgreSQL instance reachable from the deployment.
-2. In the payment provider dashboard, add an HTTP notification for `payment.succeeded` pointing to `https://<your-domain>/api/payment/webhook`.
-3. Deploy. Every push to the main branch ships to production.
+The site runs on your own server as two containers, the Next.js app (standalone output) and PostgreSQL. A reverse proxy that already runs in Docker terminates TLS in front of it.
+
+**One-time server setup**
+
+1. Create `~/cbo-shop/.env` and put every variable from the table above into it, including `POSTGRES_PASSWORD` (use a hex string so it is safe inside a URL), `SITE_URL` and `SESSION_SECRET`. Compose builds `DATABASE_URL` from the password.
+2. Install a [self-hosted runner](https://docs.github.com/en/actions/hosting-your-own-runners) for this repository (Settings, Actions, Runners) in its own directory, run it as a service, and make sure its user can run `docker`. A runner serves a single repository, so it cannot be shared with other projects.
+3. Attach the app to the network of your reverse proxy. The compose file joins the external network named by `PROXY_NETWORK` (default `cbo_default`, check with `docker network ls`) under the alias `cbo-shop`, so the proxy config is:
+
+```caddyfile
+shop.example.com {
+    reverse_proxy cbo-shop:3000
+}
+```
+
+4. In the payment provider dashboard add an HTTP notification for `payment.succeeded` pointing to `https://<your-domain>/api/payment/webhook`.
+
+**CI/CD**
+
+Every push to `main` runs `.github/workflows/deploy.yml` on the runner: it builds the Docker image, copies the compose file to `~/cbo-shop` and runs `docker compose up -d --wait`. The job fails if the app does not become healthy. Old images and build cache are pruned at the end of each run. The workflow has no `pull_request` trigger on purpose, so code from forks never reaches the runner.
+
+To deploy by hand, run `docker build -t cbo-shop:latest .` and `docker compose up -d` in the project directory.
 
 ## Security notes
 

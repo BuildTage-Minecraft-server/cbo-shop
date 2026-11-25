@@ -1,0 +1,38 @@
+services:
+  web:
+    image: cbo-shop:latest
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://cbo:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}@db:5432/cbo
+    networks:
+      default:
+      proxy:
+        aliases:
+          - cbo-shop
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: cbo
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: cbo
+    volumes:
+      - cbo-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cbo -d cbo"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+networks:
+  proxy:
+    external: true
+    name: ${PROXY_NETWORK:-cbo_default}
+
+volumes:
+  cbo-db:
