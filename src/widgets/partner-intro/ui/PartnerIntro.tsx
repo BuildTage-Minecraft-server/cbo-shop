@@ -1,5 +1,5 @@
 import { partnerProgram } from "@/shared/config";
-import { Container, Steps } from "@/shared/ui";
+import { Container, Panel, Steps } from "@/shared/ui";
 import type { StepItem } from "@/shared/ui";
 
 function daysLabel(count: number): string {
@@ -12,7 +12,7 @@ function daysLabel(count: number): string {
 }
 
 export function PartnerIntro() {
-  const { commissionPercent, holdDays, minPayoutRub, attributionDays } = partnerProgram;
+  const { holdDays, attributionDays } = partnerProgram;
 
   const steps: readonly StepItem[] = [
     {
@@ -25,18 +25,29 @@ export function PartnerIntro() {
     },
     {
       title: "Получайте процент",
-      text: `${commissionPercent}% с каждой оплаты привлечённого игрока. ${
+      text: `Процент с каждой оплаты привлечённого игрока. ${
         holdDays > 0 ? `Начисление становится доступным к выплате через ${daysLabel(holdDays)}.` : "Начисление доступно к выплате сразу."
       }`,
     },
   ];
 
   const rules = [
-    "За игроком остаётся первый партнёр, по чьей ссылке он пришёл. Позже закрепление не меняется.",
-    "Покупки с вашего собственного аккаунта не засчитываются.",
-    `Выплата от ${minPayoutRub} ₽ по заявке: на карту или по СБП. Заявки обрабатываются вручную.`,
-    "Если платёж возвращён, начисление за него может быть аннулировано.",
-    "Накрутка через дополнительные аккаунты и самопокупки ведёт к блокировке начислений.",
+    {
+      title: "Закрепление",
+      text: "Игрок остаётся у первого партнёра, по чьей ссылке он пришёл.",
+    },
+    {
+      title: "Выплаты",
+      text: "По заявке, на карту или по СБП. Обрабатываем вручную.",
+    },
+    {
+      title: "Возвраты",
+      text: "Если платёж возвращён, начисление за него отменяется.",
+    },
+    {
+      title: "Честная игра",
+      text: "Покупки с вашего аккаунта и дополнительных аккаунтов не засчитываются.",
+    },
   ];
 
   return (
@@ -56,16 +67,16 @@ export function PartnerIntro() {
           <Steps items={steps} />
         </div>
 
-        <div className="mt-14 max-w-3xl">
+        <div className="mt-14">
           <h2 className="font-display text-2xl font-semibold uppercase tracking-wide text-white">Условия</h2>
-          <ul className="mt-4 space-y-3 leading-7 text-body">
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {rules.map((rule) => (
-              <li key={rule} className="flex gap-3">
-                <span aria-hidden="true" className="mt-3 h-1.5 w-1.5 shrink-0 bg-accent" />
-                <span>{rule}</span>
-              </li>
+              <Panel key={rule.title} className="p-5">
+                <h3 className="font-display text-lg font-semibold uppercase tracking-wide text-white">{rule.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-body">{rule.text}</p>
+              </Panel>
             ))}
-          </ul>
+          </div>
         </div>
       </Container>
     </section>
