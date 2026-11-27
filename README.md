@@ -95,7 +95,7 @@ The checkout page returns the buyer to `/payment/result` both after a successful
 | `DATABASE_URL` | for referrals | PostgreSQL connection string. Without it the referral program is switched off and its links are hidden |
 | `PARTNER_ADMIN_TOKEN` | for payouts | Bearer token (16+ characters) for the payout administration endpoint. Without it the endpoint answers 404 |
 | `PARTNER_COMMISSION_PERCENT` | no | Default creator share of each payment, 1 to 50, defaults to `10`. Fixed per creator at sign-up |
-| `PARTNER_HOLD_DAYS` | no | Days before a commission becomes payable, 0 to 90, defaults to `14` |
+| `PARTNER_HOLD_DAYS` | no | Optional days before a commission becomes payable, 0 to 90. Defaults to `0`, so commissions are payable immediately |
 | `PARTNER_MIN_PAYOUT_RUB` | no | Minimum payout request in rubles, defaults to `500` |
 | `SITE_URL` | no | Public URL of the shop, defaults to `http://localhost:3000`. Set it in production, it is used for metadata, referral links and redirects |
 | `PAYMENT_SHOP_ID` | for payments | Shop identifier at the payment provider |
@@ -154,7 +154,7 @@ sequenceDiagram
 
 - **Attribution.** The cookie is turned into a binding on registration, sign-in and checkout. A player keeps the first creator who brought them, and a creator can never be attributed to themselves.
 - **Commission.** Recorded after the currency has been credited, keyed by the provider payment id, so repeated webhook deliveries never pay twice. Amounts are stored as integer kopecks and the share is computed in integer arithmetic.
-- **Hold period.** A commission becomes payable after `PARTNER_HOLD_DAYS`, which leaves room for refunds and chargebacks.
+- **Hold period.** Optional and off by default. With `PARTNER_HOLD_DAYS` above zero a commission becomes payable only after that many days, which leaves room for refunds and chargebacks.
 - **Payouts.** A creator requests the whole available balance from the cabinet. The request runs in a transaction that locks the creator row, so double submits and parallel requests cannot over-withdraw. Only one request can be pending at a time.
 - **Storage.** `partners`, `referrals`, `commissions` and `payouts` tables are created on first use under a PostgreSQL advisory lock, so no separate migration step is needed.
 
@@ -169,7 +169,7 @@ curl -X POST -H "Authorization: Bearer $PARTNER_ADMIN_TOKEN" -H "Content-Type: a
   -d '{"id": 1, "status": "paid"}' https://<your-domain>/api/partner/payouts
 ```
 
-Refunds are not wired to the commission ledger. If a payment is refunded during the hold period, delete its row from `commissions` by `payment_id`.
+Refunds are not wired to the commission ledger. If a payment is refunded, delete its row from `commissions` by `payment_id` before the creator requests a payout.
 
 ## Local development
 

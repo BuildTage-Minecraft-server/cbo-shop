@@ -54,11 +54,13 @@ export function PartnerDashboard({ partner, dashboard, link }: Props) {
         <Stat label="Привлечено игроков" value={formatNumber(dashboard.referrals)} />
         <Stat label="Покупателей" value={formatNumber(dashboard.buyers)} />
         <Stat label="Начислено всего" value={money(dashboard.earnedKopecks)} />
-        <Stat
-          label="На удержании"
-          value={money(dashboard.holdKopecks)}
-          hint={partnerProgram.holdDays > 0 ? `Доступно к выплате через ${partnerProgram.holdDays} дн. после платежа.` : undefined}
-        />
+        {partnerProgram.holdDays > 0 ? (
+          <Stat
+            label="На удержании"
+            value={money(dashboard.holdKopecks)}
+            hint={`Доступно к выплате через ${partnerProgram.holdDays} дн. после платежа.`}
+          />
+        ) : null}
         <Stat label="Доступно к выплате" value={money(dashboard.availableKopecks)} highlight />
         <Stat label="Выплачено" value={money(dashboard.paidKopecks)} />
       </dl>
